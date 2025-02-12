@@ -1,6 +1,7 @@
 import { B3dmLayerDescription } from '@navara/engine';
 import { Cesium3dTilesLayerDescription } from '@navara/engine';
 import { Color } from 'three';
+import { EffectComposer } from 'postprocessing';
 import { ElevationDecoder } from '@navara/engine';
 import { FXAAEffect } from 'postprocessing';
 import { GeoJsonLayerDescription } from '@navara/engine';
@@ -140,8 +141,9 @@ declare class ThreeView {
     private _eventManager;
     private _pickHelper?;
     private _defaultTextureOptions;
-    constructor(options: Options);
+    constructor(options?: Options);
     get scene(): Scene;
+    get effectComposer(): EffectComposer;
     init(): Promise<void>;
     dispose(): void;
     resize: (width?: number, height?: number, pixelRatio?: number) => void;

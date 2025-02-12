@@ -8699,9 +8699,9 @@ class Fl {
 function $() {
   return typeof self < "u" && self.document === void 0;
 }
-const Nl = "" + new URL("assets/index-DATcG3XH.js", import.meta.url).href, Wl = () => yr.japanGSI(), Yl = () => yr.mapbox();
+const Nl = "" + new URL("assets/index-Bv24wPR8.js", import.meta.url).href, Wl = () => yr.japanGSI(), Yl = () => yr.mapbox();
 class Vl {
-  constructor(e) {
+  constructor(e = {}) {
     A(this, "camera");
     A(this, "renderer");
     A(this, "control");
@@ -8960,6 +8960,9 @@ class Vl {
   }
   get scene() {
     return this._scenes.world;
+  }
+  get effectComposer() {
+    return this._effectComposer;
   }
   async init() {
     var r, n;
