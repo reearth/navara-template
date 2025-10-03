@@ -10,6 +10,7 @@
   "dependencies": {
     "@navara/engine": "./externals/navara_engine",
     "@navara/engine-worker": "./externals/navara_engine_worker",
+    "@navara/engine-api": "./externals/navara_engine_api",
     "@navara/three": "./externals/navara_three",
     "three": "^0.171.0"
   },
@@ -21,5 +22,6 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-win32-x64-msvc": "4.34.6"
-  }
+  },
+  "packageManager": "pnpm@10.16.1+sha512.0e155aa2629db8672b49e8475da6226aa4bdea85fdcdfdc15350874946d4f3c91faaf64cbdc4a5d1ab8002f473d5c3fcedcd197989cf0390f9badd3c04678706"
 }

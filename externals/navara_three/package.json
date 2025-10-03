@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.0",
   "private": true,
-  "main": "pkg/three.umd.cjs",
-  "module": "pkg/three.js",
-  "types": "pkg/index.d.ts"
+  "main": "pkg/index.umd.cjs",
+  "module": "pkg/index.js",
+  "types": "pkg/src/index.d.ts"
 }
