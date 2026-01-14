@@ -1,13 +1,14 @@
 import { Material } from "three";
+import { Color } from "../../Color";
 import { LightLayerDeclaration, type LightLayerConfig, ViewContext, type LightLayerUpdate } from "../../core";
 import { SunLight, type SunLightOptions } from "../../lights";
 type LayerDescription = {
     /**
      * Sun light configuration options. Includes all CSM (Cascaded Shadow Maps) settings.
-     * Color is specified as a number (hex value) instead of THREE.Color instance.
+     * Color can be specified as a number (hex value) or Navara Color instance.
      */
     sun?: Omit<SunLightOptions, "color"> & {
-        color?: number;
+        color?: Color;
     };
 };
 export type SunLightLayerConfig = LightLayerConfig & LayerDescription;

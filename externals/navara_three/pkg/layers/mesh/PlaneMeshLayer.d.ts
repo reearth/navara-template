@@ -1,4 +1,5 @@
 import { Mesh, MeshLambertMaterial, PlaneGeometry } from "three";
+import { Color } from "../../Color";
 import { MeshLayerDeclaration, type MeshLayerConfig, type MeshLayerUpdate, type ViewContext } from "../../core";
 type LayerDescription = {
     plane?: {
@@ -6,7 +7,7 @@ type LayerDescription = {
         height?: number;
         widthSegments?: number;
         heightSegments?: number;
-        color?: number;
+        color?: Color;
         emissive?: number;
         emissiveIntensity?: number;
         opacity?: number;

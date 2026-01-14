@@ -352,8 +352,8 @@ export function getHeightFromEllipsoid(point) {
  * @param {number} z
  * @returns {EncodedVec3}
  */
-export function encode_camera(x, y, z) {
-    const ret = wasm.encode_camera(x, y, z);
+export function encodePosition(x, y, z) {
+    const ret = wasm.encodePosition(x, y, z);
     return EncodedVec3.__wrap(ret);
 }
 
@@ -849,6 +849,21 @@ export class BillboardMaterial {
      */
     set depthTest(arg0) {
         wasm.__wbg_set_billboardmaterial_depthTest(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+    }
+    /**
+     * Avoid overlapping with the globe surface.
+     * @returns {boolean | undefined}
+     */
+    get offsetDepth() {
+        const ret = wasm.__wbg_get_billboardmaterial_offsetDepth(this.__wbg_ptr);
+        return ret === 0xFFFFFF ? undefined : ret !== 0;
+    }
+    /**
+     * Avoid overlapping with the globe surface.
+     * @param {boolean | null} [arg0]
+     */
+    set offsetDepth(arg0) {
+        wasm.__wbg_set_billboardmaterial_offsetDepth(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {boolean | undefined}
@@ -2212,7 +2227,7 @@ export class EncodedVec3 {
      * @returns {Vec3}
      */
     get high() {
-        const ret = wasm.__wbg_get_encodedvec3_high(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_aabb_center(this.__wbg_ptr);
         return Vec3.__wrap(ret);
     }
     /**
@@ -2221,13 +2236,13 @@ export class EncodedVec3 {
     set high(arg0) {
         _assertClass(arg0, Vec3);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_encodedvec3_high(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_aabb_center(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {Vec3}
      */
     get low() {
-        const ret = wasm.__wbg_get_encodedvec3_low(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_aabb_extent(this.__wbg_ptr);
         return Vec3.__wrap(ret);
     }
     /**
@@ -2236,7 +2251,7 @@ export class EncodedVec3 {
     set low(arg0) {
         _assertClass(arg0, Vec3);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_encodedvec3_low(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_aabb_extent(this.__wbg_ptr, ptr0);
     }
     /**
      * @param {Vec3} high
@@ -2450,6 +2465,41 @@ export class Geometry {
     transferIndices() {
         const ret = wasm.geometry_transferIndices(this.__wbg_ptr);
         return ret;
+    }
+    /**
+     * @returns {Float32Array | undefined}
+     */
+    transferSkirtVertices() {
+        const ret = wasm.geometry_transferSkirtVertices(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {Float32Array | undefined}
+     */
+    transferSkirtUvs() {
+        const ret = wasm.geometry_transferSkirtUvs(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {Uint32Array | undefined}
+     */
+    transferSkirtIndices() {
+        const ret = wasm.geometry_transferSkirtIndices(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {Uint32Array | undefined}
+     */
+    transferSkirtIndicesToEdge() {
+        const ret = wasm.geometry_transferSkirtIndicesToEdge(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {boolean}
+     */
+    hasSkirt() {
+        const ret = wasm.geometry_hasSkirt(this.__wbg_ptr);
+        return ret !== 0;
     }
 }
 
@@ -2668,40 +2718,40 @@ export class LLE {
      * @returns {number}
      */
     get lat() {
-        const ret = wasm.__wbg_get_lle_lat(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_boundingsphere_center_x(this.__wbg_ptr);
         return ret;
     }
     /**
      * @param {number} arg0
      */
     set lat(arg0) {
-        wasm.__wbg_set_lle_lat(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_boundingsphere_center_x(this.__wbg_ptr, arg0);
     }
     /**
      * @returns {number}
      */
     get lng() {
-        const ret = wasm.__wbg_get_lle_lng(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_boundingsphere_center_y(this.__wbg_ptr);
         return ret;
     }
     /**
      * @param {number} arg0
      */
     set lng(arg0) {
-        wasm.__wbg_set_lle_lng(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_boundingsphere_center_y(this.__wbg_ptr, arg0);
     }
     /**
      * @returns {number}
      */
     get height() {
-        const ret = wasm.__wbg_get_lle_height(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_boundingsphere_center_z(this.__wbg_ptr);
         return ret;
     }
     /**
      * @param {number} arg0
      */
     set height(arg0) {
-        wasm.__wbg_set_lle_height(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_boundingsphere_center_z(this.__wbg_ptr, arg0);
     }
     /**
      * @param {number} lat
@@ -2995,26 +3045,6 @@ export class ModelMaterial {
      */
     set water(arg0) {
         wasm.__wbg_set_modelmaterial_water(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
-    }
-    /**
-     * @returns {string | undefined}
-     */
-    get waterNormalUrl() {
-        const ret = wasm.__wbg_get_modelmaterial_waterNormalUrl(this.__wbg_ptr);
-        let v1;
-        if (ret[0] !== 0) {
-            v1 = getStringFromWasm0(ret[0], ret[1]).slice();
-            wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
-        }
-        return v1;
-    }
-    /**
-     * @param {string | null} [arg0]
-     */
-    set waterNormalUrl(arg0) {
-        var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_modelmaterial_waterNormalUrl(this.__wbg_ptr, ptr0, len0);
     }
     /**
      * Scale water normal. Decreasing this value will make the water surface rough.
@@ -3449,6 +3479,21 @@ export class PointMaterial {
      */
     set depthTest(arg0) {
         wasm.__wbg_set_pointmaterial_depthTest(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+    }
+    /**
+     * Avoid overlapping with the globe surface.
+     * @returns {boolean | undefined}
+     */
+    get offsetDepth() {
+        const ret = wasm.__wbg_get_pointmaterial_offsetDepth(this.__wbg_ptr);
+        return ret === 0xFFFFFF ? undefined : ret !== 0;
+    }
+    /**
+     * Avoid overlapping with the globe surface.
+     * @param {boolean | null} [arg0]
+     */
+    set offsetDepth(arg0) {
+        wasm.__wbg_set_pointmaterial_offsetDepth(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {boolean | undefined}
@@ -4053,26 +4098,6 @@ export class PolygonMaterial {
         wasm.__wbg_set_polygonmaterial_water(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
-     * @returns {string | undefined}
-     */
-    get waterNormalUrl() {
-        const ret = wasm.__wbg_get_polygonmaterial_waterNormalUrl(this.__wbg_ptr);
-        let v1;
-        if (ret[0] !== 0) {
-            v1 = getStringFromWasm0(ret[0], ret[1]).slice();
-            wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
-        }
-        return v1;
-    }
-    /**
-     * @param {string | null} [arg0]
-     */
-    set waterNormalUrl(arg0) {
-        var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_polygonmaterial_waterNormalUrl(this.__wbg_ptr, ptr0, len0);
-    }
-    /**
      * Scale water normal. Decreasing this value will make the water surface rough.
      * @returns {number | undefined}
      */
@@ -4361,7 +4386,7 @@ export class PolylineGeometryAttributes {
      * @returns {number}
      */
     transfer_position_size() {
-        const ret = wasm.polylinegeometry_position_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_position_size(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -4375,7 +4400,7 @@ export class PolylineGeometryAttributes {
      * @returns {number}
      */
     transfer_start_size() {
-        const ret = wasm.polylinegeometry_start_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_start_size(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -4389,7 +4414,7 @@ export class PolylineGeometryAttributes {
      * @returns {number}
      */
     transfer_forward_offset_size() {
-        const ret = wasm.polylinegeometry_forward_offset_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_forward_offset_size(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -4403,7 +4428,7 @@ export class PolylineGeometryAttributes {
      * @returns {number}
      */
     transfer_start_normals_size() {
-        const ret = wasm.polylinegeometry_start_normals_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_start_normals_size(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -4417,7 +4442,7 @@ export class PolylineGeometryAttributes {
      * @returns {number}
      */
     transfer_end_normal_and_texture_coordinate_normalization_x_size() {
-        const ret = wasm.polylinegeometry_end_normal_and_texture_coordinate_normalization_x_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_end_normal_and_texture_coordinate_normalization_x_size(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -4431,7 +4456,7 @@ export class PolylineGeometryAttributes {
      * @returns {number}
      */
     transfer_right_normal_and_texture_coordinate_normalization_y_size() {
-        const ret = wasm.polylinegeometry_right_normal_and_texture_coordinate_normalization_y_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_right_normal_and_texture_coordinate_normalization_y_size(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -4445,7 +4470,7 @@ export class PolylineGeometryAttributes {
      * @returns {number | undefined}
      */
     transfer_batch_id_size() {
-        const ret = wasm.polylinegeometry_batch_id_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_batch_id_size(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret;
     }
     /**
@@ -4459,7 +4484,7 @@ export class PolylineGeometryAttributes {
      * @returns {number | undefined}
      */
     transfer_batch_index_size() {
-        const ret = wasm.polylinegeometry_batch_index_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_batch_index_size(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret;
     }
 }
@@ -4705,40 +4730,40 @@ export class RasterTerrainMaterial {
      * @returns {boolean | undefined}
      */
     get castShadow() {
-        const ret = wasm.__wbg_get_rasterterrainmaterial_castShadow(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_polygonmaterial_castShadow(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set castShadow(arg0) {
-        wasm.__wbg_set_rasterterrainmaterial_castShadow(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_polygonmaterial_castShadow(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {boolean | undefined}
      */
     get receiveShadow() {
-        const ret = wasm.__wbg_get_rasterterrainmaterial_receiveShadow(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_polygonmaterial_receiveShadow(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set receiveShadow(arg0) {
-        wasm.__wbg_set_rasterterrainmaterial_receiveShadow(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_polygonmaterial_receiveShadow(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {boolean | undefined}
      */
     get showBoundingBox() {
-        const ret = wasm.__wbg_get_rasterterrainmaterial_showBoundingBox(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_polygonmaterial_clampToGround(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set showBoundingBox(arg0) {
-        wasm.__wbg_set_rasterterrainmaterial_showBoundingBox(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_polygonmaterial_clampToGround(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {number | undefined}
@@ -4811,6 +4836,40 @@ export class RasterTerrainMaterial {
      */
     set tileSize(arg0) {
         wasm.__wbg_set_rasterterrainmaterial_tileSize(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : (arg0) >>> 0);
+    }
+    /**
+     * Whether to render skirts along tile boundaries to hide gaps.
+     * You should disable `skirt` if you want to visualize an underground model.
+     * @returns {boolean | undefined}
+     */
+    get skirt() {
+        const ret = wasm.__wbg_get_polygonmaterial_useGroundNormals(this.__wbg_ptr);
+        return ret === 0xFFFFFF ? undefined : ret !== 0;
+    }
+    /**
+     * Whether to render skirts along tile boundaries to hide gaps.
+     * You should disable `skirt` if you want to visualize an underground model.
+     * @param {boolean | null} [arg0]
+     */
+    set skirt(arg0) {
+        wasm.__wbg_set_polygonmaterial_useGroundNormals(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+    }
+    /**
+     * Multiplier for the automatically calculated skirt height.
+     * A value of 1.0 uses the default calculated height.
+     * @returns {number | undefined}
+     */
+    get skirtExaggeration() {
+        const ret = wasm.__wbg_get_modelmaterial_pointSize(this.__wbg_ptr);
+        return ret === 0x100000001 ? undefined : ret;
+    }
+    /**
+     * Multiplier for the automatically calculated skirt height.
+     * A value of 1.0 uses the default calculated height.
+     * @param {number | null} [arg0]
+     */
+    set skirtExaggeration(arg0) {
+        wasm.__wbg_set_modelmaterial_pointSize(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : Math.fround(arg0));
     }
 }
 
@@ -5408,6 +5467,41 @@ export class ReturnedConstructedTerrainMesh {
         const ret = wasm.returnedconstructedterrainmesh_transferHeights(this.__wbg_ptr);
         return ret;
     }
+    /**
+     * @returns {Float32Array | undefined}
+     */
+    transferSkirtVertices() {
+        const ret = wasm.returnedconstructedterrainmesh_transferSkirtVertices(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {Float32Array | undefined}
+     */
+    transferSkirtUvs() {
+        const ret = wasm.returnedconstructedterrainmesh_transferSkirtUvs(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {Uint32Array | undefined}
+     */
+    transferSkirtIndices() {
+        const ret = wasm.returnedconstructedterrainmesh_transferSkirtIndices(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {Uint32Array | undefined}
+     */
+    transferSkirtIndicesToEdge() {
+        const ret = wasm.returnedconstructedterrainmesh_transferSkirtIndicesToEdge(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {boolean}
+     */
+    hasSkirt() {
+        const ret = wasm.returnedconstructedterrainmesh_hasSkirt(this.__wbg_ptr);
+        return ret !== 0;
+    }
 }
 
 const TextMaterialFinalization = (typeof FinalizationRegistry === 'undefined')
@@ -5431,14 +5525,14 @@ export class TextMaterial {
      * @returns {boolean | undefined}
      */
     get show() {
-        const ret = wasm.__wbg_get_modelmaterial_shouldRotateInDefault(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_textmaterial_show(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set show(arg0) {
-        wasm.__wbg_set_modelmaterial_shouldRotateInDefault(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_textmaterial_show(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {number | undefined}
@@ -5501,40 +5595,55 @@ export class TextMaterial {
      * @returns {boolean | undefined}
      */
     get scaleByDistance() {
-        const ret = wasm.__wbg_get_modelmaterial_water(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_textmaterial_scaleByDistance(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set scaleByDistance(arg0) {
-        wasm.__wbg_set_modelmaterial_water(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_textmaterial_scaleByDistance(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {boolean | undefined}
      */
     get clampToGround() {
-        const ret = wasm.__wbg_get_modelmaterial_applyWaterNormal(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_textmaterial_clampToGround(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set clampToGround(arg0) {
-        wasm.__wbg_set_modelmaterial_applyWaterNormal(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_textmaterial_clampToGround(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {boolean | undefined}
      */
     get depthTest() {
-        const ret = wasm.__wbg_get_modelmaterial_specular(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_textmaterial_depthTest(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set depthTest(arg0) {
-        wasm.__wbg_set_modelmaterial_specular(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_textmaterial_depthTest(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+    }
+    /**
+     * Avoid overlapping with the globe surface.
+     * @returns {boolean | undefined}
+     */
+    get offsetDepth() {
+        const ret = wasm.__wbg_get_textmaterial_offsetDepth(this.__wbg_ptr);
+        return ret === 0xFFFFFF ? undefined : ret !== 0;
+    }
+    /**
+     * Avoid overlapping with the globe surface.
+     * @param {boolean | null} [arg0]
+     */
+    set offsetDepth(arg0) {
+        wasm.__wbg_set_textmaterial_offsetDepth(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {string | undefined}
@@ -6401,7 +6510,7 @@ export class UintAttribute {
     constructor(data, size) {
         const ptr0 = passArray32ToWasm0(data, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
-        const ret = wasm.floatattribute_new(ptr0, len0, size);
+        const ret = wasm.uintattribute_new(ptr0, len0, size);
         this.__wbg_ptr = ret >>> 0;
         UintAttributeFinalization.register(this, this.__wbg_ptr, this);
         return this;
@@ -6444,7 +6553,7 @@ export class UpsamplableTerrainGeometry {
         const len1 = WASM_VECTOR_LEN;
         const ptr2 = passArrayF32ToWasm0(heights, wasm.__wbindgen_malloc);
         const len2 = WASM_VECTOR_LEN;
-        const ret = wasm.geometry_new(ptr0, len0, ptr1, len1, ptr2, len2);
+        const ret = wasm.upsamplableterraingeometry_new(ptr0, len0, ptr1, len1, ptr2, len2);
         this.__wbg_ptr = ret >>> 0;
         UpsamplableTerrainGeometryFinalization.register(this, this.__wbg_ptr, this);
         return this;
@@ -6763,40 +6872,40 @@ export class Window {
      * @returns {number}
      */
     get width() {
-        const ret = wasm.__wbg_get_window_width(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_boundingsphere_center_x(this.__wbg_ptr);
         return ret;
     }
     /**
      * @param {number} arg0
      */
     set width(arg0) {
-        wasm.__wbg_set_window_width(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_boundingsphere_center_x(this.__wbg_ptr, arg0);
     }
     /**
      * @returns {number}
      */
     get height() {
-        const ret = wasm.__wbg_get_window_height(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_boundingsphere_center_y(this.__wbg_ptr);
         return ret;
     }
     /**
      * @param {number} arg0
      */
     set height(arg0) {
-        wasm.__wbg_set_window_height(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_boundingsphere_center_y(this.__wbg_ptr, arg0);
     }
     /**
      * @returns {number}
      */
     get pixel_ratio() {
-        const ret = wasm.__wbg_get_window_pixel_ratio(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_boundingsphere_center_z(this.__wbg_ptr);
         return ret;
     }
     /**
      * @param {number} arg0
      */
     set pixel_ratio(arg0) {
-        wasm.__wbg_set_window_pixel_ratio(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_boundingsphere_center_z(this.__wbg_ptr, arg0);
     }
     /**
      * @param {number} width

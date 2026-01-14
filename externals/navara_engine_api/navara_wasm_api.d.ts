@@ -28,7 +28,7 @@ export function getHeightFromEllipsoid(point: Vec3): number;
  * // Use camera.high_x, camera.low_x, etc. in shaders
  * ```
  */
-export function encode_camera(x: number, y: number, z: number): EncodedVec3;
+export function encodePosition(x: number, y: number, z: number): EncodedVec3;
 export function geodeticToXyz(lle: LLE): Vec3;
 export function xyzToGeodetic(vec3: Vec3): LLE;
 export function angleToRadian(degree: number): number;
@@ -104,6 +104,14 @@ export class BillboardMaterial {
   set clampToGround(value: boolean | null | undefined);
   get depthTest(): boolean | undefined;
   set depthTest(value: boolean | null | undefined);
+  /**
+   * Avoid overlapping with the globe surface.
+   */
+  get offsetDepth(): boolean | undefined;
+  /**
+   * Avoid overlapping with the globe surface.
+   */
+  set offsetDepth(value: boolean | null | undefined);
   get transparent(): boolean | undefined;
   set transparent(value: boolean | null | undefined);
   get alphaTest(): number | undefined;
@@ -393,6 +401,11 @@ export class Geometry {
   transferVertices(): Float32Array;
   transferUvs(): Float32Array;
   transferIndices(): Uint32Array;
+  transferSkirtVertices(): Float32Array | undefined;
+  transferSkirtUvs(): Float32Array | undefined;
+  transferSkirtIndices(): Uint32Array | undefined;
+  transferSkirtIndicesToEdge(): Uint32Array | undefined;
+  hasSkirt(): boolean;
 }
 /**
  * WASM wrapper for Globe resource.
@@ -505,8 +518,6 @@ export class ModelMaterial {
    * Apply a water material on the polygon. It might slow down the loading of the mesh.
    */
   set water(value: boolean | null | undefined);
-  get waterNormalUrl(): string | undefined;
-  set waterNormalUrl(value: string | null | undefined);
   /**
    * Scale water normal. Decreasing this value will make the water surface rough.
    */
@@ -586,6 +597,14 @@ export class PointMaterial {
   set clampToGround(value: boolean | null | undefined);
   get depthTest(): boolean | undefined;
   set depthTest(value: boolean | null | undefined);
+  /**
+   * Avoid overlapping with the globe surface.
+   */
+  get offsetDepth(): boolean | undefined;
+  /**
+   * Avoid overlapping with the globe surface.
+   */
+  set offsetDepth(value: boolean | null | undefined);
   get transparent(): boolean | undefined;
   set transparent(value: boolean | null | undefined);
 }
@@ -734,8 +753,6 @@ export class PolygonMaterial {
    * Apply a water material on the polygon. It might slow down the loading of the mesh.
    */
   set water(value: boolean | null | undefined);
-  get waterNormalUrl(): string | undefined;
-  set waterNormalUrl(value: string | null | undefined);
   /**
    * Scale water normal. Decreasing this value will make the water surface rough.
    */
@@ -864,6 +881,26 @@ export class RasterTerrainMaterial {
   set elevationDecoder(value: ElevationDecoder | null | undefined);
   get tileSize(): number | undefined;
   set tileSize(value: number | null | undefined);
+  /**
+   * Whether to render skirts along tile boundaries to hide gaps.
+   * You should disable `skirt` if you want to visualize an underground model.
+   */
+  get skirt(): boolean | undefined;
+  /**
+   * Whether to render skirts along tile boundaries to hide gaps.
+   * You should disable `skirt` if you want to visualize an underground model.
+   */
+  set skirt(value: boolean | null | undefined);
+  /**
+   * Multiplier for the automatically calculated skirt height.
+   * A value of 1.0 uses the default calculated height.
+   */
+  get skirtExaggeration(): number | undefined;
+  /**
+   * Multiplier for the automatically calculated skirt height.
+   * A value of 1.0 uses the default calculated height.
+   */
+  set skirtExaggeration(value: number | null | undefined);
 }
 export class RasterTileInternalMaterial {
   private constructor();
@@ -924,6 +961,11 @@ export class ReturnedConstructedTerrainMesh {
   transferUvs(): Float32Array;
   transferIndices(): Uint32Array;
   transferHeights(): Float32Array;
+  transferSkirtVertices(): Float32Array | undefined;
+  transferSkirtUvs(): Float32Array | undefined;
+  transferSkirtIndices(): Uint32Array | undefined;
+  transferSkirtIndicesToEdge(): Uint32Array | undefined;
+  hasSkirt(): boolean;
   max_height: number;
   min_height: number;
   get rtc_translation(): Vec3 | undefined;
@@ -948,6 +990,14 @@ export class TextMaterial {
   set clampToGround(value: boolean | null | undefined);
   get depthTest(): boolean | undefined;
   set depthTest(value: boolean | null | undefined);
+  /**
+   * Avoid overlapping with the globe surface.
+   */
+  get offsetDepth(): boolean | undefined;
+  /**
+   * Avoid overlapping with the globe surface.
+   */
+  set offsetDepth(value: boolean | null | undefined);
   get text(): string | undefined;
   set text(value: string | null | undefined);
   /**
@@ -1153,7 +1203,7 @@ export interface InitOutput {
   readonly getPickRay: (a: number, b: number, c: number, d: number) => number;
   readonly getRayPlaneIntersection: (a: number, b: number) => number;
   readonly getHeightFromEllipsoid: (a: number) => number;
-  readonly encode_camera: (a: number, b: number, c: number) => number;
+  readonly encodePosition: (a: number, b: number, c: number) => number;
   readonly geodeticToXyz: (a: number) => number;
   readonly xyzToGeodetic: (a: number) => number;
   readonly angleToRadian: (a: number) => number;
@@ -1175,6 +1225,8 @@ export interface InitOutput {
   readonly __wbg_set_pointmaterial_clampToGround: (a: number, b: number) => void;
   readonly __wbg_get_pointmaterial_depthTest: (a: number) => number;
   readonly __wbg_set_pointmaterial_depthTest: (a: number, b: number) => void;
+  readonly __wbg_get_pointmaterial_offsetDepth: (a: number) => number;
+  readonly __wbg_set_pointmaterial_offsetDepth: (a: number, b: number) => void;
   readonly __wbg_get_pointmaterial_transparent: (a: number) => number;
   readonly __wbg_set_pointmaterial_transparent: (a: number, b: number) => void;
   readonly __wbg_nearfar_free: (a: number, b: number) => void;
@@ -1201,11 +1253,23 @@ export interface InitOutput {
   readonly __wbg_set_billboardmaterial_clampToGround: (a: number, b: number) => void;
   readonly __wbg_get_billboardmaterial_depthTest: (a: number) => number;
   readonly __wbg_set_billboardmaterial_depthTest: (a: number, b: number) => void;
+  readonly __wbg_get_billboardmaterial_offsetDepth: (a: number) => number;
+  readonly __wbg_set_billboardmaterial_offsetDepth: (a: number, b: number) => void;
   readonly __wbg_get_billboardmaterial_transparent: (a: number) => number;
   readonly __wbg_set_billboardmaterial_transparent: (a: number, b: number) => void;
   readonly __wbg_get_billboardmaterial_alphaTest: (a: number) => number;
   readonly __wbg_set_billboardmaterial_alphaTest: (a: number, b: number) => void;
   readonly __wbg_textmaterial_free: (a: number, b: number) => void;
+  readonly __wbg_get_textmaterial_show: (a: number) => number;
+  readonly __wbg_set_textmaterial_show: (a: number, b: number) => void;
+  readonly __wbg_get_textmaterial_scaleByDistance: (a: number) => number;
+  readonly __wbg_set_textmaterial_scaleByDistance: (a: number, b: number) => void;
+  readonly __wbg_get_textmaterial_clampToGround: (a: number) => number;
+  readonly __wbg_set_textmaterial_clampToGround: (a: number, b: number) => void;
+  readonly __wbg_get_textmaterial_depthTest: (a: number) => number;
+  readonly __wbg_set_textmaterial_depthTest: (a: number, b: number) => void;
+  readonly __wbg_get_textmaterial_offsetDepth: (a: number) => number;
+  readonly __wbg_set_textmaterial_offsetDepth: (a: number, b: number) => void;
   readonly __wbg_get_textmaterial_text: (a: number) => [number, number];
   readonly __wbg_set_textmaterial_text: (a: number, b: number, c: number) => void;
   readonly __wbg_get_textmaterial_font: (a: number) => [number, number];
@@ -1243,6 +1307,7 @@ export interface InitOutput {
   readonly __wbg_set_polylinematerial___internal__: (a: number, b: number) => void;
   readonly polylinematerial_new: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => number;
   readonly __wbg_polylineinternalmaterial_free: (a: number, b: number) => void;
+  readonly __wbg_get_polylineinternalmaterial_minMaxHeights: (a: number) => [number, number];
   readonly __wbg_polygonmaterial_free: (a: number, b: number) => void;
   readonly __wbg_get_polygonmaterial_show: (a: number) => number;
   readonly __wbg_set_polygonmaterial_show: (a: number, b: number) => void;
@@ -1282,8 +1347,6 @@ export interface InitOutput {
   readonly __wbg_set_polygonmaterial_outlineWidth: (a: number, b: number) => void;
   readonly __wbg_get_polygonmaterial_water: (a: number) => number;
   readonly __wbg_set_polygonmaterial_water: (a: number, b: number) => void;
-  readonly __wbg_get_polygonmaterial_waterNormalUrl: (a: number) => [number, number];
-  readonly __wbg_set_polygonmaterial_waterNormalUrl: (a: number, b: number, c: number) => void;
   readonly __wbg_get_polygonmaterial_waterScaleNormal: (a: number) => number;
   readonly __wbg_set_polygonmaterial_waterScaleNormal: (a: number, b: number) => void;
   readonly __wbg_get_polygonmaterial_waterSpeed: (a: number) => number;
@@ -1327,8 +1390,6 @@ export interface InitOutput {
   readonly __wbg_set_modelmaterial_metalness: (a: number, b: number) => void;
   readonly __wbg_get_modelmaterial_water: (a: number) => number;
   readonly __wbg_set_modelmaterial_water: (a: number, b: number) => void;
-  readonly __wbg_get_modelmaterial_waterNormalUrl: (a: number) => [number, number];
-  readonly __wbg_set_modelmaterial_waterNormalUrl: (a: number, b: number, c: number) => void;
   readonly __wbg_get_modelmaterial_waterScaleNormal: (a: number) => number;
   readonly __wbg_set_modelmaterial_waterScaleNormal: (a: number, b: number) => void;
   readonly __wbg_get_modelmaterial_waterSpeed: (a: number) => number;
@@ -1417,12 +1478,6 @@ export interface InitOutput {
   readonly __wbg_rasterterrainmaterial_free: (a: number, b: number) => void;
   readonly __wbg_get_rasterterrainmaterial_show: (a: number) => number;
   readonly __wbg_set_rasterterrainmaterial_show: (a: number, b: number) => void;
-  readonly __wbg_get_rasterterrainmaterial_castShadow: (a: number) => number;
-  readonly __wbg_set_rasterterrainmaterial_castShadow: (a: number, b: number) => void;
-  readonly __wbg_get_rasterterrainmaterial_receiveShadow: (a: number) => number;
-  readonly __wbg_set_rasterterrainmaterial_receiveShadow: (a: number, b: number) => void;
-  readonly __wbg_get_rasterterrainmaterial_showBoundingBox: (a: number) => number;
-  readonly __wbg_set_rasterterrainmaterial_showBoundingBox: (a: number, b: number) => void;
   readonly __wbg_get_rasterterrainmaterial_maxZoom: (a: number) => number;
   readonly __wbg_set_rasterterrainmaterial_maxZoom: (a: number, b: number) => void;
   readonly __wbg_get_rasterterrainmaterial_overscaledMaxZoom: (a: number) => number;
@@ -1455,6 +1510,15 @@ export interface InitOutput {
   readonly __wbg_set_ellipsoidterrainmaterial_maxZoom: (a: number, b: number) => void;
   readonly __wbg_get_ellipsoidterrainmaterial_minZoom: (a: number) => number;
   readonly __wbg_set_ellipsoidterrainmaterial_minZoom: (a: number, b: number) => void;
+  readonly __wbg_set_pointmaterial_color: (a: number, b: number) => void;
+  readonly __wbg_set_polylinematerial_color: (a: number, b: number) => void;
+  readonly __wbg_set_rastertilematerial_color: (a: number, b: number) => void;
+  readonly __wbg_set_vectortilematerial_maxZoom: (a: number, b: number) => void;
+  readonly __wbg_set_vectortilematerial_overscaledMaxZoom: (a: number, b: number) => void;
+  readonly __wbg_set_textmaterial_color: (a: number, b: number) => void;
+  readonly __wbg_set_textmaterial_backgroundColor: (a: number, b: number) => void;
+  readonly __wbg_set_polygonmaterial_color: (a: number, b: number) => void;
+  readonly __wbg_set_polylineinternalmaterial_minMaxHeights: (a: number, b: number, c: number) => void;
   readonly __wbg_set_pointmaterial_center: (a: number, b: number) => void;
   readonly __wbg_set_textmaterial_center: (a: number, b: number) => void;
   readonly __wbg_set_pointmaterial_size: (a: number, b: number) => void;
@@ -1467,32 +1531,23 @@ export interface InitOutput {
   readonly __wbg_set_textmaterial_height: (a: number, b: number) => void;
   readonly __wbg_set_rastertilematerial_opacity: (a: number, b: number) => void;
   readonly __wbg_set_vectortilematerial_maxSse: (a: number, b: number) => void;
-  readonly __wbg_get_polylineinternalmaterial_minMaxHeights: (a: number) => [number, number];
-  readonly __wbg_set_polylineinternalmaterial_minMaxHeights: (a: number, b: number, c: number) => void;
-  readonly __wbg_get_textmaterial_show: (a: number) => number;
-  readonly __wbg_get_textmaterial_scaleByDistance: (a: number) => number;
-  readonly __wbg_get_textmaterial_clampToGround: (a: number) => number;
-  readonly __wbg_get_textmaterial_depthTest: (a: number) => number;
-  readonly __wbg_get_vectortilematerial_show: (a: number) => number;
-  readonly __wbg_get_vectortilematerial_castShadow: (a: number) => number;
-  readonly __wbg_get_vectortilematerial_receiveShadow: (a: number) => number;
-  readonly __wbg_set_textmaterial_show: (a: number, b: number) => void;
-  readonly __wbg_set_textmaterial_scaleByDistance: (a: number, b: number) => void;
-  readonly __wbg_set_textmaterial_clampToGround: (a: number, b: number) => void;
-  readonly __wbg_set_textmaterial_depthTest: (a: number, b: number) => void;
+  readonly __wbg_set_rasterterrainmaterial_skirtExaggeration: (a: number, b: number) => void;
   readonly __wbg_set_vectortilematerial_show: (a: number, b: number) => void;
   readonly __wbg_set_vectortilematerial_castShadow: (a: number, b: number) => void;
   readonly __wbg_set_vectortilematerial_receiveShadow: (a: number, b: number) => void;
+  readonly __wbg_set_rasterterrainmaterial_castShadow: (a: number, b: number) => void;
+  readonly __wbg_set_rasterterrainmaterial_receiveShadow: (a: number, b: number) => void;
+  readonly __wbg_set_rasterterrainmaterial_showBoundingBox: (a: number, b: number) => void;
+  readonly __wbg_set_rasterterrainmaterial_skirt: (a: number, b: number) => void;
+  readonly __wbg_get_vectortilematerial_show: (a: number) => number;
+  readonly __wbg_get_vectortilematerial_castShadow: (a: number) => number;
+  readonly __wbg_get_vectortilematerial_receiveShadow: (a: number) => number;
+  readonly __wbg_get_rasterterrainmaterial_castShadow: (a: number) => number;
+  readonly __wbg_get_rasterterrainmaterial_receiveShadow: (a: number) => number;
+  readonly __wbg_get_rasterterrainmaterial_showBoundingBox: (a: number) => number;
+  readonly __wbg_get_rasterterrainmaterial_skirt: (a: number) => number;
   readonly __wbg_get_pointmaterial_center: (a: number) => number;
   readonly __wbg_get_textmaterial_center: (a: number) => number;
-  readonly __wbg_set_pointmaterial_color: (a: number, b: number) => void;
-  readonly __wbg_set_polylinematerial_color: (a: number, b: number) => void;
-  readonly __wbg_set_rastertilematerial_color: (a: number, b: number) => void;
-  readonly __wbg_set_vectortilematerial_maxZoom: (a: number, b: number) => void;
-  readonly __wbg_set_vectortilematerial_overscaledMaxZoom: (a: number, b: number) => void;
-  readonly __wbg_set_textmaterial_color: (a: number, b: number) => void;
-  readonly __wbg_set_textmaterial_backgroundColor: (a: number, b: number) => void;
-  readonly __wbg_set_polygonmaterial_color: (a: number, b: number) => void;
   readonly __wbg_get_pointmaterial_color: (a: number) => number;
   readonly __wbg_get_polylinematerial_color: (a: number) => number;
   readonly __wbg_get_rastertilematerial_color: (a: number) => number;
@@ -1511,6 +1566,7 @@ export interface InitOutput {
   readonly __wbg_get_textmaterial_height: (a: number) => number;
   readonly __wbg_get_rastertilematerial_opacity: (a: number) => number;
   readonly __wbg_get_vectortilematerial_maxSse: (a: number) => number;
+  readonly __wbg_get_rasterterrainmaterial_skirtExaggeration: (a: number) => number;
   readonly __wbg_constructedpolygongeometry_free: (a: number, b: number) => void;
   readonly __wbg_get_constructedpolygongeometry_extent: (a: number) => number;
   readonly __wbg_set_constructedpolygongeometry_extent: (a: number, b: number) => void;
@@ -1583,39 +1639,6 @@ export interface InitOutput {
   readonly elevationdecoder_japanGSI: () => number;
   readonly elevationdecoder_mapbox: () => number;
   readonly elevationdecoder_terrarium: () => number;
-  readonly __wbg_extentradianf32_free: (a: number, b: number) => void;
-  readonly __wbg_get_extentradianf32_west: (a: number) => number;
-  readonly __wbg_set_extentradianf32_west: (a: number, b: number) => void;
-  readonly __wbg_get_extentradianf32_south: (a: number) => number;
-  readonly __wbg_set_extentradianf32_south: (a: number, b: number) => void;
-  readonly __wbg_get_extentradianf32_east: (a: number) => number;
-  readonly __wbg_set_extentradianf32_east: (a: number, b: number) => void;
-  readonly __wbg_get_extentradianf32_north: (a: number) => number;
-  readonly __wbg_set_extentradianf32_north: (a: number, b: number) => void;
-  readonly extentradianf32_new: (a: number, b: number, c: number, d: number) => number;
-  readonly __wbg_boundingsphere_free: (a: number, b: number) => void;
-  readonly __wbg_get_boundingsphere_center_x: (a: number) => number;
-  readonly __wbg_set_boundingsphere_center_x: (a: number, b: number) => void;
-  readonly __wbg_get_boundingsphere_center_y: (a: number) => number;
-  readonly __wbg_set_boundingsphere_center_y: (a: number, b: number) => void;
-  readonly __wbg_get_boundingsphere_center_z: (a: number) => number;
-  readonly __wbg_set_boundingsphere_center_z: (a: number, b: number) => void;
-  readonly __wbg_get_boundingsphere_radius: (a: number) => number;
-  readonly __wbg_set_boundingsphere_radius: (a: number, b: number) => void;
-  readonly boundingsphere_new: (a: number, b: number, c: number, d: number) => number;
-  readonly __wbg_aabb_free: (a: number, b: number) => void;
-  readonly __wbg_get_aabb_center: (a: number) => number;
-  readonly __wbg_set_aabb_center: (a: number, b: number) => void;
-  readonly __wbg_get_aabb_extent: (a: number) => number;
-  readonly __wbg_set_aabb_extent: (a: number, b: number) => void;
-  readonly aabb_new: (a: number, b: number) => number;
-  readonly __wbg_transferablehierarchy_free: (a: number, b: number) => void;
-  readonly __wbg_get_transferablehierarchy_expected_winding_order: (a: number) => number;
-  readonly __wbg_set_transferablehierarchy_expected_winding_order: (a: number, b: number) => void;
-  readonly __wbg_transferableholes_free: (a: number, b: number) => void;
-  readonly __wbg_windingorder_free: (a: number, b: number) => void;
-  readonly __wbg_get_windingorder_0: (a: number) => number;
-  readonly __wbg_set_windingorder_0: (a: number, b: number) => void;
   readonly __wbg_tilexyz_free: (a: number, b: number) => void;
   readonly __wbg_get_tilexyz_x: (a: number) => number;
   readonly __wbg_set_tilexyz_x: (a: number, b: number) => void;
@@ -1627,103 +1650,24 @@ export interface InitOutput {
   readonly __wbg_overscaledtilehandle_free: (a: number, b: number) => void;
   readonly __wbg_get_overscaledtilehandle_handle: (a: number) => bigint;
   readonly __wbg_set_overscaledtilehandle_handle: (a: number, b: bigint) => void;
-  readonly __wbg_batchpropresult_free: (a: number, b: number) => void;
-  readonly __wbg_get_batchpropresult_properties: (a: number) => any;
-  readonly __wbg_set_batchpropresult_properties: (a: number, b: any) => void;
-  readonly __wbg_get_batchpropresult_layerId: (a: number) => [number, number];
-  readonly __wbg_set_batchpropresult_layerId: (a: number, b: number, c: number) => void;
-  readonly __wbg_lle_free: (a: number, b: number) => void;
-  readonly __wbg_get_lle_lat: (a: number) => number;
-  readonly __wbg_set_lle_lat: (a: number, b: number) => void;
-  readonly __wbg_get_lle_lng: (a: number) => number;
-  readonly __wbg_set_lle_lng: (a: number, b: number) => void;
-  readonly __wbg_get_lle_height: (a: number) => number;
-  readonly __wbg_set_lle_height: (a: number, b: number) => void;
-  readonly lle_new: (a: number, b: number, c: number) => number;
-  readonly __wbg_ellipsoidgeodesic_free: (a: number, b: number) => void;
-  readonly __wbg_get_ellipsoidgeodesic_start: (a: number) => number;
-  readonly __wbg_set_ellipsoidgeodesic_start: (a: number, b: number) => void;
-  readonly __wbg_get_ellipsoidgeodesic_end: (a: number) => number;
-  readonly __wbg_set_ellipsoidgeodesic_end: (a: number, b: number) => void;
-  readonly __wbg_get_ellipsoidgeodesic_distance: (a: number) => number;
-  readonly __wbg_set_ellipsoidgeodesic_distance: (a: number, b: number) => void;
-  readonly __wbg_get_ellipsoidgeodesic_start_heading: (a: number) => number;
-  readonly __wbg_set_ellipsoidgeodesic_start_heading: (a: number, b: number) => void;
-  readonly __wbg_get_ellipsoidgeodesic_end_heading: (a: number) => number;
-  readonly __wbg_set_ellipsoidgeodesic_end_heading: (a: number, b: number) => void;
-  readonly ellipsoidgeodesic_new: (a: number, b: number) => number;
-  readonly ellipsoidgeodesic_interpolateGeodeticPoints: (a: number, b: number, c: number) => [number, number];
-  readonly ellipsoidgeodesic_interpolateDistance: (a: number, b: number) => number;
-  readonly __wbg_plane_free: (a: number, b: number) => void;
-  readonly __wbg_get_plane_normal: (a: number) => number;
-  readonly __wbg_set_plane_normal: (a: number, b: number) => void;
-  readonly __wbg_get_plane_distance: (a: number) => number;
-  readonly __wbg_set_plane_distance: (a: number, b: number) => void;
-  readonly __wbg_transferablepolygonbatchedfeature_free: (a: number, b: number) => void;
-  readonly __wbg_get_transferablepolygonbatchedfeature_crs: (a: number) => number;
-  readonly __wbg_set_transferablepolygonbatchedfeature_crs: (a: number, b: number) => void;
-  readonly __wbg_get_transferablepolygonbatchedfeature_length: (a: number) => number;
-  readonly __wbg_set_transferablepolygonbatchedfeature_length: (a: number, b: number) => void;
-  readonly transferablepolygonbatchedfeature_constructor: (a: number, b: number) => number;
-  readonly transferablepolygonbatchedfeature_setOuterRing: (a: number, b: number, c: any) => void;
-  readonly transferablepolygonbatchedfeature_setOuterRingSizes: (a: number, b: number, c: any) => void;
-  readonly transferablepolygonbatchedfeature_setHoles: (a: number, b: number, c: any) => void;
-  readonly transferablepolygonbatchedfeature_setHolesSizes: (a: number, b: number, c: any) => void;
-  readonly transferablepolygonbatchedfeature_setHolesTotalSizes: (a: number, b: number, c: any) => void;
-  readonly transferablepolygonbatchedfeature_setHolesBoundaries: (a: number, b: number, c: any) => void;
-  readonly transferablepolygonbatchedfeature_setBatchIds: (a: number, b: number, c: any) => void;
-  readonly transferablepolygonbatchedfeature_setBatchIndices: (a: number, b: number, c: any) => void;
-  readonly transferablepolygonbatchedfeature_setExpectedWindingOrders: (a: number, b: number, c: any) => void;
-  readonly transferablepolygonbatchedfeature_transferBatchIds: (a: number) => any;
-  readonly transferablepolygonbatchedfeature_transferBatchIndices: (a: number) => any;
-  readonly transferablepolygonbatchedfeature_transferOuterRing: (a: number) => any;
-  readonly transferablepolygonbatchedfeature_transferOuterRingSizes: (a: number) => any;
-  readonly transferablepolygonbatchedfeature_transferHoles: (a: number) => any;
-  readonly transferablepolygonbatchedfeature_transferHolesBoundaries: (a: number) => any;
-  readonly transferablepolygonbatchedfeature_transferHolesSizes: (a: number) => any;
-  readonly transferablepolygonbatchedfeature_transferHolesTotalSizes: (a: number) => any;
-  readonly transferablepolygonbatchedfeature_transferExpectedWindingOrders: (a: number) => any;
-  readonly __wbg_transferablepolylinebatchedfeature_free: (a: number, b: number) => void;
-  readonly __wbg_get_transferablepolylinebatchedfeature_crs: (a: number) => number;
-  readonly __wbg_set_transferablepolylinebatchedfeature_crs: (a: number, b: number) => void;
-  readonly __wbg_get_transferablepolylinebatchedfeature_length: (a: number) => number;
-  readonly __wbg_set_transferablepolylinebatchedfeature_length: (a: number, b: number) => void;
-  readonly transferablepolylinebatchedfeature_constructor: (a: number, b: number) => number;
-  readonly transferablepolylinebatchedfeature_setBatchIds: (a: number, b: number, c: any) => void;
-  readonly transferablepolylinebatchedfeature_setBatchIndices: (a: number, b: number, c: any) => void;
-  readonly transferablepolylinebatchedfeature_setPoints: (a: number, b: number, c: any) => void;
-  readonly transferablepolylinebatchedfeature_setPointsSizes: (a: number, b: number, c: any) => void;
-  readonly transferablepolylinebatchedfeature_transferBatchIds: (a: number) => any;
-  readonly transferablepolylinebatchedfeature_transferBatchIndices: (a: number) => any;
-  readonly transferablepolylinebatchedfeature_transferPoints: (a: number) => any;
-  readonly transferablepolylinebatchedfeature_transferPointsSizes: (a: number) => any;
-  readonly __wbg_cachedmeshhandle_free: (a: number, b: number) => void;
-  readonly __wbg_get_cachedmeshhandle_vertices: (a: number) => number;
-  readonly __wbg_set_cachedmeshhandle_vertices: (a: number, b: number) => void;
-  readonly __wbg_get_cachedmeshhandle_indices: (a: number) => number;
-  readonly __wbg_set_cachedmeshhandle_indices: (a: number, b: number) => void;
-  readonly __wbg_get_cachedmeshhandle_uvs: (a: number) => number;
-  readonly __wbg_set_cachedmeshhandle_uvs: (a: number, b: number) => void;
-  readonly __wbg_get_cachedmeshhandle_heights: (a: number) => number;
-  readonly __wbg_set_cachedmeshhandle_heights: (a: number, b: number) => void;
-  readonly cachedmeshhandle_new: (a: number, b: number, c: number, d: number) => number;
-  readonly __wbg_texturefragment_free: (a: number, b: number) => void;
-  readonly __wbg_get_texturefragment_ind: (a: number) => number;
-  readonly __wbg_set_texturefragment_ind: (a: number, b: number) => void;
-  readonly __wbg_get_texturefragment_gen: (a: number) => number;
-  readonly __wbg_set_texturefragment_gen: (a: number, b: number) => void;
   readonly __wbg_floatattribute_free: (a: number, b: number) => void;
   readonly __wbg_get_floatattribute_size: (a: number) => number;
   readonly __wbg_set_floatattribute_size: (a: number, b: number) => void;
   readonly floatattribute_new: (a: number, b: number, c: number) => number;
   readonly floatattribute_transferData: (a: number) => any;
   readonly __wbg_uintattribute_free: (a: number, b: number) => void;
+  readonly uintattribute_new: (a: number, b: number, c: number) => number;
   readonly uintattribute_transferData: (a: number) => any;
   readonly __wbg_geometry_free: (a: number, b: number) => void;
   readonly geometry_new: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly geometry_transferVertices: (a: number) => any;
   readonly geometry_transferUvs: (a: number) => any;
   readonly geometry_transferIndices: (a: number) => any;
+  readonly geometry_transferSkirtVertices: (a: number) => any;
+  readonly geometry_transferSkirtUvs: (a: number) => any;
+  readonly geometry_transferSkirtIndices: (a: number) => any;
+  readonly geometry_transferSkirtIndicesToEdge: (a: number) => any;
+  readonly geometry_hasSkirt: (a: number) => number;
   readonly __wbg_returnedconstructedterrainmesh_free: (a: number, b: number) => void;
   readonly __wbg_get_returnedconstructedterrainmesh_max_height: (a: number) => number;
   readonly __wbg_set_returnedconstructedterrainmesh_max_height: (a: number, b: number) => void;
@@ -1736,25 +1680,18 @@ export interface InitOutput {
   readonly returnedconstructedterrainmesh_transferUvs: (a: number) => any;
   readonly returnedconstructedterrainmesh_transferIndices: (a: number) => any;
   readonly returnedconstructedterrainmesh_transferHeights: (a: number) => any;
+  readonly returnedconstructedterrainmesh_transferSkirtVertices: (a: number) => any;
+  readonly returnedconstructedterrainmesh_transferSkirtUvs: (a: number) => any;
+  readonly returnedconstructedterrainmesh_transferSkirtIndices: (a: number) => any;
+  readonly returnedconstructedterrainmesh_transferSkirtIndicesToEdge: (a: number) => any;
+  readonly returnedconstructedterrainmesh_hasSkirt: (a: number) => number;
   readonly __wbg_upsamplableterraingeometry_free: (a: number, b: number) => void;
-  readonly __wbg_encodedvec3_free: (a: number, b: number) => void;
-  readonly __wbg_get_encodedvec3_high: (a: number) => number;
-  readonly __wbg_set_encodedvec3_high: (a: number, b: number) => void;
-  readonly __wbg_get_encodedvec3_low: (a: number) => number;
-  readonly __wbg_set_encodedvec3_low: (a: number, b: number) => void;
-  readonly encodedvec3_new: (a: number, b: number) => number;
-  readonly __wbg_window_free: (a: number, b: number) => void;
-  readonly __wbg_get_window_width: (a: number) => number;
-  readonly __wbg_set_window_width: (a: number, b: number) => void;
-  readonly __wbg_get_window_height: (a: number) => number;
-  readonly __wbg_set_window_height: (a: number, b: number) => void;
-  readonly __wbg_get_window_pixel_ratio: (a: number) => number;
-  readonly __wbg_set_window_pixel_ratio: (a: number, b: number) => void;
-  readonly window_new: (a: number, b: number, c: number) => number;
-  readonly __wbg_set_uintattribute_size: (a: number, b: number) => void;
   readonly upsamplableterraingeometry_new: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
-  readonly __wbg_get_uintattribute_size: (a: number) => number;
-  readonly uintattribute_new: (a: number, b: number, c: number) => number;
+  readonly __wbg_plane_free: (a: number, b: number) => void;
+  readonly __wbg_get_plane_normal: (a: number) => number;
+  readonly __wbg_set_plane_normal: (a: number, b: number) => void;
+  readonly __wbg_get_plane_distance: (a: number) => number;
+  readonly __wbg_set_plane_distance: (a: number, b: number) => void;
   readonly __wbg_vec2_free: (a: number, b: number) => void;
   readonly __wbg_get_vec2_x: (a: number) => number;
   readonly __wbg_set_vec2_x: (a: number, b: number) => void;
@@ -1769,87 +1706,8 @@ export interface InitOutput {
   readonly __wbg_get_vec3_y: (a: number) => number;
   readonly __wbg_set_vec3_x: (a: number, b: number) => void;
   readonly __wbg_set_vec3_y: (a: number, b: number) => void;
-  readonly __wbg_constructedpolylinegeometry_free: (a: number, b: number) => void;
-  readonly constructedpolylinegeometry_extent: (a: number) => number;
-  readonly constructedpolylinegeometry_position: (a: number) => any;
-  readonly constructedpolylinegeometry_position_size: (a: number) => number;
-  readonly constructedpolylinegeometry_start: (a: number) => any;
-  readonly constructedpolylinegeometry_start_size: (a: number) => number;
-  readonly constructedpolylinegeometry_forward_offset: (a: number) => any;
-  readonly constructedpolylinegeometry_forward_offset_size: (a: number) => number;
-  readonly constructedpolylinegeometry_start_normals: (a: number) => any;
-  readonly constructedpolylinegeometry_start_normals_size: (a: number) => number;
-  readonly constructedpolylinegeometry_end_normal_and_texture_coordinate_normalization_x: (a: number) => any;
-  readonly constructedpolylinegeometry_end_normal_and_texture_coordinate_normalization_x_size: (a: number) => number;
-  readonly constructedpolylinegeometry_right_normal_and_texture_coordinate_normalization_y: (a: number) => any;
-  readonly constructedpolylinegeometry_right_normal_and_texture_coordinate_normalization_y_size: (a: number) => number;
-  readonly constructedpolylinegeometry_batch_id: (a: number) => any;
-  readonly constructedpolylinegeometry_batch_id_size: (a: number) => number;
-  readonly constructedpolylinegeometry_batch_index: (a: number) => any;
-  readonly constructedpolylinegeometry_batch_index_size: (a: number) => number;
-  readonly constructedpolylinegeometry_indices: (a: number) => any;
-  readonly __wbg_polylinegeometry_free: (a: number, b: number) => void;
-  readonly polylinegeometry_position: (a: number) => any;
-  readonly polylinegeometry_position_size: (a: number) => number;
-  readonly polylinegeometry_start: (a: number) => any;
-  readonly polylinegeometry_start_size: (a: number) => number;
-  readonly polylinegeometry_forward_offset: (a: number) => any;
-  readonly polylinegeometry_forward_offset_size: (a: number) => number;
-  readonly polylinegeometry_start_normals: (a: number) => any;
-  readonly polylinegeometry_start_normals_size: (a: number) => number;
-  readonly polylinegeometry_end_normal_and_texture_coordinate_normalization_x: (a: number) => any;
-  readonly polylinegeometry_end_normal_and_texture_coordinate_normalization_x_size: (a: number) => number;
-  readonly polylinegeometry_right_normal_and_texture_coordinate_normalization_y: (a: number) => any;
-  readonly polylinegeometry_right_normal_and_texture_coordinate_normalization_y_size: (a: number) => number;
-  readonly polylinegeometry_batch_id: (a: number) => any;
-  readonly polylinegeometry_batch_id_size: (a: number) => number;
-  readonly polylinegeometry_batch_index: (a: number) => any;
-  readonly polylinegeometry_batch_index_size: (a: number) => number;
-  readonly polylinegeometry_indices: (a: number) => any;
-  readonly __wbg_polylinegeometryattributes_free: (a: number, b: number) => void;
-  readonly polylinegeometryattributes_transfer_position: (a: number) => any;
-  readonly polylinegeometryattributes_transfer_start: (a: number) => any;
-  readonly polylinegeometryattributes_transfer_forward_offset: (a: number) => any;
-  readonly polylinegeometryattributes_transfer_start_normals: (a: number) => any;
-  readonly polylinegeometryattributes_transfer_end_normal_and_texture_coordinate_normalization_x: (a: number) => any;
-  readonly polylinegeometryattributes_transfer_right_normal_and_texture_coordinate_normalization_y: (a: number) => any;
-  readonly polylinegeometryattributes_transfer_batch_id: (a: number) => any;
-  readonly polylinegeometryattributes_transfer_batch_index: (a: number) => any;
-  readonly __wbg_globe_free: (a: number, b: number) => void;
-  readonly __wbg_get_globe_maxSse: (a: number) => number;
-  readonly __wbg_set_globe_maxSse: (a: number, b: number) => void;
-  readonly __wbg_get_globe_segments: (a: number) => number;
-  readonly __wbg_set_globe_segments: (a: number, b: number) => void;
-  readonly __wbg_get_globe_color: (a: number) => number;
-  readonly __wbg_set_globe_color: (a: number, b: number) => void;
-  readonly __wbg_get_globe_hideUnderground: (a: number) => number;
-  readonly __wbg_set_globe_hideUnderground: (a: number, b: number) => void;
-  readonly __wbg_get_globe_shouldComputeNormalFromVertex: (a: number) => number;
-  readonly __wbg_set_globe_shouldComputeNormalFromVertex: (a: number, b: number) => void;
-  readonly __wbg_get_globe_transparent: (a: number) => number;
-  readonly __wbg_set_globe_transparent: (a: number, b: number) => void;
-  readonly __wbg_get_globe_opacity: (a: number) => number;
-  readonly __wbg_set_globe_opacity: (a: number, b: number) => void;
-  readonly __wbg_get_globe_wireframe: (a: number) => number;
-  readonly __wbg_set_globe_wireframe: (a: number, b: number) => void;
-  readonly __wbg_get_globe_elevationColormap: (a: number) => [number, number];
-  readonly __wbg_set_globe_elevationColormap: (a: number, b: number, c: number) => void;
-  readonly globe_new: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
-  readonly __wbg_ray_free: (a: number, b: number) => void;
-  readonly __wbg_get_ray_origin: (a: number) => number;
-  readonly __wbg_set_ray_origin: (a: number, b: number) => void;
-  readonly __wbg_get_ray_direction: (a: number) => number;
-  readonly __wbg_set_ray_direction: (a: number, b: number) => void;
-  readonly ray_new: (a: number, b: number) => number;
-  readonly ray_getPoint: (a: number, b: number) => number;
-  readonly polylinegeometryattributes_transfer_position_size: (a: number) => number;
-  readonly polylinegeometryattributes_transfer_start_size: (a: number) => number;
-  readonly polylinegeometryattributes_transfer_forward_offset_size: (a: number) => number;
-  readonly polylinegeometryattributes_transfer_start_normals_size: (a: number) => number;
-  readonly polylinegeometryattributes_transfer_end_normal_and_texture_coordinate_normalization_x_size: (a: number) => number;
-  readonly polylinegeometryattributes_transfer_right_normal_and_texture_coordinate_normalization_y_size: (a: number) => number;
-  readonly polylinegeometryattributes_transfer_batch_id_size: (a: number) => number;
-  readonly polylinegeometryattributes_transfer_batch_index_size: (a: number) => number;
+  readonly __wbg_set_uintattribute_size: (a: number, b: number) => void;
+  readonly __wbg_get_uintattribute_size: (a: number) => number;
   readonly __wbg_camerastatus_free: (a: number, b: number) => void;
   readonly __wbg_get_camerastatus_status: (a: number) => [number, number];
   readonly __wbg_set_camerastatus_status: (a: number, b: number, c: number) => void;
@@ -1896,6 +1754,16 @@ export interface InitOutput {
   readonly __wbg_get_cameracontrolupdateevent_translateDuration: (a: number) => number;
   readonly __wbg_set_cameracontrolupdateevent_translateDuration: (a: number, b: number) => void;
   readonly cameracontrolupdateevent_new: () => number;
+  readonly __wbg_cachedmeshhandle_free: (a: number, b: number) => void;
+  readonly __wbg_get_cachedmeshhandle_vertices: (a: number) => number;
+  readonly __wbg_set_cachedmeshhandle_vertices: (a: number, b: number) => void;
+  readonly __wbg_get_cachedmeshhandle_indices: (a: number) => number;
+  readonly __wbg_set_cachedmeshhandle_indices: (a: number, b: number) => void;
+  readonly __wbg_get_cachedmeshhandle_uvs: (a: number) => number;
+  readonly __wbg_set_cachedmeshhandle_uvs: (a: number, b: number) => void;
+  readonly __wbg_get_cachedmeshhandle_heights: (a: number) => number;
+  readonly __wbg_set_cachedmeshhandle_heights: (a: number, b: number) => void;
+  readonly cachedmeshhandle_new: (a: number, b: number, c: number, d: number) => number;
   readonly __wbg_get_transform_tx: (a: number) => number;
   readonly __wbg_get_transform_ty: (a: number) => number;
   readonly __wbg_get_transform_tz: (a: number) => number;
@@ -1910,6 +1778,204 @@ export interface InitOutput {
   readonly __wbg_set_cameraorientation_pitch: (a: number, b: number) => void;
   readonly __wbg_set_cameraorientation_roll: (a: number, b: number) => void;
   readonly __wbg_set_transform_qx: (a: number, b: number) => void;
+  readonly __wbg_constructedpolylinegeometry_free: (a: number, b: number) => void;
+  readonly constructedpolylinegeometry_extent: (a: number) => number;
+  readonly constructedpolylinegeometry_position: (a: number) => any;
+  readonly constructedpolylinegeometry_position_size: (a: number) => number;
+  readonly constructedpolylinegeometry_start: (a: number) => any;
+  readonly constructedpolylinegeometry_start_size: (a: number) => number;
+  readonly constructedpolylinegeometry_forward_offset: (a: number) => any;
+  readonly constructedpolylinegeometry_forward_offset_size: (a: number) => number;
+  readonly constructedpolylinegeometry_start_normals: (a: number) => any;
+  readonly constructedpolylinegeometry_start_normals_size: (a: number) => number;
+  readonly constructedpolylinegeometry_end_normal_and_texture_coordinate_normalization_x: (a: number) => any;
+  readonly constructedpolylinegeometry_end_normal_and_texture_coordinate_normalization_x_size: (a: number) => number;
+  readonly constructedpolylinegeometry_right_normal_and_texture_coordinate_normalization_y: (a: number) => any;
+  readonly constructedpolylinegeometry_right_normal_and_texture_coordinate_normalization_y_size: (a: number) => number;
+  readonly constructedpolylinegeometry_batch_id: (a: number) => any;
+  readonly constructedpolylinegeometry_batch_id_size: (a: number) => number;
+  readonly constructedpolylinegeometry_batch_index: (a: number) => any;
+  readonly constructedpolylinegeometry_batch_index_size: (a: number) => number;
+  readonly constructedpolylinegeometry_indices: (a: number) => any;
+  readonly __wbg_polylinegeometry_free: (a: number, b: number) => void;
+  readonly polylinegeometry_position: (a: number) => any;
+  readonly polylinegeometry_position_size: (a: number) => number;
+  readonly polylinegeometry_start: (a: number) => any;
+  readonly polylinegeometry_start_size: (a: number) => number;
+  readonly polylinegeometry_forward_offset: (a: number) => any;
+  readonly polylinegeometry_forward_offset_size: (a: number) => number;
+  readonly polylinegeometry_start_normals: (a: number) => any;
+  readonly polylinegeometry_start_normals_size: (a: number) => number;
+  readonly polylinegeometry_end_normal_and_texture_coordinate_normalization_x: (a: number) => any;
+  readonly polylinegeometry_end_normal_and_texture_coordinate_normalization_x_size: (a: number) => number;
+  readonly polylinegeometry_right_normal_and_texture_coordinate_normalization_y: (a: number) => any;
+  readonly polylinegeometry_right_normal_and_texture_coordinate_normalization_y_size: (a: number) => number;
+  readonly polylinegeometry_batch_id: (a: number) => any;
+  readonly polylinegeometry_batch_id_size: (a: number) => number;
+  readonly polylinegeometry_batch_index: (a: number) => any;
+  readonly polylinegeometry_batch_index_size: (a: number) => number;
+  readonly polylinegeometry_indices: (a: number) => any;
+  readonly __wbg_polylinegeometryattributes_free: (a: number, b: number) => void;
+  readonly polylinegeometryattributes_transfer_position: (a: number) => any;
+  readonly polylinegeometryattributes_transfer_position_size: (a: number) => number;
+  readonly polylinegeometryattributes_transfer_start: (a: number) => any;
+  readonly polylinegeometryattributes_transfer_start_size: (a: number) => number;
+  readonly polylinegeometryattributes_transfer_forward_offset: (a: number) => any;
+  readonly polylinegeometryattributes_transfer_forward_offset_size: (a: number) => number;
+  readonly polylinegeometryattributes_transfer_start_normals: (a: number) => any;
+  readonly polylinegeometryattributes_transfer_start_normals_size: (a: number) => number;
+  readonly polylinegeometryattributes_transfer_end_normal_and_texture_coordinate_normalization_x: (a: number) => any;
+  readonly polylinegeometryattributes_transfer_end_normal_and_texture_coordinate_normalization_x_size: (a: number) => number;
+  readonly polylinegeometryattributes_transfer_right_normal_and_texture_coordinate_normalization_y: (a: number) => any;
+  readonly polylinegeometryattributes_transfer_right_normal_and_texture_coordinate_normalization_y_size: (a: number) => number;
+  readonly polylinegeometryattributes_transfer_batch_id: (a: number) => any;
+  readonly polylinegeometryattributes_transfer_batch_id_size: (a: number) => number;
+  readonly polylinegeometryattributes_transfer_batch_index: (a: number) => any;
+  readonly polylinegeometryattributes_transfer_batch_index_size: (a: number) => number;
+  readonly __wbg_globe_free: (a: number, b: number) => void;
+  readonly __wbg_get_globe_maxSse: (a: number) => number;
+  readonly __wbg_set_globe_maxSse: (a: number, b: number) => void;
+  readonly __wbg_get_globe_segments: (a: number) => number;
+  readonly __wbg_set_globe_segments: (a: number, b: number) => void;
+  readonly __wbg_get_globe_color: (a: number) => number;
+  readonly __wbg_set_globe_color: (a: number, b: number) => void;
+  readonly __wbg_get_globe_hideUnderground: (a: number) => number;
+  readonly __wbg_set_globe_hideUnderground: (a: number, b: number) => void;
+  readonly __wbg_get_globe_shouldComputeNormalFromVertex: (a: number) => number;
+  readonly __wbg_set_globe_shouldComputeNormalFromVertex: (a: number, b: number) => void;
+  readonly __wbg_get_globe_transparent: (a: number) => number;
+  readonly __wbg_set_globe_transparent: (a: number, b: number) => void;
+  readonly __wbg_get_globe_opacity: (a: number) => number;
+  readonly __wbg_set_globe_opacity: (a: number, b: number) => void;
+  readonly __wbg_get_globe_wireframe: (a: number) => number;
+  readonly __wbg_set_globe_wireframe: (a: number, b: number) => void;
+  readonly __wbg_get_globe_elevationColormap: (a: number) => [number, number];
+  readonly __wbg_set_globe_elevationColormap: (a: number, b: number, c: number) => void;
+  readonly globe_new: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number) => number;
+  readonly __wbg_texturefragment_free: (a: number, b: number) => void;
+  readonly __wbg_get_texturefragment_ind: (a: number) => number;
+  readonly __wbg_set_texturefragment_ind: (a: number, b: number) => void;
+  readonly __wbg_get_texturefragment_gen: (a: number) => number;
+  readonly __wbg_set_texturefragment_gen: (a: number, b: number) => void;
+  readonly __wbg_batchpropresult_free: (a: number, b: number) => void;
+  readonly __wbg_get_batchpropresult_properties: (a: number) => any;
+  readonly __wbg_set_batchpropresult_properties: (a: number, b: any) => void;
+  readonly __wbg_get_batchpropresult_layerId: (a: number) => [number, number];
+  readonly __wbg_set_batchpropresult_layerId: (a: number, b: number, c: number) => void;
+  readonly __wbg_transferablehierarchy_free: (a: number, b: number) => void;
+  readonly __wbg_get_transferablehierarchy_expected_winding_order: (a: number) => number;
+  readonly __wbg_set_transferablehierarchy_expected_winding_order: (a: number, b: number) => void;
+  readonly __wbg_transferableholes_free: (a: number, b: number) => void;
+  readonly __wbg_windingorder_free: (a: number, b: number) => void;
+  readonly __wbg_get_windingorder_0: (a: number) => number;
+  readonly __wbg_set_windingorder_0: (a: number, b: number) => void;
+  readonly __wbg_lle_free: (a: number, b: number) => void;
+  readonly lle_new: (a: number, b: number, c: number) => number;
+  readonly __wbg_ellipsoidgeodesic_free: (a: number, b: number) => void;
+  readonly __wbg_get_ellipsoidgeodesic_start: (a: number) => number;
+  readonly __wbg_set_ellipsoidgeodesic_start: (a: number, b: number) => void;
+  readonly __wbg_get_ellipsoidgeodesic_end: (a: number) => number;
+  readonly __wbg_set_ellipsoidgeodesic_end: (a: number, b: number) => void;
+  readonly __wbg_get_ellipsoidgeodesic_distance: (a: number) => number;
+  readonly __wbg_set_ellipsoidgeodesic_distance: (a: number, b: number) => void;
+  readonly __wbg_get_ellipsoidgeodesic_start_heading: (a: number) => number;
+  readonly __wbg_set_ellipsoidgeodesic_start_heading: (a: number, b: number) => void;
+  readonly __wbg_get_ellipsoidgeodesic_end_heading: (a: number) => number;
+  readonly __wbg_set_ellipsoidgeodesic_end_heading: (a: number, b: number) => void;
+  readonly ellipsoidgeodesic_new: (a: number, b: number) => number;
+  readonly ellipsoidgeodesic_interpolateGeodeticPoints: (a: number, b: number, c: number) => [number, number];
+  readonly ellipsoidgeodesic_interpolateDistance: (a: number, b: number) => number;
+  readonly __wbg_extentradianf32_free: (a: number, b: number) => void;
+  readonly __wbg_get_extentradianf32_west: (a: number) => number;
+  readonly __wbg_set_extentradianf32_west: (a: number, b: number) => void;
+  readonly __wbg_get_extentradianf32_south: (a: number) => number;
+  readonly __wbg_set_extentradianf32_south: (a: number, b: number) => void;
+  readonly __wbg_get_extentradianf32_east: (a: number) => number;
+  readonly __wbg_set_extentradianf32_east: (a: number, b: number) => void;
+  readonly __wbg_get_extentradianf32_north: (a: number) => number;
+  readonly __wbg_set_extentradianf32_north: (a: number, b: number) => void;
+  readonly extentradianf32_new: (a: number, b: number, c: number, d: number) => number;
+  readonly __wbg_boundingsphere_free: (a: number, b: number) => void;
+  readonly __wbg_get_boundingsphere_center_x: (a: number) => number;
+  readonly __wbg_set_boundingsphere_center_x: (a: number, b: number) => void;
+  readonly __wbg_get_boundingsphere_center_y: (a: number) => number;
+  readonly __wbg_set_boundingsphere_center_y: (a: number, b: number) => void;
+  readonly __wbg_get_boundingsphere_center_z: (a: number) => number;
+  readonly __wbg_set_boundingsphere_center_z: (a: number, b: number) => void;
+  readonly __wbg_get_boundingsphere_radius: (a: number) => number;
+  readonly __wbg_set_boundingsphere_radius: (a: number, b: number) => void;
+  readonly boundingsphere_new: (a: number, b: number, c: number, d: number) => number;
+  readonly __wbg_aabb_free: (a: number, b: number) => void;
+  readonly __wbg_get_aabb_center: (a: number) => number;
+  readonly __wbg_set_aabb_center: (a: number, b: number) => void;
+  readonly __wbg_get_aabb_extent: (a: number) => number;
+  readonly __wbg_set_aabb_extent: (a: number, b: number) => void;
+  readonly aabb_new: (a: number, b: number) => number;
+  readonly __wbg_encodedvec3_free: (a: number, b: number) => void;
+  readonly encodedvec3_new: (a: number, b: number) => number;
+  readonly __wbg_window_free: (a: number, b: number) => void;
+  readonly window_new: (a: number, b: number, c: number) => number;
+  readonly __wbg_get_lle_lat: (a: number) => number;
+  readonly __wbg_get_lle_lng: (a: number) => number;
+  readonly __wbg_get_lle_height: (a: number) => number;
+  readonly __wbg_get_window_width: (a: number) => number;
+  readonly __wbg_get_window_height: (a: number) => number;
+  readonly __wbg_get_window_pixel_ratio: (a: number) => number;
+  readonly __wbg_get_encodedvec3_high: (a: number) => number;
+  readonly __wbg_get_encodedvec3_low: (a: number) => number;
+  readonly __wbg_set_lle_lat: (a: number, b: number) => void;
+  readonly __wbg_set_lle_lng: (a: number, b: number) => void;
+  readonly __wbg_set_lle_height: (a: number, b: number) => void;
+  readonly __wbg_set_window_width: (a: number, b: number) => void;
+  readonly __wbg_set_window_height: (a: number, b: number) => void;
+  readonly __wbg_set_window_pixel_ratio: (a: number, b: number) => void;
+  readonly __wbg_set_encodedvec3_high: (a: number, b: number) => void;
+  readonly __wbg_set_encodedvec3_low: (a: number, b: number) => void;
+  readonly __wbg_transferablepolygonbatchedfeature_free: (a: number, b: number) => void;
+  readonly __wbg_get_transferablepolygonbatchedfeature_crs: (a: number) => number;
+  readonly __wbg_set_transferablepolygonbatchedfeature_crs: (a: number, b: number) => void;
+  readonly __wbg_get_transferablepolygonbatchedfeature_length: (a: number) => number;
+  readonly __wbg_set_transferablepolygonbatchedfeature_length: (a: number, b: number) => void;
+  readonly transferablepolygonbatchedfeature_constructor: (a: number, b: number) => number;
+  readonly transferablepolygonbatchedfeature_setOuterRing: (a: number, b: number, c: any) => void;
+  readonly transferablepolygonbatchedfeature_setOuterRingSizes: (a: number, b: number, c: any) => void;
+  readonly transferablepolygonbatchedfeature_setHoles: (a: number, b: number, c: any) => void;
+  readonly transferablepolygonbatchedfeature_setHolesSizes: (a: number, b: number, c: any) => void;
+  readonly transferablepolygonbatchedfeature_setHolesTotalSizes: (a: number, b: number, c: any) => void;
+  readonly transferablepolygonbatchedfeature_setHolesBoundaries: (a: number, b: number, c: any) => void;
+  readonly transferablepolygonbatchedfeature_setBatchIds: (a: number, b: number, c: any) => void;
+  readonly transferablepolygonbatchedfeature_setBatchIndices: (a: number, b: number, c: any) => void;
+  readonly transferablepolygonbatchedfeature_setExpectedWindingOrders: (a: number, b: number, c: any) => void;
+  readonly transferablepolygonbatchedfeature_transferBatchIds: (a: number) => any;
+  readonly transferablepolygonbatchedfeature_transferBatchIndices: (a: number) => any;
+  readonly transferablepolygonbatchedfeature_transferOuterRing: (a: number) => any;
+  readonly transferablepolygonbatchedfeature_transferOuterRingSizes: (a: number) => any;
+  readonly transferablepolygonbatchedfeature_transferHoles: (a: number) => any;
+  readonly transferablepolygonbatchedfeature_transferHolesBoundaries: (a: number) => any;
+  readonly transferablepolygonbatchedfeature_transferHolesSizes: (a: number) => any;
+  readonly transferablepolygonbatchedfeature_transferHolesTotalSizes: (a: number) => any;
+  readonly transferablepolygonbatchedfeature_transferExpectedWindingOrders: (a: number) => any;
+  readonly __wbg_transferablepolylinebatchedfeature_free: (a: number, b: number) => void;
+  readonly __wbg_get_transferablepolylinebatchedfeature_crs: (a: number) => number;
+  readonly __wbg_set_transferablepolylinebatchedfeature_crs: (a: number, b: number) => void;
+  readonly __wbg_get_transferablepolylinebatchedfeature_length: (a: number) => number;
+  readonly __wbg_set_transferablepolylinebatchedfeature_length: (a: number, b: number) => void;
+  readonly transferablepolylinebatchedfeature_constructor: (a: number, b: number) => number;
+  readonly transferablepolylinebatchedfeature_setBatchIds: (a: number, b: number, c: any) => void;
+  readonly transferablepolylinebatchedfeature_setBatchIndices: (a: number, b: number, c: any) => void;
+  readonly transferablepolylinebatchedfeature_setPoints: (a: number, b: number, c: any) => void;
+  readonly transferablepolylinebatchedfeature_setPointsSizes: (a: number, b: number, c: any) => void;
+  readonly transferablepolylinebatchedfeature_transferBatchIds: (a: number) => any;
+  readonly transferablepolylinebatchedfeature_transferBatchIndices: (a: number) => any;
+  readonly transferablepolylinebatchedfeature_transferPoints: (a: number) => any;
+  readonly transferablepolylinebatchedfeature_transferPointsSizes: (a: number) => any;
+  readonly __wbg_ray_free: (a: number, b: number) => void;
+  readonly __wbg_get_ray_origin: (a: number) => number;
+  readonly __wbg_set_ray_origin: (a: number, b: number) => void;
+  readonly __wbg_get_ray_direction: (a: number) => number;
+  readonly __wbg_set_ray_direction: (a: number, b: number) => void;
+  readonly ray_new: (a: number, b: number) => number;
+  readonly ray_getPoint: (a: number, b: number) => number;
   readonly __wbindgen_exn_store: (a: number) => void;
   readonly __externref_table_alloc: () => number;
   readonly __wbindgen_export_2: WebAssembly.Table;

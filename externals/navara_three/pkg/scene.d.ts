@@ -23,6 +23,7 @@ export declare class TexturizedSceneByTileCoordinates {
     hasCurrentMesh(handle: TileHandle, layerId: string): import("three").Object3D<import("three").Object3DEventMap> | undefined;
     findSceneByLayerId(handle: TileHandle, layerId: string): Scene | undefined;
     remove(handle: TileHandle, layerId: string): void;
+    delete(handle: TileHandle): void;
     getNeedsUpdate(handle: TileHandle): boolean;
     setNeedsUpdate(handle: TileHandle, v: boolean): void;
 }

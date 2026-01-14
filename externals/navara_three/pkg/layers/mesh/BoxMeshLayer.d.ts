@@ -1,4 +1,5 @@
 import { BoxGeometry, Mesh, MeshLambertMaterial } from "three";
+import { Color } from "../../Color";
 import { MeshLayerDeclaration, type MeshLayerConfig, type MeshLayerUpdate, type ViewContext } from "../../core";
 type LayerDescription = {
     box?: {
@@ -8,7 +9,7 @@ type LayerDescription = {
         widthSegments?: number;
         heightSegments?: number;
         depthSegments?: number;
-        color?: number;
+        color?: Color;
         emissive?: number;
         emissiveIntensity?: number;
         opacity?: number;

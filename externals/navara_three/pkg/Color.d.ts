@@ -29,5 +29,6 @@ export declare class Color implements CoreColor {
     clone(): this;
     toArray(): [r: number, g: number, b: number];
     srgb(): this;
+    toHex(): number;
     get raw(): ThreeColor;
 }

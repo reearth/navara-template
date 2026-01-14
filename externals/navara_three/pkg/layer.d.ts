@@ -14,7 +14,8 @@ export declare class Layer extends EventHandler<LayerEvent> {
     private core;
     private featureEvaluators;
     private needUpdate;
-    constructor(id: string, core: Core);
+    private convertColors?;
+    constructor(id: string, core: Core, convertColors?: (obj: unknown) => unknown);
     /**
      * Register a feature evaluator with this layer
      * @internal Used by the event system

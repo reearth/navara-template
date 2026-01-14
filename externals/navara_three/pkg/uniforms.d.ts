@@ -13,5 +13,6 @@ export type CommonUniforms = {
     screenHeightPx: RefThree<number>;
     time: RefThree<number>;
     colorMapTexture: RefThree<Texture>;
+    waterTexture: RefThree<Texture>;
 };
 export {};

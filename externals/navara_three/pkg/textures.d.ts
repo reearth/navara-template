@@ -4,4 +4,8 @@ export type TextureOptions = {
     magFilter: number;
     useMipmaps: boolean;
     maxTextures: number;
+    additionalTexturesInUse?: {
+        waterTexture?: boolean;
+        colorMapTexture?: boolean;
+    };
 };

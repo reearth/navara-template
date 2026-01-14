@@ -1,5 +1,5 @@
 import { EventHandler, Globe } from "@navara/core";
-import type { CameraPosition, GlobeOptions, Nullable, XYZ } from "@navara/core";
+import type { CameraPosition, GlobeOptions, Nullable, XYZ, Color as CoreColor } from "@navara/core";
 import { type TerrainHeightUpdatedEvent } from "@navara/engine";
 import { LLE as ApiLLE } from "@navara/three_api";
 import { WebGLRenderer, Vector3, Texture, Vector2, Material } from "three";
@@ -9,7 +9,7 @@ import { LayerDeclaration, type MeshLayerConstructor, type LightLayerConstructor
 import { LayerHandle } from "./core/LayerHandle";
 import { Layer, type LayerEvent } from "./layer";
 import { SunLightLayer, SkyLightProbeLayer } from "./layers";
-import { LensFlareEffectLayer, MRTPassEffectLayer, SkyEnvMapEffectLayer, SMAAEffectLayer, ToneMappingEffectLayer, TransparentPassEffectLayer } from "./layers/effect";
+import { FXAAEffectLayer, LensFlareEffectLayer, MRTPassEffectLayer, SkyEnvMapEffectLayer, SMAAEffectLayer, ToneMappingEffectLayer, TransparentPassEffectLayer } from "./layers/effect";
 import { AerialPerspectiveEffectLayer } from "./layers/effect/AerialPerspectiveEffectLayer";
 import { FinalCopyEffectLayer } from "./layers/effect/FinalCopyEffectLayer";
 import { SkyMeshLayer } from "./layers/mesh/SkyMeshLayer";
@@ -35,6 +35,7 @@ export * from "./lights";
 export * from "./passes";
 export * from "@navara/three_api";
 export * from "./Color";
+export { isMobileDevice, getDevicePixelRatio, type DevicePixelRatioOptions, } from "./device";
 export { CascadedShadowMaps, CSMHelper } from "@navara/three_csm";
 export type Options = {
     container?: HTMLElement;
@@ -43,13 +44,18 @@ export type Options = {
     disableAutoResize?: boolean;
     debug?: boolean;
     atmosphere?: AtmosphereOptions;
-    backgroundColor?: number;
+    backgroundColor?: CoreColor;
     picking?: Picking;
     animation?: boolean;
     multisampling?: number;
     halfFloat?: boolean;
     logarithmicDepthBuffer?: boolean;
     shadow?: boolean;
+    mobileOptimization?: boolean;
+    waterTexture?: {
+        enabled: boolean;
+        url?: string;
+    };
 } & GlobeOptions;
 export type MapMouseEvent = {
     map: XYZ;
@@ -158,6 +164,12 @@ export default class ThreeView<CustomLayerDescriptions extends Record<string, un
      */
     private _forceFeatureUpdates;
     private _render;
+    /**
+     * Since passing Color class to WASM is tricky, converts Navara Color
+     * objects to numbers in layer descriptions.
+     * Handles the two-level structure: layer -> material -> color fields.
+     */
+    private _convertColorsToNumbers;
     addLayer<L = unknown>(l: LayerDescription): L extends LayerDeclaration ? LayerHandle<L> : Layer;
     updateLayerById(layerId: string, l: LayerDescription): void;
     deleteLayerById(layerId: string): void;
@@ -190,11 +202,15 @@ export default class ThreeView<CustomLayerDescriptions extends Record<string, un
         skyLightProbe: LayerHandle<SkyLightProbeLayer>;
         sun: LayerHandle<SunLightLayer>;
     };
+    /**
+     * Adds default effect layers for rendering.
+     * On mobile devices (when mobileOptimization is enabled), uses lighter-weight effects.
+     */
     addDefaultEffectLayers(): {
         aerialPerspective: LayerHandle<AerialPerspectiveEffectLayer>;
-        lensFlare: LayerHandle<LensFlareEffectLayer>;
+        lensFlare: LayerHandle<LensFlareEffectLayer> | undefined;
         toneMapping: LayerHandle<ToneMappingEffectLayer>;
-        smaa: LayerHandle<SMAAEffectLayer>;
+        antialiasing: LayerHandle<SMAAEffectLayer> | LayerHandle<FXAAEffectLayer>;
     };
     getEffectOrder(): string[];
     setCamera(camPos: CameraPosition): void;

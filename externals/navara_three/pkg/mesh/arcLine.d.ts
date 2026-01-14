@@ -1,12 +1,13 @@
 import type { LngLat } from "@navara/core";
 import { Object3D, Mesh, InstancedBufferGeometry, ShaderMaterial } from "three";
+import { Color } from "../Color";
 export type ArcLineConfig = {
     thickness: number;
     transparent: boolean;
     opacity: number;
     segments: number;
-    srcColor: number;
-    tgtColor: number;
+    srcColor: Color;
+    tgtColor: Color;
     height: number;
     arcHeightScale: number;
     gradation: number;

@@ -252,15 +252,6 @@ function passArrayJsValueToWasm0(array, malloc) {
     WASM_VECTOR_LEN = array.length;
     return ptr;
 }
-/**
- * @param {bigint} child
- * @param {bigint} parent
- * @returns {OrthoCamTransform}
- */
-export function orthoCameraTransform(child, parent) {
-    const ret = wasm.orthoCameraTransform(child, parent);
-    return OrthoCamTransform.__wrap(ret);
-}
 
 function passArray8ToWasm0(arg, malloc) {
     const ptr = malloc(arg.length * 1, 1) >>> 0;
@@ -307,6 +298,16 @@ export function generateId() {
 
 export function start() {
     wasm.start();
+}
+
+/**
+ * @param {bigint} child
+ * @param {bigint} parent
+ * @returns {OrthoCamTransform}
+ */
+export function orthoCameraTransform(child, parent) {
+    const ret = wasm.orthoCameraTransform(child, parent);
+    return OrthoCamTransform.__wrap(ret);
 }
 
 /**
@@ -728,6 +729,21 @@ export class BillboardMaterial {
      */
     set depthTest(arg0) {
         wasm.__wbg_set_billboardmaterial_depthTest(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+    }
+    /**
+     * Avoid overlapping with the globe surface.
+     * @returns {boolean | undefined}
+     */
+    get offsetDepth() {
+        const ret = wasm.__wbg_get_billboardmaterial_offsetDepth(this.__wbg_ptr);
+        return ret === 0xFFFFFF ? undefined : ret !== 0;
+    }
+    /**
+     * Avoid overlapping with the globe surface.
+     * @param {boolean | null} [arg0]
+     */
+    set offsetDepth(arg0) {
+        wasm.__wbg_set_billboardmaterial_offsetDepth(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {boolean | undefined}
@@ -1873,6 +1889,36 @@ export class ConstructTerrainMeshParameters {
     set tile_handle(arg0) {
         wasm.__wbg_set_constructterrainmeshparameters_tile_handle(this.__wbg_ptr, arg0);
     }
+    /**
+     * Whether to render skirts along tile boundaries.
+     * @returns {boolean}
+     */
+    get skirt() {
+        const ret = wasm.__wbg_get_constructterrainmeshparameters_skirt(this.__wbg_ptr);
+        return ret !== 0;
+    }
+    /**
+     * Whether to render skirts along tile boundaries.
+     * @param {boolean} arg0
+     */
+    set skirt(arg0) {
+        wasm.__wbg_set_constructterrainmeshparameters_skirt(this.__wbg_ptr, arg0);
+    }
+    /**
+     * Multiplier for the automatically calculated skirt height.
+     * @returns {number}
+     */
+    get skirtExaggeration() {
+        const ret = wasm.__wbg_get_constructterrainmeshparameters_skirtExaggeration(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * Multiplier for the automatically calculated skirt height.
+     * @param {number} arg0
+     */
+    set skirtExaggeration(arg0) {
+        wasm.__wbg_set_constructterrainmeshparameters_skirtExaggeration(this.__wbg_ptr, arg0);
+    }
 }
 
 const ConstructTerrainMeshResultFinalization = (typeof FinalizationRegistry === 'undefined')
@@ -1970,7 +2016,7 @@ export class ConstructTerrainMeshResult {
             _assertClass(arg0, Vec3);
             ptr0 = arg0.__destroy_into_raw();
         }
-        wasm.__wbg_set_constructterrainmeshresult_rtc_translation(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_constructpolygonbatchedfeatureresult_rtc_translation(this.__wbg_ptr, ptr0);
     }
     /**
      * @param {TransferableGeometry} geometry
@@ -3992,7 +4038,7 @@ export class EncodedVec3 {
      * @returns {Vec3}
      */
     get high() {
-        const ret = wasm.__wbg_get_encodedvec3_high(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_aabb_center(this.__wbg_ptr);
         return Vec3.__wrap(ret);
     }
     /**
@@ -4001,13 +4047,13 @@ export class EncodedVec3 {
     set high(arg0) {
         _assertClass(arg0, Vec3);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_encodedvec3_high(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_aabb_center(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {Vec3}
      */
     get low() {
-        const ret = wasm.__wbg_get_encodedvec3_low(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_aabb_extent(this.__wbg_ptr);
         return Vec3.__wrap(ret);
     }
     /**
@@ -4016,7 +4062,7 @@ export class EncodedVec3 {
     set low(arg0) {
         _assertClass(arg0, Vec3);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_encodedvec3_low(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_aabb_extent(this.__wbg_ptr, ptr0);
     }
     /**
      * @param {Vec3} high
@@ -4772,6 +4818,41 @@ export class Geometry {
         const ret = wasm.geometry_transferIndices(this.__wbg_ptr);
         return ret;
     }
+    /**
+     * @returns {Float32Array | undefined}
+     */
+    transferSkirtVertices() {
+        const ret = wasm.geometry_transferSkirtVertices(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {Float32Array | undefined}
+     */
+    transferSkirtUvs() {
+        const ret = wasm.geometry_transferSkirtUvs(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {Uint32Array | undefined}
+     */
+    transferSkirtIndices() {
+        const ret = wasm.geometry_transferSkirtIndices(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {Uint32Array | undefined}
+     */
+    transferSkirtIndicesToEdge() {
+        const ret = wasm.geometry_transferSkirtIndicesToEdge(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {boolean}
+     */
+    hasSkirt() {
+        const ret = wasm.geometry_hasSkirt(this.__wbg_ptr);
+        return ret !== 0;
+    }
 }
 
 const GlobeFinalization = (typeof FinalizationRegistry === 'undefined')
@@ -4997,40 +5078,40 @@ export class LLE {
      * @returns {number}
      */
     get lat() {
-        const ret = wasm.__wbg_get_lle_lat(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_boundingsphere_center_x(this.__wbg_ptr);
         return ret;
     }
     /**
      * @param {number} arg0
      */
     set lat(arg0) {
-        wasm.__wbg_set_lle_lat(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_boundingsphere_center_x(this.__wbg_ptr, arg0);
     }
     /**
      * @returns {number}
      */
     get lng() {
-        const ret = wasm.__wbg_get_lle_lng(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_boundingsphere_center_y(this.__wbg_ptr);
         return ret;
     }
     /**
      * @param {number} arg0
      */
     set lng(arg0) {
-        wasm.__wbg_set_lle_lng(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_boundingsphere_center_y(this.__wbg_ptr, arg0);
     }
     /**
      * @returns {number}
      */
     get height() {
-        const ret = wasm.__wbg_get_lle_height(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_boundingsphere_center_z(this.__wbg_ptr);
         return ret;
     }
     /**
      * @param {number} arg0
      */
     set height(arg0) {
-        wasm.__wbg_set_lle_height(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_boundingsphere_center_z(this.__wbg_ptr, arg0);
     }
     /**
      * @param {number} lat
@@ -5277,6 +5358,66 @@ export class Mesh {
         _assertClass(arg0, Aabb);
         var ptr0 = arg0.__destroy_into_raw();
         wasm.__wbg_set_mesh_aabb(this.__wbg_ptr, ptr0);
+    }
+    /**
+     * Skirt vertices handle (separate from main geometry for shadow/normal handling).
+     * @returns {number | undefined}
+     */
+    get skirt_vertices() {
+        const ret = wasm.__wbg_get_mesh_skirt_vertices(this.__wbg_ptr);
+        return ret === 0x100000001 ? undefined : ret;
+    }
+    /**
+     * Skirt vertices handle (separate from main geometry for shadow/normal handling).
+     * @param {number | null} [arg0]
+     */
+    set skirt_vertices(arg0) {
+        wasm.__wbg_set_mesh_skirt_vertices(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : (arg0) >> 0);
+    }
+    /**
+     * Skirt UVs handle.
+     * @returns {number | undefined}
+     */
+    get skirt_uvs() {
+        const ret = wasm.__wbg_get_mesh_skirt_uvs(this.__wbg_ptr);
+        return ret === 0x100000001 ? undefined : ret;
+    }
+    /**
+     * Skirt UVs handle.
+     * @param {number | null} [arg0]
+     */
+    set skirt_uvs(arg0) {
+        wasm.__wbg_set_mesh_skirt_uvs(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : (arg0) >> 0);
+    }
+    /**
+     * Skirt indices handle.
+     * @returns {number | undefined}
+     */
+    get skirt_indices() {
+        const ret = wasm.__wbg_get_mesh_skirt_indices(this.__wbg_ptr);
+        return ret === 0x100000001 ? undefined : ret;
+    }
+    /**
+     * Skirt indices handle.
+     * @param {number | null} [arg0]
+     */
+    set skirt_indices(arg0) {
+        wasm.__wbg_set_mesh_skirt_indices(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : (arg0) >> 0);
+    }
+    /**
+     * Mapping from skirt vertex index to edge vertex index in main geometry.
+     * @returns {number | undefined}
+     */
+    get skirt_indices_to_edge() {
+        const ret = wasm.__wbg_get_mesh_skirt_indices_to_edge(this.__wbg_ptr);
+        return ret === 0x100000001 ? undefined : ret;
+    }
+    /**
+     * Mapping from skirt vertex index to edge vertex index in main geometry.
+     * @param {number | null} [arg0]
+     */
+    set skirt_indices_to_edge(arg0) {
+        wasm.__wbg_set_mesh_skirt_indices_to_edge(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : (arg0) >> 0);
     }
 }
 
@@ -5833,26 +5974,6 @@ export class ModelMaterial {
         wasm.__wbg_set_modelmaterial_water(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
-     * @returns {string | undefined}
-     */
-    get waterNormalUrl() {
-        const ret = wasm.__wbg_get_modelmaterial_waterNormalUrl(this.__wbg_ptr);
-        let v1;
-        if (ret[0] !== 0) {
-            v1 = getStringFromWasm0(ret[0], ret[1]).slice();
-            wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
-        }
-        return v1;
-    }
-    /**
-     * @param {string | null} [arg0]
-     */
-    set waterNormalUrl(arg0) {
-        var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_modelmaterial_waterNormalUrl(this.__wbg_ptr, ptr0, len0);
-    }
-    /**
      * Scale water normal. Decreasing this value will make the water surface rough.
      * @returns {number | undefined}
      */
@@ -6287,7 +6408,7 @@ export class MvtLayerDescription {
      * @returns {PolygonMaterial | undefined}
      */
     get polygon() {
-        const ret = wasm.__wbg_get_geojsonlayerdescription_polygon(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_mvtlayerdescription_polygon(this.__wbg_ptr);
         return ret === 0 ? undefined : PolygonMaterial.__wrap(ret);
     }
     /**
@@ -6299,7 +6420,7 @@ export class MvtLayerDescription {
             _assertClass(arg0, PolygonMaterial);
             ptr0 = arg0.__destroy_into_raw();
         }
-        wasm.__wbg_set_geojsonlayerdescription_polygon(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_mvtlayerdescription_polygon(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {VectorTileMaterial | undefined}
@@ -6402,27 +6523,27 @@ export class ObjectTransformEvent {
      * @returns {number}
      */
     get ind() {
-        const ret = wasm.__wbg_get_mesh_vertices(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_objecttransformevent_ind(this.__wbg_ptr);
         return ret >>> 0;
     }
     /**
      * @param {number} arg0
      */
     set ind(arg0) {
-        wasm.__wbg_set_mesh_vertices(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_objecttransformevent_ind(this.__wbg_ptr, arg0);
     }
     /**
      * @returns {number}
      */
     get gen() {
-        const ret = wasm.__wbg_get_mesh_uvs(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_objecttransformevent_gen(this.__wbg_ptr);
         return ret >>> 0;
     }
     /**
      * @param {number} arg0
      */
     set gen(arg0) {
-        wasm.__wbg_set_mesh_uvs(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_objecttransformevent_gen(this.__wbg_ptr, arg0);
     }
     /**
      * @returns {Transform}
@@ -6844,6 +6965,21 @@ export class PointMaterial {
         wasm.__wbg_set_pointmaterial_depthTest(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
+     * Avoid overlapping with the globe surface.
+     * @returns {boolean | undefined}
+     */
+    get offsetDepth() {
+        const ret = wasm.__wbg_get_pointmaterial_offsetDepth(this.__wbg_ptr);
+        return ret === 0xFFFFFF ? undefined : ret !== 0;
+    }
+    /**
+     * Avoid overlapping with the globe surface.
+     * @param {boolean | null} [arg0]
+     */
+    set offsetDepth(arg0) {
+        wasm.__wbg_set_pointmaterial_offsetDepth(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+    }
+    /**
      * @returns {boolean | undefined}
      */
     get transparent() {
@@ -6932,14 +7068,33 @@ export class PointMesh {
      * @returns {boolean}
      */
     get active() {
-        const ret = wasm.__wbg_get_pointmesh_active(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_billboardmesh_active(this.__wbg_ptr);
         return ret !== 0;
     }
     /**
      * @param {boolean} arg0
      */
     set active(arg0) {
-        wasm.__wbg_set_pointmesh_active(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_billboardmesh_active(this.__wbg_ptr, arg0);
+    }
+    /**
+     * RTC (Relative-To-Center) coordinates - tile center in world-space
+     * Used for positioning the mesh when using RTC rendering
+     * @returns {Vec3}
+     */
+    get coordinates() {
+        const ret = wasm.__wbg_get_pointmesh_coordinates(this.__wbg_ptr);
+        return Vec3.__wrap(ret);
+    }
+    /**
+     * RTC (Relative-To-Center) coordinates - tile center in world-space
+     * Used for positioning the mesh when using RTC rendering
+     * @param {Vec3} arg0
+     */
+    set coordinates(arg0) {
+        _assertClass(arg0, Vec3);
+        var ptr0 = arg0.__destroy_into_raw();
+        wasm.__wbg_set_pointmesh_coordinates(this.__wbg_ptr, ptr0);
     }
 }
 
@@ -7539,26 +7694,6 @@ export class PolygonMaterial {
         wasm.__wbg_set_polygonmaterial_water(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
-     * @returns {string | undefined}
-     */
-    get waterNormalUrl() {
-        const ret = wasm.__wbg_get_polygonmaterial_waterNormalUrl(this.__wbg_ptr);
-        let v1;
-        if (ret[0] !== 0) {
-            v1 = getStringFromWasm0(ret[0], ret[1]).slice();
-            wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
-        }
-        return v1;
-    }
-    /**
-     * @param {string | null} [arg0]
-     */
-    set waterNormalUrl(arg0) {
-        var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_polygonmaterial_waterNormalUrl(this.__wbg_ptr, ptr0, len0);
-    }
-    /**
      * Scale water normal. Decreasing this value will make the water surface rough.
      * @returns {number | undefined}
      */
@@ -7987,7 +8122,7 @@ export class PolylineGeometryAttributes {
      * @returns {number}
      */
     transfer_position_size() {
-        const ret = wasm.polylinegeometry_position_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_position_size(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -8001,7 +8136,7 @@ export class PolylineGeometryAttributes {
      * @returns {number}
      */
     transfer_start_size() {
-        const ret = wasm.polylinegeometry_start_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_start_size(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -8015,7 +8150,7 @@ export class PolylineGeometryAttributes {
      * @returns {number}
      */
     transfer_forward_offset_size() {
-        const ret = wasm.polylinegeometry_forward_offset_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_forward_offset_size(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -8029,7 +8164,7 @@ export class PolylineGeometryAttributes {
      * @returns {number}
      */
     transfer_start_normals_size() {
-        const ret = wasm.polylinegeometry_start_normals_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_start_normals_size(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -8043,7 +8178,7 @@ export class PolylineGeometryAttributes {
      * @returns {number}
      */
     transfer_end_normal_and_texture_coordinate_normalization_x_size() {
-        const ret = wasm.polylinegeometry_end_normal_and_texture_coordinate_normalization_x_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_end_normal_and_texture_coordinate_normalization_x_size(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -8057,7 +8192,7 @@ export class PolylineGeometryAttributes {
      * @returns {number}
      */
     transfer_right_normal_and_texture_coordinate_normalization_y_size() {
-        const ret = wasm.polylinegeometry_right_normal_and_texture_coordinate_normalization_y_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_right_normal_and_texture_coordinate_normalization_y_size(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -8071,7 +8206,7 @@ export class PolylineGeometryAttributes {
      * @returns {number | undefined}
      */
     transfer_batch_id_size() {
-        const ret = wasm.polylinegeometry_batch_id_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_batch_id_size(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret;
     }
     /**
@@ -8085,7 +8220,7 @@ export class PolylineGeometryAttributes {
      * @returns {number | undefined}
      */
     transfer_batch_index_size() {
-        const ret = wasm.polylinegeometry_batch_index_size(this.__wbg_ptr);
+        const ret = wasm.polylinegeometryattributes_transfer_batch_index_size(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret;
     }
 }
@@ -8447,40 +8582,40 @@ export class RasterTerrainMaterial {
      * @returns {boolean | undefined}
      */
     get castShadow() {
-        const ret = wasm.__wbg_get_rasterterrainmaterial_castShadow(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_polygonmaterial_castShadow(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set castShadow(arg0) {
-        wasm.__wbg_set_rasterterrainmaterial_castShadow(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_polygonmaterial_castShadow(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {boolean | undefined}
      */
     get receiveShadow() {
-        const ret = wasm.__wbg_get_rasterterrainmaterial_receiveShadow(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_polygonmaterial_receiveShadow(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set receiveShadow(arg0) {
-        wasm.__wbg_set_rasterterrainmaterial_receiveShadow(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_polygonmaterial_receiveShadow(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {boolean | undefined}
      */
     get showBoundingBox() {
-        const ret = wasm.__wbg_get_rasterterrainmaterial_showBoundingBox(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_polygonmaterial_clampToGround(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set showBoundingBox(arg0) {
-        wasm.__wbg_set_rasterterrainmaterial_showBoundingBox(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_polygonmaterial_clampToGround(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {number | undefined}
@@ -8553,6 +8688,40 @@ export class RasterTerrainMaterial {
      */
     set tileSize(arg0) {
         wasm.__wbg_set_rasterterrainmaterial_tileSize(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : (arg0) >>> 0);
+    }
+    /**
+     * Whether to render skirts along tile boundaries to hide gaps.
+     * You should disable `skirt` if you want to visualize an underground model.
+     * @returns {boolean | undefined}
+     */
+    get skirt() {
+        const ret = wasm.__wbg_get_polygonmaterial_useGroundNormals(this.__wbg_ptr);
+        return ret === 0xFFFFFF ? undefined : ret !== 0;
+    }
+    /**
+     * Whether to render skirts along tile boundaries to hide gaps.
+     * You should disable `skirt` if you want to visualize an underground model.
+     * @param {boolean | null} [arg0]
+     */
+    set skirt(arg0) {
+        wasm.__wbg_set_polygonmaterial_useGroundNormals(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+    }
+    /**
+     * Multiplier for the automatically calculated skirt height.
+     * A value of 1.0 uses the default calculated height.
+     * @returns {number | undefined}
+     */
+    get skirtExaggeration() {
+        const ret = wasm.__wbg_get_modelmaterial_pointSize(this.__wbg_ptr);
+        return ret === 0x100000001 ? undefined : ret;
+    }
+    /**
+     * Multiplier for the automatically calculated skirt height.
+     * A value of 1.0 uses the default calculated height.
+     * @param {number | null} [arg0]
+     */
+    set skirtExaggeration(arg0) {
+        wasm.__wbg_set_modelmaterial_pointSize(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : Math.fround(arg0));
     }
 }
 
@@ -9079,14 +9248,14 @@ export class ReconstructableEntity {
      * @returns {bigint}
      */
     get 0() {
-        const ret = wasm.__wbg_get_constructterrainmeshparameters_tile_handle(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_reconstructableentity_0(this.__wbg_ptr);
         return BigInt.asUintN(64, ret);
     }
     /**
      * @param {bigint} arg0
      */
     set 0(arg0) {
-        wasm.__wbg_set_constructterrainmeshparameters_tile_handle(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_reconstructableentity_0(this.__wbg_ptr, arg0);
     }
 }
 
@@ -9545,14 +9714,14 @@ export class RenderableFeatureRemovedEvent {
      * @returns {bigint}
      */
     get bits() {
-        const ret = wasm.__wbg_get_renderablefeatureremovedevent_bits(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_reconstructableentity_0(this.__wbg_ptr);
         return BigInt.asUintN(64, ret);
     }
     /**
      * @param {bigint} arg0
      */
     set bits(arg0) {
-        wasm.__wbg_set_renderablefeatureremovedevent_bits(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_reconstructableentity_0(this.__wbg_ptr, arg0);
     }
     /**
      * @returns {string}
@@ -9689,6 +9858,41 @@ export class ReturnedConstructedTerrainMesh {
     transferHeights() {
         const ret = wasm.returnedconstructedterrainmesh_transferHeights(this.__wbg_ptr);
         return ret;
+    }
+    /**
+     * @returns {Float32Array | undefined}
+     */
+    transferSkirtVertices() {
+        const ret = wasm.returnedconstructedterrainmesh_transferSkirtVertices(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {Float32Array | undefined}
+     */
+    transferSkirtUvs() {
+        const ret = wasm.returnedconstructedterrainmesh_transferSkirtUvs(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {Uint32Array | undefined}
+     */
+    transferSkirtIndices() {
+        const ret = wasm.returnedconstructedterrainmesh_transferSkirtIndices(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {Uint32Array | undefined}
+     */
+    transferSkirtIndicesToEdge() {
+        const ret = wasm.returnedconstructedterrainmesh_transferSkirtIndicesToEdge(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @returns {boolean}
+     */
+    hasSkirt() {
+        const ret = wasm.returnedconstructedterrainmesh_hasSkirt(this.__wbg_ptr);
+        return ret !== 0;
     }
 }
 
@@ -10116,14 +10320,14 @@ export class TextMaterial {
      * @returns {boolean | undefined}
      */
     get show() {
-        const ret = wasm.__wbg_get_modelmaterial_shouldRotateInDefault(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_textmaterial_show(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set show(arg0) {
-        wasm.__wbg_set_modelmaterial_shouldRotateInDefault(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_textmaterial_show(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {number | undefined}
@@ -10186,40 +10390,55 @@ export class TextMaterial {
      * @returns {boolean | undefined}
      */
     get scaleByDistance() {
-        const ret = wasm.__wbg_get_modelmaterial_water(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_textmaterial_scaleByDistance(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set scaleByDistance(arg0) {
-        wasm.__wbg_set_modelmaterial_water(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_textmaterial_scaleByDistance(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {boolean | undefined}
      */
     get clampToGround() {
-        const ret = wasm.__wbg_get_modelmaterial_applyWaterNormal(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_textmaterial_clampToGround(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set clampToGround(arg0) {
-        wasm.__wbg_set_modelmaterial_applyWaterNormal(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_textmaterial_clampToGround(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {boolean | undefined}
      */
     get depthTest() {
-        const ret = wasm.__wbg_get_modelmaterial_specular(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_textmaterial_depthTest(this.__wbg_ptr);
         return ret === 0xFFFFFF ? undefined : ret !== 0;
     }
     /**
      * @param {boolean | null} [arg0]
      */
     set depthTest(arg0) {
-        wasm.__wbg_set_modelmaterial_specular(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+        wasm.__wbg_set_textmaterial_depthTest(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
+    }
+    /**
+     * Avoid overlapping with the globe surface.
+     * @returns {boolean | undefined}
+     */
+    get offsetDepth() {
+        const ret = wasm.__wbg_get_textmaterial_offsetDepth(this.__wbg_ptr);
+        return ret === 0xFFFFFF ? undefined : ret !== 0;
+    }
+    /**
+     * Avoid overlapping with the globe surface.
+     * @param {boolean | null} [arg0]
+     */
+    set offsetDepth(arg0) {
+        wasm.__wbg_set_textmaterial_offsetDepth(this.__wbg_ptr, isLikeNone(arg0) ? 0xFFFFFF : arg0 ? 1 : 0);
     }
     /**
      * @returns {string | undefined}
@@ -10455,7 +10674,7 @@ export class TextMesh {
      * @returns {Transform}
      */
     get transform() {
-        const ret = wasm.__wbg_get_textmesh_transform(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_modelmesh_transform(this.__wbg_ptr);
         return Transform.__wrap(ret);
     }
     /**
@@ -10464,7 +10683,7 @@ export class TextMesh {
     set transform(arg0) {
         _assertClass(arg0, Transform);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_textmesh_transform(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_modelmesh_transform(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {TransferablePointGeometry}
@@ -11009,6 +11228,58 @@ export class TransferableGeometry {
      */
     set indices(arg0) {
         wasm.__wbg_set_transferablegeometry_indices(this.__wbg_ptr, arg0);
+    }
+    /**
+     * @returns {number | undefined}
+     */
+    get skirt_vertices() {
+        const ret = wasm.__wbg_get_transferablegeometry_skirt_vertices(this.__wbg_ptr);
+        return ret === 0x100000001 ? undefined : ret;
+    }
+    /**
+     * @param {number | null} [arg0]
+     */
+    set skirt_vertices(arg0) {
+        wasm.__wbg_set_transferablegeometry_skirt_vertices(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : (arg0) >> 0);
+    }
+    /**
+     * @returns {number | undefined}
+     */
+    get skirt_uvs() {
+        const ret = wasm.__wbg_get_transferablegeometry_skirt_uvs(this.__wbg_ptr);
+        return ret === 0x100000001 ? undefined : ret;
+    }
+    /**
+     * @param {number | null} [arg0]
+     */
+    set skirt_uvs(arg0) {
+        wasm.__wbg_set_transferablegeometry_skirt_uvs(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : (arg0) >> 0);
+    }
+    /**
+     * @returns {number | undefined}
+     */
+    get skirt_indices() {
+        const ret = wasm.__wbg_get_transferablegeometry_skirt_indices(this.__wbg_ptr);
+        return ret === 0x100000001 ? undefined : ret;
+    }
+    /**
+     * @param {number | null} [arg0]
+     */
+    set skirt_indices(arg0) {
+        wasm.__wbg_set_transferablegeometry_skirt_indices(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : (arg0) >> 0);
+    }
+    /**
+     * @returns {number | undefined}
+     */
+    get skirt_indices_to_edge() {
+        const ret = wasm.__wbg_get_transferablegeometry_skirt_indices_to_edge(this.__wbg_ptr);
+        return ret === 0x100000001 ? undefined : ret;
+    }
+    /**
+     * @param {number | null} [arg0]
+     */
+    set skirt_indices_to_edge(arg0) {
+        wasm.__wbg_set_transferablegeometry_skirt_indices_to_edge(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : (arg0) >> 0);
     }
     /**
      * @param {number} vertices
@@ -11732,7 +12003,7 @@ export class TransferablePolygonOutlineGeometry {
      * @param {number | null} [arg0]
      */
     set skip_indices(arg0) {
-        wasm.__wbg_set_transferablepolygonoutlinegeometry_skip_indices(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : (arg0) >> 0);
+        wasm.__wbg_set_transferablegeometry_skirt_indices_to_edge(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : (arg0) >> 0);
     }
     /**
      * @param {TransferableFloatAttribute | null} [position]
@@ -12007,7 +12278,7 @@ export class TransferablePolylineGeometry {
      * @returns {TransferableUintAttribute | undefined}
      */
     get batch_index() {
-        const ret = wasm.__wbg_get_transferablepolygongeometry_position_3d_high(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_transferablepolylinegeometry_batch_index(this.__wbg_ptr);
         return ret === 0 ? undefined : TransferableUintAttribute.__wrap(ret);
     }
     /**
@@ -12174,6 +12445,19 @@ export class TransferableTile {
         wasm.__wbg_set_transferabletile_max_height(this.__wbg_ptr, arg0);
     }
     /**
+     * @returns {number}
+     */
+    get min_height() {
+        const ret = wasm.__wbg_get_transferabletile_min_height(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * @param {number} arg0
+     */
+    set min_height(arg0) {
+        wasm.__wbg_set_transferabletile_min_height(this.__wbg_ptr, arg0);
+    }
+    /**
      * @returns {CachedMeshHandle | undefined}
      */
     get cached_mesh_handle() {
@@ -12194,9 +12478,10 @@ export class TransferableTile {
     /**
      * @param {TileXYZ} coords
      * @param {number} max_height
+     * @param {number} min_height
      * @param {CachedMeshHandle | null} [cached_mesh_handle]
      */
-    constructor(coords, max_height, cached_mesh_handle) {
+    constructor(coords, max_height, min_height, cached_mesh_handle) {
         _assertClass(coords, TileXYZ);
         var ptr0 = coords.__destroy_into_raw();
         let ptr1 = 0;
@@ -12204,7 +12489,7 @@ export class TransferableTile {
             _assertClass(cached_mesh_handle, CachedMeshHandle);
             ptr1 = cached_mesh_handle.__destroy_into_raw();
         }
-        const ret = wasm.transferabletile_new(ptr0, max_height, ptr1);
+        const ret = wasm.transferabletile_new(ptr0, max_height, min_height, ptr1);
         this.__wbg_ptr = ret >>> 0;
         TransferableTileFinalization.register(this, this.__wbg_ptr, this);
         return this;
@@ -12267,7 +12552,7 @@ export class TransferableUintAttribute {
      * @param {number} size
      */
     constructor(data, size) {
-        const ret = wasm.transferablefloatattribute_new(data, size);
+        const ret = wasm.transferableuintattribute_new(data, size);
         this.__wbg_ptr = ret >>> 0;
         TransferableUintAttributeFinalization.register(this, this.__wbg_ptr, this);
         return this;
@@ -12486,7 +12771,7 @@ export class UintAttribute {
     constructor(data, size) {
         const ptr0 = passArray32ToWasm0(data, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
-        const ret = wasm.floatattribute_new(ptr0, len0, size);
+        const ret = wasm.uintattribute_new(ptr0, len0, size);
         this.__wbg_ptr = ret >>> 0;
         UintAttributeFinalization.register(this, this.__wbg_ptr, this);
         return this;
@@ -12529,7 +12814,7 @@ export class UpsamplableTerrainGeometry {
         const len1 = WASM_VECTOR_LEN;
         const ptr2 = passArrayF32ToWasm0(heights, wasm.__wbindgen_malloc);
         const len2 = WASM_VECTOR_LEN;
-        const ret = wasm.geometry_new(ptr0, len0, ptr1, len1, ptr2, len2);
+        const ret = wasm.upsamplableterraingeometry_new(ptr0, len0, ptr1, len1, ptr2, len2);
         this.__wbg_ptr = ret >>> 0;
         UpsamplableTerrainGeometryFinalization.register(this, this.__wbg_ptr, this);
         return this;
@@ -12575,10 +12860,42 @@ export class UpsampleTerrainMeshParameters {
         wasm.__wbg_set_upsampleterrainmeshparameters_tile_handle(this.__wbg_ptr, arg0);
     }
     /**
-     * @param {bigint} tile_handle
+     * Whether to render skirts along tile boundaries.
+     * @returns {boolean}
      */
-    constructor(tile_handle) {
-        const ret = wasm.upsampleterrainmeshparameters_new(tile_handle);
+    get skirt() {
+        const ret = wasm.__wbg_get_upsampleterrainmeshparameters_skirt(this.__wbg_ptr);
+        return ret !== 0;
+    }
+    /**
+     * Whether to render skirts along tile boundaries.
+     * @param {boolean} arg0
+     */
+    set skirt(arg0) {
+        wasm.__wbg_set_upsampleterrainmeshparameters_skirt(this.__wbg_ptr, arg0);
+    }
+    /**
+     * Multiplier for the automatically calculated skirt height.
+     * @returns {number}
+     */
+    get skirtExaggeration() {
+        const ret = wasm.__wbg_get_upsampleterrainmeshparameters_skirtExaggeration(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+     * Multiplier for the automatically calculated skirt height.
+     * @param {number} arg0
+     */
+    set skirtExaggeration(arg0) {
+        wasm.__wbg_set_upsampleterrainmeshparameters_skirtExaggeration(this.__wbg_ptr, arg0);
+    }
+    /**
+     * @param {bigint} tile_handle
+     * @param {boolean} skirt
+     * @param {number} skirt_exaggeration
+     */
+    constructor(tile_handle, skirt, skirt_exaggeration) {
+        const ret = wasm.upsampleterrainmeshparameters_new(tile_handle, skirt, skirt_exaggeration);
         this.__wbg_ptr = ret >>> 0;
         UpsampleTerrainMeshParametersFinalization.register(this, this.__wbg_ptr, this);
         return this;
@@ -12680,7 +12997,7 @@ export class UpsampleTerrainMeshResult {
             _assertClass(arg0, Vec3);
             ptr0 = arg0.__destroy_into_raw();
         }
-        wasm.__wbg_set_constructpolygonbatchedfeatureresult_rtc_translation(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_upsampleterrainmeshresult_rtc_translation(this.__wbg_ptr, ptr0);
     }
     /**
      * @param {TransferableGeometry} geometry
@@ -13100,40 +13417,40 @@ export class Window {
      * @returns {number}
      */
     get width() {
-        const ret = wasm.__wbg_get_window_width(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_boundingsphere_center_x(this.__wbg_ptr);
         return ret;
     }
     /**
      * @param {number} arg0
      */
     set width(arg0) {
-        wasm.__wbg_set_window_width(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_boundingsphere_center_x(this.__wbg_ptr, arg0);
     }
     /**
      * @returns {number}
      */
     get height() {
-        const ret = wasm.__wbg_get_window_height(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_boundingsphere_center_y(this.__wbg_ptr);
         return ret;
     }
     /**
      * @param {number} arg0
      */
     set height(arg0) {
-        wasm.__wbg_set_window_height(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_boundingsphere_center_y(this.__wbg_ptr, arg0);
     }
     /**
      * @returns {number}
      */
     get pixel_ratio() {
-        const ret = wasm.__wbg_get_window_pixel_ratio(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_boundingsphere_center_z(this.__wbg_ptr);
         return ret;
     }
     /**
      * @param {number} arg0
      */
     set pixel_ratio(arg0) {
-        wasm.__wbg_set_window_pixel_ratio(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_boundingsphere_center_z(this.__wbg_ptr, arg0);
     }
     /**
      * @param {number} width
@@ -13345,7 +13662,7 @@ function __wbg_get_imports() {
             wasm.__wbindgen_free(deferred0_0, deferred0_1, 1);
         }
     };
-    imports.wbg.__wbg_getRandomValues_3c9c0d586e575a16 = function() { return handleError(function (arg0, arg1) {
+    imports.wbg.__wbg_getRandomValues_1c61fac11405ffdc = function() { return handleError(function (arg0, arg1) {
         globalThis.crypto.getRandomValues(getArrayU8FromWasm0(arg0, arg1));
     }, arguments) };
     imports.wbg.__wbg_getRandomValues_b8f5dbd5f3995a9e = function() { return handleError(function (arg0, arg1) {

@@ -17,6 +17,7 @@ type Attributes = BatchedFeatureAttributes<{
 export declare class PolygonMesh extends BatchedFeatureMesh<BufferGeometry<Attributes>, MeshLambertMaterial> {
     outline?: PolygonOutlineMesh;
     private _baseBoundingSphere?;
+    private _uniforms?;
     constructor(buf?: BufferGeometry<Attributes>, mat?: MeshLambertMaterial);
     init(mesh: NavaraPolygonMesh, buf: BufferLoader, uniforms: CommonUniforms, tileHandle: TileHandle | undefined, viewEvents: EventHandler<ViewEvents>): this;
     clone(): this;

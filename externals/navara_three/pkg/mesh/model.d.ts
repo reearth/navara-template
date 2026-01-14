@@ -1,7 +1,7 @@
 import { EventHandler } from "@navara/core";
 import { ModelMaterial as NavaraModelMaterial, ModelMesh as NavaraModelMesh } from "@navara/engine";
-import { BufferGeometry, Color, DataTexture, Group, Mesh, MeshPhysicalMaterial, MeshStandardMaterial, Object3D, type NormalBufferAttributes } from "three";
-import { type ViewEvents } from "..";
+import { BufferGeometry, Color, DataTexture, Group, Mesh, MeshPhysicalMaterial, MeshStandardMaterial, Object3D, type NormalBufferAttributes, Material } from "three";
+import type { ViewEvents } from "..";
 import type { BufferLoader } from "../event";
 import type { CustomObject3DEventMap } from "../object3DEvent";
 import type { CommonUniforms } from "../uniforms";
@@ -14,10 +14,11 @@ export declare const MODEL_BATCH_TEXTURE_CONFIG: BatchTextureConfig;
 export declare class ModelMesh extends Object3D<CustomObject3DEventMap> implements FeatureMesh, PickableMesh {
     water: boolean;
     private waterNormalMapTexture;
+    private _uniforms?;
     private mixer;
     /**
-     * Loads the water normal map texture if water is enabled.
-     * Returns the texture if it should be used, or null otherwise.
+     * Returns the shared water normal map texture if water is enabled.
+     * The texture must be enabled via Options.waterTexture.enabled.
      */
     private enableWaterNormalMap;
     private actions;
@@ -30,6 +31,7 @@ export declare class ModelMesh extends Object3D<CustomObject3DEventMap> implemen
     _initBatchDataTexture(mesh: Mesh<BufferGeometry<NormalBufferAttributes>, ModelMaterial>, batchLength: number): void;
     _getBatchDataTexture(mesh: Mesh<BufferGeometry<NormalBufferAttributes>, ModelMaterial>): DataTexture | undefined;
     _updateBatchAttribute(mesh: Mesh<BufferGeometry<NormalBufferAttributes>, ModelMaterial>, batchId: number, attribute: ModelBatchedAttributeName, value: number | number[] | boolean): void;
+    setupWaterMaterial(mesh: Mesh<BufferGeometry, Material>, meshMaterial: NavaraModelMaterial): void;
     private overrideCesium3DTilesMaterial;
     private traversePoints;
     private overridePntsMaterial;

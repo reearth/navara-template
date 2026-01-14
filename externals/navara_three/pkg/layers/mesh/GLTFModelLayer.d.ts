@@ -1,10 +1,11 @@
-import { Group, AnimationAction, AnimationClip } from "three";
+import { Group, AnimationAction, AnimationClip, Vector3 } from "three";
 import { MeshLayerDeclaration, type MeshLayerConfig, type MeshLayerUpdate, type ViewContext } from "../../core";
 type LayerDescription = {
     gltfModel?: {
         url: string;
         castShadow?: boolean;
         receiveShadow?: boolean;
+        useRTE?: boolean;
         animationEnabled?: boolean;
         animationClips?: string[];
         animationActiveClip?: string;
@@ -51,10 +52,17 @@ export declare class GLTFModelLayer extends MeshLayerDeclaration<GLTFModelLayerC
     private isLooping;
     private activeBlendAnimations;
     private isBlendMode;
+    private originalWorldPosition;
+    private modelPositionHigh;
+    private modelPositionLow;
     constructor(view: ViewContext, config: GLTFModelLayerConfig);
+    onCreate(): void;
     createMesh(): Group;
     private loadModel;
     private setupModel;
+    private setPositionRTE;
+    private setupRTEShadersForMesh;
+    private modifyMaterialForRTE;
     onUpdateConfig(updates: GLTFModelLayerUpdate): void;
     protected disposeMesh(): void;
     /**
@@ -163,6 +171,7 @@ export declare class GLTFModelLayer extends MeshLayerDeclaration<GLTFModelLayerC
      * Get currently playing animation name
      */
     private getCurrentAnimationName;
+    getWorldPosition(): Vector3 | undefined;
     private lastUpdateTime?;
 }
 export {};

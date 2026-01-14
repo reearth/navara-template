@@ -1,6 +1,7 @@
 import type { Nullable } from "@navara/core";
 import { N8AOPostPass, type QualityMode } from "n8ao";
-import { Color, type Camera } from "three";
+import { type Camera } from "three";
+import { Color } from "../Color";
 import { Pass, type EffectOptions } from "./effect";
 export { ToneMappingMode } from "postprocessing";
 export { type QualityMode as SSAOQualityMode } from "n8ao";

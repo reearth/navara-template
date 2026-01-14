@@ -1,4 +1,5 @@
 import { Mesh, ShaderMaterial, SphereGeometry } from "three";
+import { Color } from "../../Color";
 import { MeshLayerDeclaration, type MeshLayerConfig, type ViewContext } from "../../core";
 import type { MeshLayerUpdate } from "../../core/MeshLayerDeclaration";
 type LayerDescription = {
@@ -53,18 +54,19 @@ type LayerDescription = {
          */
         exponent?: number;
         /**
-         * The color of the glow effect as a hexadecimal value.
+         * The color of the glow effect as a hexadecimal value or NavaraColor instance.
          *
-         * Accepts standard hex color formats (e.g., 0x8cf3ff for light cyan).
-         * The RGB components determine the hue of the glow, which is then
-         * modulated by the calculated Fresnel intensity and the opacity value.
+         * Accepts standard hex color formats (e.g., 0x8cf3ff for light cyan) or
+         * a NavaraColor instance. The RGB components determine the hue of the glow,
+         * which is then modulated by the calculated Fresnel intensity and the opacity value.
          *
          * @default 0x8cf3ff - Light cyan
          * @example 0xff0000 - Red glow
          * @example 0x00ff00 - Green glow
          * @example 0x0080ff - Blue glow
+         * @example new Color().setHex(0xff0000) - Red glow using Color instance
          */
-        glowColor?: number;
+        glowColor?: Color;
         /**
          * The opacity/alpha channel of the glow effect.
          *

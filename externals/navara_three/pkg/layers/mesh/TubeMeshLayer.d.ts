@@ -1,5 +1,6 @@
 import type { XYZ } from "@navara/core";
 import { Mesh, MeshLambertMaterial, TubeGeometry } from "three";
+import { Color } from "../../Color";
 import { MeshLayerDeclaration, type MeshLayerConfig, type ViewContext } from "../../core";
 import type { MeshLayerUpdate } from "../../core/MeshLayerDeclaration";
 type LayerDescription = {
@@ -10,7 +11,7 @@ type LayerDescription = {
         radialSegments?: number;
         closed?: boolean;
         tension?: number;
-        color?: number;
+        color?: Color;
         emissive?: number;
         emissiveIntensity?: number;
         opacity?: number;

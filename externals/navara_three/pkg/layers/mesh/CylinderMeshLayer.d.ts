@@ -1,4 +1,5 @@
 import { CylinderGeometry, Mesh, MeshLambertMaterial } from "three";
+import { Color } from "../../Color";
 import { MeshLayerDeclaration, type MeshLayerConfig, type MeshLayerUpdate, type ViewContext } from "../../core";
 type LayerDescription = {
     cylinder?: {
@@ -10,7 +11,7 @@ type LayerDescription = {
         openEnded?: boolean;
         thetaStart?: number;
         thetaLength?: number;
-        color?: number;
+        color?: Color;
         emissive?: number;
         emissiveIntensity?: number;
         opacity?: number;
