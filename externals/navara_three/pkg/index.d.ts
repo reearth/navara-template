@@ -17,8 +17,8 @@ import { BufferGeometry } from 'three';
 import { BufferGeometryEventMap } from 'three';
 import { Camera } from 'three';
 import { CameraControlUpdateEvent } from '@navara/engine';
-import { CameraFrustum } from '@navara/engine-api';
-import { CameraOrientation } from '@navara/engine';
+import type { CameraFrustum as CameraFrustum_2 } from '@navara/engine-api';
+import { CameraOrientation as CameraOrientation_2 } from '@navara/engine';
 import { CanvasTexture } from 'three';
 import { CascadedDirectionalLights } from '@navara/three_csm';
 import { CascadedShadowMaps } from '@navara/three_csm';
@@ -44,7 +44,6 @@ import { Effect as Effect_2 } from 'postprocessing';
 import { EffectComposer } from 'postprocessing';
 import { EffectPass } from 'postprocessing';
 import { ElevationDecoder } from '@navara/engine';
-import { EllipsoidGeodesic } from '@navara/engine-api';
 import { FXAAEffect } from 'postprocessing';
 import { GaussianBlurPass } from 'postprocessing';
 import { GeoJsonLayerDescription } from '@navara/engine';
@@ -59,7 +58,7 @@ import { LightProbe } from 'three';
 import { LightShadow } from 'three';
 import { Line2 } from 'three-stdlib';
 import { LineMaterial } from 'three-stdlib';
-import { LLE } from '@navara/engine-api';
+import { LLE } from '@navara/engine';
 import { Loader } from 'three';
 import { LUT3DEffect } from 'postprocessing';
 import { Material } from 'three';
@@ -82,7 +81,8 @@ import { Object3DEventMap } from 'three';
 import { OrthographicCamera } from 'three';
 import { Pass as Pass_2 } from 'postprocessing';
 import { PerspectiveCamera } from 'three';
-import { Plane } from '@navara/engine-api';
+import { Plane as Plane_2 } from 'three';
+import type { Plane as Plane_3 } from '@navara/engine-api';
 import { PlaneGeometry } from 'three';
 import { PntsLayerDescription } from '@navara/engine';
 import { PointMaterial } from '@navara/engine';
@@ -93,7 +93,8 @@ import { PolygonMesh as PolygonMesh_2 } from '@navara/engine';
 import { PolylineMaterial } from '@navara/engine';
 import { PolylineMesh as PolylineMesh_2 } from '@navara/engine';
 import { PrecomputedTextures } from '@takram/three-atmosphere';
-import { Ray } from '@navara/engine-api';
+import { Ray as Ray_2 } from 'three';
+import type { Ray as Ray_3 } from '@navara/engine-api';
 import { ReconstructableEntity } from '@navara/engine';
 import { RenderPass as RenderPass_2 } from 'postprocessing';
 import { Resolution } from 'postprocessing';
@@ -127,10 +128,13 @@ import { ToneMappingEffect } from 'postprocessing';
 import { ToneMappingMode } from 'postprocessing';
 import { TransferableMartini } from '@navara/engine';
 import { TransferableTile } from '@navara/engine';
-import { Transform } from '@navara/engine-api';
+import { Transform as Transform_2 } from '@navara/engine';
+import type { Transform as Transform_3 } from '@navara/engine-api';
 import { TubeGeometry } from 'three';
 import { Uniform } from 'three';
 import { UniformsLib } from 'three';
+import type { Vec2 as Vec2_2 } from '@navara/engine-api';
+import type { Vec3 as Vec3_2 } from '@navara/engine-api';
 import { Vector2 } from 'three';
 import { Vector3 } from 'three';
 import { VectorTileState } from '@navara/engine';
@@ -138,7 +142,7 @@ import { WebGLCubeRenderTarget } from 'three';
 import { WebGLProgramParametersWithUniforms } from 'three';
 import { WebGLRenderer } from 'three';
 import { WebGLRenderTarget } from 'three';
-import { Window as Window_2 } from '@navara/engine-api';
+import type { Window as Window_3 } from '@navara/engine';
 import { Promise as WorkerPoolPromise } from '@navara/worker';
 
 export declare const ABORTABLE_IMAGE_LOADER: AbortableImageLoader;
@@ -185,7 +189,7 @@ export declare class AerialPerspective extends Pass<CustomEffectPass, AerialPers
     set moon(v: boolean);
 }
 
-export declare type AerialPerspectiveConfig = LayerDescription_21 & EffectLayerConfig;
+export declare type AerialPerspectiveConfig = LayerDescription_22 & EffectLayerConfig;
 
 export declare class AerialPerspectiveEffectLayer extends EffectLayerDeclaration<AerialPerspectiveConfig, AerialPerspectiveUpdate, AerialPerspective> {
     static key: string;
@@ -206,7 +210,7 @@ export declare type AerialPerspectiveOptions = {
     moon?: boolean;
 } & EffectOptions;
 
-export declare type AerialPerspectiveUpdate = LayerDescription_21 & EffectLayerUpdate;
+export declare type AerialPerspectiveUpdate = LayerDescription_22 & EffectLayerUpdate;
 
 /**
  * A pass that copies and optionally merges depth buffers.
@@ -257,9 +261,9 @@ export declare class AmbientLightLayer extends LightLayerDeclaration<AmbientLigh
     onUpdateConfig(updates: AmbientLightLayerUpdate): void;
 }
 
-export declare type AmbientLightLayerConfig = LightLayerConfig & LayerDescription_19;
+export declare type AmbientLightLayerConfig = LightLayerConfig & LayerDescription_20;
 
-export declare type AmbientLightLayerUpdate = LightLayerUpdate & LayerDescription_19;
+export declare type AmbientLightLayerUpdate = LightLayerUpdate & LayerDescription_20;
 
 export declare type AmbientLightOptions = {
     color?: Color_3;
@@ -367,7 +371,7 @@ export declare type ArcLineConfig = {
     dashSize: number;
     gapSize: number;
     dashOffset: number;
-    geometry: LngLat[];
+    geometry: LatLng[];
 };
 
 export declare class ArclineMeshLayer extends MeshLayerDeclaration<ArclineMeshLayerConfig, ArclineMeshLayerUpdate, ArcLine> {
@@ -380,9 +384,9 @@ export declare class ArclineMeshLayer extends MeshLayerDeclaration<ArclineMeshLa
     protected disposeMesh(): void;
 }
 
-export declare type ArclineMeshLayerConfig = MeshLayerConfig & LayerDescription_15;
+export declare type ArclineMeshLayerConfig = MeshLayerConfig & LayerDescription_16;
 
-export declare type ArclineMeshLayerUpdate = MeshLayerUpdate & LayerDescription_15;
+export declare type ArclineMeshLayerUpdate = MeshLayerUpdate & LayerDescription_16;
 
 export declare class ArrowHelperLayer extends MeshLayerDeclaration<ArrowHelperLayerConfig, ArrowHelperLayerUpdate, ArrowHelper> {
     private config;
@@ -392,9 +396,9 @@ export declare class ArrowHelperLayer extends MeshLayerDeclaration<ArrowHelperLa
     protected disposeMesh(): void;
 }
 
-export declare type ArrowHelperLayerConfig = MeshLayerConfig & LayerDescription_14;
+export declare type ArrowHelperLayerConfig = MeshLayerConfig & LayerDescription_15;
 
-export declare type ArrowHelperLayerUpdate = Pick<MeshLayerConfig, "position" | "visible"> & LayerDescription_14;
+export declare type ArrowHelperLayerUpdate = Pick<MeshLayerConfig, "position" | "visible"> & LayerDescription_15;
 
 /**
  * Context for atmosphere.
@@ -484,9 +488,9 @@ export declare class AxesHelperLayer extends MeshLayerDeclaration<AxesHelperLaye
     protected disposeMesh(): void;
 }
 
-export declare type AxesHelperLayerConfig = MeshLayerConfig & LayerDescription_13;
+export declare type AxesHelperLayerConfig = MeshLayerConfig & LayerDescription_14;
 
-export declare type AxesHelperLayerUpdate = Pick<MeshLayerConfig, "position" | "visible"> & LayerDescription_13;
+export declare type AxesHelperLayerUpdate = Pick<MeshLayerConfig, "position" | "visible"> & LayerDescription_14;
 
 export declare type B3dmLayer = WithColorSupport<Layer_2<B3dmLayerDescription & {
     type: "b3dm";
@@ -535,9 +539,10 @@ export declare type BatchTextureConfig = {
 export declare type BatchTextureRowKey = (typeof BATCH_TEXTURE_ROW)[number];
 
 export declare class BillboardMesh extends Sprite implements FeatureMesh {
-    constructor();
+    constructor(useRTE?: boolean);
     _init(material: BillboardMaterial, batchId: number, active: boolean): Promise<void>;
     private initMaterial;
+    setPosition(useRTE: boolean, position: Float32Array<ArrayBufferLike> | null | undefined, positionHigh: Float32Array<ArrayBufferLike> | null | undefined, positionLow: Float32Array<ArrayBufferLike> | null | undefined, posIdx: number, transform: Transform_2): void;
     _update(material: BillboardMaterial, active: boolean): Promise<void>;
     _setFeatureColor(color: Color_3): void;
     _getFeatureColor(): Color_3;
@@ -551,7 +556,7 @@ export declare type BlendMode = "skip" | "set" | "add" | "alpha" | "average" | "
 
 declare type BoxMeshEventMap = Object3DEventMap & CustomObject3DEventMap;
 
-export declare class BoxMeshLayer extends MeshLayerDeclaration<BoxMeshLayerConfig, BoxMeshLayerUpdate, Mesh<BoxGeometry, MeshLambertMaterial, BoxMeshEventMap>> {
+export declare class BoxMeshLayer extends MeshLayerDeclarationForSelectiveEffect<BoxMeshLayerConfig, BoxMeshLayerUpdate, Mesh<BoxGeometry, MeshLambertMaterial, BoxMeshEventMap>> {
     private config;
     constructor(view: ViewContext, config: BoxMeshLayerConfig);
     createMesh(): Mesh<BoxGeometry, MeshLambertMaterial, BoxMeshEventMap>;
@@ -559,9 +564,9 @@ export declare class BoxMeshLayer extends MeshLayerDeclaration<BoxMeshLayerConfi
     protected disposeMesh(): void;
 }
 
-export declare type BoxMeshLayerConfig = MeshLayerConfig & LayerDescription_6;
+export declare type BoxMeshLayerConfig = MeshLayerConfigWithSelectiveEffect & LayerDescription_7;
 
-export declare type BoxMeshLayerUpdate = MeshLayerUpdate & LayerDescription_6;
+export declare type BoxMeshLayerUpdate = MeshLayerUpdateWithSelectiveEffect & LayerDescription_7;
 
 declare type BufferLoader = {
     u8: (handle: number) => Uint8Array | null;
@@ -592,11 +597,24 @@ declare class BufferView {
     dispose(): void;
 }
 
+/**
+ * Calculates the camera position relative to an object with high/low precision encoding for RTE rendering.
+ * @param cameraPosition - The camera's world position
+ * @param modelMatrixWorld - The object's world transformation matrix
+ * @returns Object with high and low precision Vector3 components for GPU double precision emulation
+ */
 export declare const calcCameraPosition: (cameraPosition: Vector3, modelMatrixWorld: Matrix4) => {
     high: Vector3;
     low: Vector3;
 };
 
+/**
+ * Calculates the model-view matrix for Relative-To-Eye (RTE) rendering, which improves precision for distant objects.
+ * @param objectMatrixWorld - The object's world transformation matrix
+ * @param matrixWorldInverse - The camera's inverse world matrix
+ * @param result - Optional matrix to store the result (creates new if omitted)
+ * @returns Model-view matrix with translation zeroed for RTE rendering
+ */
 export declare const calcModelMatrixRTE: (objectMatrixWorld: Matrix4, matrixWorldInverse: Matrix4, result?: Matrix4) => Matrix4;
 
 export declare type CameraEvent = {
@@ -606,17 +624,13 @@ export declare type CameraEvent = {
     frustumChanged: () => void;
 };
 
-export { CameraFrustum }
+export declare type CameraFrustum = Required<NormalizeWASMClass_2<CameraFrustum_2>>;
 
-export declare type CameraOptions = ExtractProperties<RemoveFreeRecursively<CameraControlUpdateEvent>>;
+export declare type CameraOptions = NormalizeWASMClass<CameraControlUpdateEvent>;
 
-declare type CameraOrientation_2 = {
-    pitch?: number;
-    heading?: number;
-    roll?: number;
-};
+declare type CameraOrientation = Partial<NormalizeWASMClass<CameraOrientation_2>>;
 
-declare type CameraPosition = Partial<LngLatHeight> & CameraOrientation_2;
+declare type CameraPosition = Partial<LatLngHeight> & CameraOrientation;
 
 export { CascadedShadowMaps }
 
@@ -772,7 +786,7 @@ export declare class Clouds extends Pass<CustomEffectPass, CloudsEffect, Require
     get cloudLayers(): CloudLayer[];
 }
 
-export declare type CloudsConfig = LayerDescription_22 & EffectLayerConfig;
+export declare type CloudsConfig = LayerDescription_23 & EffectLayerConfig;
 
 export declare class CloudsEffectLayer extends EffectLayerDeclaration<CloudsConfig, CloudsUpdate, Clouds> {
     static key: string;
@@ -824,7 +838,7 @@ export declare type CloudsOptions = {
     cloudLayers?: Nullable<CloudLayerOptions[]>;
 } & EffectOptions;
 
-export declare type CloudsUpdate = LayerDescription_22 & EffectLayerUpdate;
+export declare type CloudsUpdate = LayerDescription_23 & EffectLayerUpdate;
 
 /**
  * Class representing a color.
@@ -883,7 +897,7 @@ export declare class ColorGradingLUT extends Effect<LUT3DEffect, ColorGradingLUT
     protected onMounted(): void;
 }
 
-export declare type ColorGradingLUTConfig = LayerDescription_36 & EffectLayerConfig;
+export declare type ColorGradingLUTConfig = LayerDescription_37 & EffectLayerConfig;
 
 export declare class ColorGradingLUTEffectLayer extends EffectLayerDeclaration<ColorGradingLUTConfig, ColorGradingLUTUpdate, ColorGradingLUT> {
     static key: string;
@@ -908,7 +922,7 @@ export declare type ColorGradingLUTOptions = {
     opacity?: number;
 } & EffectOptions;
 
-export declare type ColorGradingLUTUpdate = LayerDescription_36 & EffectLayerUpdate;
+export declare type ColorGradingLUTUpdate = LayerDescription_37 & EffectLayerUpdate;
 
 export declare class ColorMap<T extends ColorMapType = ColorMapType> {
     #private;
@@ -1029,9 +1043,23 @@ declare type ConvertColorFields<T> = {
     [K in keyof T]: K extends `${string}Color` | "color" ? T[K] extends number | undefined ? Color | undefined : T[K] extends number ? Color : T[K] : T[K] extends object | undefined ? ConvertColorFields<T[K]> | Extract<T[K], undefined> : T[K];
 };
 
-export declare function convertScreenToWorld(window: Window_2, camera: PerspectiveCamera, vec2: Vector2): Vector3 | undefined;
+/**
+ * Converts screen coordinates to world coordinates by raycasting against the WGS84 ellipsoid.
+ * @param window - Window configuration with width, height, and pixel_ratio
+ * @param camera - Three.js PerspectiveCamera
+ * @param vec2 - Screen coordinates in CSS pixels (same as MouseEvent clientX/clientY)
+ * @returns World position Vector3 in ECEF coordinates, or undefined if no intersection with ellipsoid
+ */
+export declare function convertScreenToWorld(windowObject: Window_2, camera: PerspectiveCamera, vec2: Vector2): Vector3 | undefined;
 
-export declare function convertWorldToScreen(window: Window_2, camera: PerspectiveCamera, worldPos: Vector3): Vector2 | undefined;
+/**
+ * Converts world coordinates to screen coordinates.
+ * @param window - Window configuration with width, height, and pixel_ratio
+ * @param camera - Three.js PerspectiveCamera
+ * @param worldPos - World position Vector3 in ECEF coordinates
+ * @returns Screen coordinates in CSS pixels, or undefined if behind camera
+ */
+export declare function convertWorldToScreen(windowObject: Window_2, camera: PerspectiveCamera, worldPos: Vector3): Vector2 | undefined;
 
 export declare class CopyPass extends CopyPass_2 {
     get visible(): boolean;
@@ -1141,7 +1169,7 @@ export declare type CustomRenderPassOptions = {
 
 declare type CylinderMeshEventMap = Object3DEventMap & CustomObject3DEventMap;
 
-export declare class CylinderMeshLayer extends MeshLayerDeclaration<CylinderMeshLayerConfig, CylinderMeshLayerUpdate, Mesh<CylinderGeometry, MeshLambertMaterial, CylinderMeshEventMap>> {
+export declare class CylinderMeshLayer extends MeshLayerDeclarationForSelectiveEffect<CylinderMeshLayerConfig, CylinderMeshLayerUpdate, Mesh<CylinderGeometry, MeshLambertMaterial, CylinderMeshEventMap>> {
     private config;
     constructor(view: ViewContext, config: CylinderMeshLayerConfig);
     createMesh(): Mesh<CylinderGeometry, MeshLambertMaterial, CylinderMeshEventMap>;
@@ -1149,9 +1177,9 @@ export declare class CylinderMeshLayer extends MeshLayerDeclaration<CylinderMesh
     protected disposeMesh(): void;
 }
 
-export declare type CylinderMeshLayerConfig = MeshLayerConfig & LayerDescription_9;
+export declare type CylinderMeshLayerConfig = MeshLayerConfigWithSelectiveEffect & LayerDescription_10;
 
-export declare type CylinderMeshLayerUpdate = MeshLayerUpdate & LayerDescription_9;
+export declare type CylinderMeshLayerUpdate = MeshLayerUpdateWithSelectiveEffect & LayerDescription_10;
 
 export declare function decompressDraco(buffer: ArrayBuffer, dracoLoader: DRACOLoader): Promise<BufferGeometry | undefined>;
 
@@ -1175,9 +1203,13 @@ export declare const DEFAULT_FOG_LIGHT_EFFECT_OPTIONS: FogLightEffectOptions;
 
 export declare const DEFAULT_FOG_LIGHT_OPTIONS: FogLightOptions;
 
+export declare const DEFAULT_GLOW_GLOBE_OPTIONS: Required<NonNullable<LayerDescription_9["glowGlobe"]>>;
+
 export declare const DEFAULT_LENS_FLARE_OPTIONS: Required<LensFlareOptions>;
 
 export declare const DEFAULT_RAIN_DROP_OPTIONS: RainDropOptions;
+
+export declare const DEFAULT_SKY_BOX_OPTIONS: Required<NonNullable<LayerDescription_5["skyBox"]>>;
 
 export declare const DEFAULT_SSAO_OPTIONS: Required<SSAOOptions>;
 
@@ -1199,6 +1231,11 @@ export declare const DefaultSmoothLineConfig: SmoothLineConfig;
 
 export declare const DefaultSnowConfig: SnowConfig;
 
+/**
+ * Converts an angle from degrees to radians.
+ * @param degree - Angle in degrees
+ * @returns Angle in radians
+ */
 export declare function degreeToRadian(degree: number): number;
 
 export declare class DepthOfField extends Effect<DepthOfFieldEffect, DepthOfFieldOptions> {
@@ -1212,7 +1249,7 @@ export declare class DepthOfField extends Effect<DepthOfFieldEffect, DepthOfFiel
     set bokehScale(v: number);
 }
 
-export declare type DepthOfFieldConfig = LayerDescription_35 & EffectLayerConfig;
+export declare type DepthOfFieldConfig = LayerDescription_36 & EffectLayerConfig;
 
 export declare class DepthOfFieldEffectLayer extends EffectLayerDeclaration<DepthOfFieldConfig, DepthOfFieldUpdate, DepthOfField> {
     static key: string;
@@ -1232,7 +1269,7 @@ export declare type DepthOfFieldOptions = {
     bokehScale?: number;
 } & EffectOptions;
 
-export declare type DepthOfFieldUpdate = LayerDescription_35 & EffectLayerUpdate;
+export declare type DepthOfFieldUpdate = LayerDescription_36 & EffectLayerUpdate;
 
 export declare type DevicePixelRatioOptions = {
     /** User-specified pixel ratio override (takes precedence over all other settings) */
@@ -1243,6 +1280,11 @@ export declare type DevicePixelRatioOptions = {
 
 export declare type DrapedMaterialCache = Map<string, Material>;
 
+/**
+ * Creates a local East-North-Up (ENU) reference frame transformation matrix at a position.
+ * @param origin - Origin position in ECEF coordinates
+ * @returns 4x4 transformation matrix from ENU to ECEF
+ */
 export declare function eastNorthUpToFixedFrame(origin: Vector3): Matrix4;
 
 export declare type EdgeDetectionMode = "color" | "depth" | "luma";
@@ -1310,7 +1352,59 @@ export declare type EffectOptions = {
     enabled?: boolean;
 };
 
-export { EllipsoidGeodesic }
+/**
+ * Wrapper class for geodesic calculations on an ellipsoid surface.
+ * Precomputes common variables for optimization when instantiated.
+ *
+ * @example
+ * ```typescript
+ * const geodesic = new EllipsoidGeodesic(
+ *   { lat: 0.5, lng: 2.0, height: 0 },
+ *   { lat: 0.6, lng: 2.1, height: 0 }
+ * );
+ *
+ * console.log(geodesic.distance);
+ * const points = geodesic.interpolatePoints(1000);
+ * const midpoint = geodesic.interpolateDistance(geodesic.distance / 2);
+ *
+ * geodesic.dispose(); // Free WASM memory when done
+ * ```
+ */
+export declare class EllipsoidGeodesic {
+    private _raw;
+    /**
+     * Create a new geodesic between two points on the ellipsoid.
+     * @param start - Start point in geodetic coordinates (lat/lng in radians)
+     * @param end - End point in geodetic coordinates (lat/lng in radians)
+     */
+    constructor(start: LatLngHeight_2, end: LatLngHeight_2);
+    /** Distance in meters between start and end points */
+    get distance(): number;
+    /** Heading at the start point in radians */
+    get startHeading(): number;
+    /** Heading at the end point in radians */
+    get endHeading(): number;
+    /** Start point in geodetic coordinates */
+    get start(): LatLngHeight_2;
+    /** End point in geodetic coordinates */
+    get end(): LatLngHeight_2;
+    /**
+     * Interpolate points along the geodesic path.
+     * @param granularity - Distance between interpolated points in meters (optional)
+     * @returns Array of interpolated points in geodetic coordinates
+     */
+    interpolatePoints(granularity?: number): LatLngHeight_2[];
+    /**
+     * Interpolate a point at a specific distance along the geodesic path.
+     * @param distance - Distance from start point in meters
+     * @returns Interpolated point in geodetic coordinates
+     */
+    interpolateDistance(distance: number): LatLngHeight_2;
+    /**
+     * Free WASM memory. Call this when the geodesic is no longer needed.
+     */
+    dispose(): void;
+}
 
 export declare function encodeFloatToRGBA(value: number): [number, number, number, number];
 
@@ -1374,8 +1468,16 @@ declare class EventHandler<T extends BaseEventMap = BaseEventMap, K extends keyo
     emit<E extends K>(k: E, ...args: Parameters<T[E]>): void;
 }
 
-export declare type ExtractProperties<T> = {
+declare type ExtractProperties<T> = {
     [K in keyof T]?: T[K] extends (...args: any) => any ? ReturnType<T[K]> extends (...args: any) => any ? ExtractProperties<ReturnType<T[K]>> : ReturnType<T[K]> : Partial<T[K]>;
+};
+
+declare type ExtractProperties_2<T> = {
+    [K in keyof T]?: T[K] extends (...args: any) => any
+    ? ReturnType<T[K]> extends (...args: any) => any
+    ? ExtractProperties_2<ReturnType<T[K]>>
+    : ReturnType<T[K]>
+    : Partial<T[K]>;
 };
 
 export declare const FEATURE_BATCH_TEXTURE_CONFIG: BatchTextureConfig;
@@ -1424,9 +1526,9 @@ export declare class FinalCopyEffectLayer extends EffectLayerDeclaration<FinalCo
     createPass(): CopyPass;
 }
 
-export declare type FinalCopyPassConfig = LayerDescription_23 & EffectLayerConfig;
+export declare type FinalCopyPassConfig = LayerDescription_24 & EffectLayerConfig;
 
-export declare type FinalCopyPassUpdate = LayerDescription_23 & EffectLayerUpdate;
+export declare type FinalCopyPassUpdate = LayerDescription_24 & EffectLayerUpdate;
 
 export declare class FogLight extends Pass<FogLightDownsampledPass, FogLightEffect, FogLightOptions, FogLightEvents> {
     constructor(camera: Camera, options?: FogLightOptions);
@@ -1452,7 +1554,7 @@ export declare class FogLight extends Pass<FogLightDownsampledPass, FogLightEffe
     set debugShowGrid(v: boolean);
 }
 
-export declare type FogLightConfig = LayerDescription_24 & EffectLayerConfig;
+export declare type FogLightConfig = LayerDescription_25 & EffectLayerConfig;
 
 export declare type FogLightDefinition = {
     position: {
@@ -1580,13 +1682,13 @@ export declare type FogLightOptions = FogLightEffectOptions & EffectOptions & {
     downsample?: number;
 };
 
-export declare type FogLightUpdate = LayerDescription_24 & EffectLayerUpdate;
+export declare type FogLightUpdate = LayerDescription_25 & EffectLayerUpdate;
 
 export declare class FXAA extends Effect<FXAAEffect, AntialiasOptions> {
     constructor(camera: Camera, options?: AntialiasOptions);
 }
 
-export declare type FXAAConfig = LayerDescription_25 & EffectLayerConfig;
+export declare type FXAAConfig = LayerDescription_26 & EffectLayerConfig;
 
 export declare class FXAAEffectLayer extends EffectLayerDeclaration<FXAAConfig, FXAAUpdate, FXAA> {
     static key: string;
@@ -1594,13 +1696,23 @@ export declare class FXAAEffectLayer extends EffectLayerDeclaration<FXAAConfig, 
     createPass(): FXAA;
 }
 
-export declare type FXAAUpdate = LayerDescription_25 & EffectLayerUpdate;
+export declare type FXAAUpdate = LayerDescription_26 & EffectLayerUpdate;
 
 export declare const generateMixOverlaidTexturesMacro: (numTextures: number, insert?: (texColorVar: string, idx: number) => string) => string | undefined;
 
-export declare function geodeticSurfaceNormal(lle: LLE): Vector3;
+/**
+ * Computes the surface normal vector at a geodetic position on the WGS84 ellipsoid.
+ * @param lle - Geodetic coordinates (lng, lat, height)
+ * @returns Unit normal vector pointing outward from the ellipsoid surface
+ */
+export declare function geodeticSurfaceNormal(lle: LatLngHeight_2): Vector3;
 
-export declare function geodeticToVector3(lle: LLE): Vector3;
+/**
+ * Converts geodetic coordinates (longitude, latitude, height) to a Cartesian Vector3 in ECEF coordinates.
+ * @param lle - Geodetic coordinates (lng, lat, height in meters)
+ * @returns Cartesian Vector3 in Earth-Centered Earth-Fixed (ECEF) coordinates
+ */
+export declare function geodeticToVector3(lle: LatLngHeight_2): Vector3;
 
 export declare type GeoJsonLayer = WithColorSupport<Layer_2<GeoJsonLayerDescription & {
     type: "geojson";
@@ -1617,6 +1729,11 @@ export declare function getBatchDataTexture(material: Material): DataTexture | u
  */
 export declare function getDevicePixelRatio(options?: DevicePixelRatioOptions): number;
 
+/**
+ * Computes the height of a point above the WGS84 ellipsoid surface.
+ * @param point - Position in ECEF coordinates
+ * @returns Height above the ellipsoid in meters
+ */
 export declare function getHeightFromEllipsoid(point: Vector3): number;
 
 /**
@@ -1627,11 +1744,30 @@ export declare function getHeightFromEllipsoid(point: Vector3): number;
  */
 export declare function getMaskPassContext(): Readonly<MaskPassContext>;
 
-export declare function getPickRay(window: Window_2, camera: PerspectiveCamera, vec2: Vector2): Ray;
+/**
+ * Creates a picking ray from screen coordinates for raycasting.
+ * @param window - Window configuration with width, height, and pixel_ratio
+ * @param camera - Three.js PerspectiveCamera
+ * @param vec2 - Screen coordinates in CSS pixels (same as MouseEvent clientX/clientY)
+ * @returns A Ray starting from the camera through the screen point
+ */
+export declare function getPickRay(windowObject: Window_2, camera: PerspectiveCamera, vec2: Vector2): Ray_2;
 
-export declare function getPlaneFromPointNormal(point: Vector3, normal: Vector3): Plane;
+/**
+ * Creates a plane from a point and a normal vector.
+ * @param point - A point on the plane
+ * @param normal - The normal vector of the plane
+ * @returns A Plane object defined by the point and normal
+ */
+export declare function getPlaneFromPointNormal(point: Vector3, normal: Vector3): Plane_2;
 
-export declare function getRayPlaneIntersection(ray: Ray, plane: Plane): Vector3 | undefined;
+/**
+ * Computes the intersection point between a ray and a plane.
+ * @param ray - The ray to test
+ * @param plane - The plane to intersect with
+ * @returns Intersection point Vector3 or undefined if no intersection
+ */
+export declare function getRayPlaneIntersection(ray: Ray_2, plane: Plane_2): Vector3 | undefined;
 
 export declare function getRowIndex(material: Material, row: BatchTextureRowKey): number;
 
@@ -1640,14 +1776,34 @@ export declare function getRowIndex(material: Material, row: BatchTextureRowKey)
  */
 export declare function getSelectiveEffectConfig(obj: unknown): SelectiveEffectConfig | undefined;
 
+/**
+ * Returns the WGS84 ellipsoid first eccentricity.
+ * @returns Eccentricity value
+ */
 export declare function getWGS84Eccentricity(): number;
 
+/**
+ * Returns the WGS84 ellipsoid first eccentricity squared.
+ * @returns Eccentricity squared value
+ */
 export declare function getWGS84EccentricitySquared(): number;
 
+/**
+ * Returns the WGS84 ellipsoid flattening ratio.
+ * @returns Flattening value (approximately 1/298.257)
+ */
 export declare function getWGS84Flattening(): number;
 
+/**
+ * Returns the WGS84 ellipsoid semi-major axis (equatorial radius) in meters.
+ * @returns Semi-major axis (approximately 6,378,137 meters)
+ */
 export declare function getWGS84SemiMajorAxis(): number;
 
+/**
+ * Returns the WGS84 ellipsoid semi-minor axis (polar radius) in meters.
+ * @returns Semi-minor axis (approximately 6,356,752 meters)
+ */
 export declare function getWGS84SemiMinorAxis(): number;
 
 /**
@@ -1719,9 +1875,9 @@ export declare class GlowGlobeMeshLayer extends MeshLayerDeclaration<GlowGlobeMe
     protected disposeMesh(): void;
 }
 
-export declare type GlowGlobeMeshLayerConfig = MeshLayerConfig & LayerDescription_8;
+export declare type GlowGlobeMeshLayerConfig = MeshLayerConfig & LayerDescription_9;
 
-export declare type GlowGlobeMeshLayerUpdate = MeshLayerUpdate & LayerDescription_8;
+export declare type GlowGlobeMeshLayerUpdate = MeshLayerUpdate & LayerDescription_9;
 
 export declare class GLTFModelLayer extends MeshLayerDeclaration<GLTFModelLayerConfig, GLTFModelLayerUpdate, Group, GLTFModelLayerEvent> {
     private config;
@@ -1738,6 +1894,7 @@ export declare class GLTFModelLayer extends MeshLayerDeclaration<GLTFModelLayerC
     private originalWorldPosition;
     private modelPositionHigh;
     private modelPositionLow;
+    private rteUserData;
     constructor(view: ViewContext, config: GLTFModelLayerConfig);
     onCreate(): void;
     createMesh(): Group;
@@ -1858,14 +2015,14 @@ export declare class GLTFModelLayer extends MeshLayerDeclaration<GLTFModelLayerC
     private lastUpdateTime?;
 }
 
-export declare type GLTFModelLayerConfig = MeshLayerConfig & LayerDescription_12;
+export declare type GLTFModelLayerConfig = MeshLayerConfig & LayerDescription_13;
 
 declare type GLTFModelLayerEvent = {
     load: () => void;
     animationReady: () => void;
 };
 
-export declare type GLTFModelLayerUpdate = MeshLayerUpdate & LayerDescription_12;
+export declare type GLTFModelLayerUpdate = MeshLayerUpdate & LayerDescription_13;
 
 /**
  * Check if Bloom effect is enabled
@@ -1899,6 +2056,9 @@ export declare const initializeDracoLoader: () => DRACOLoader;
 
 export declare const initializeGltfLoader: () => GLTFLoader;
 
+/**
+ * Initializes the Navara API WASM module. Must be called before using other API functions.
+ */
 export declare function initNavaraApi(): Promise<void>;
 
 export declare class InstancedBillboardMesh extends InstancedMesh<BillboardMesh> {
@@ -1913,12 +2073,17 @@ export declare class InstancedBillboardMesh extends InstancedMesh<BillboardMesh>
 }
 
 export declare class InstancedMesh<M extends Object3D> extends Mesh implements PickableMesh {
+    visibleMeshes: Set<unknown>;
+    allMeshes: M[];
+    active: boolean;
     constructor(options: InstancedMeshOptions);
+    setActive(active: boolean): void;
     addWithBatchIndex(m: M, batchIndex: number): void;
+    markVisibility(m: M): void;
     meshes(): M[];
     getMeshByBatchIndex(batchIndex: number): M;
     setFeatureColorByBatchIndex(batchIndex: number, color: Color_3): void;
-    setFeatureShowByBatchIndex(batchIndex: number, visible: boolean): void;
+    setFeatureShowByBatchIndex(batchIndex: number, rawVisible: boolean): void;
     setFeatureHeightByBatchIndex(batchIndex: number, height: number): void;
     _setPickable(pickable: boolean): void;
 }
@@ -1943,7 +2108,7 @@ export declare class InstancedTextMesh extends InstancedMesh<TextMesh> {
     constructor(m: TextMesh_2, buf: BufferLoader, uniforms: CommonUniforms, options: InstancedMeshOptions);
     private initMeshes;
     _update(m: TextMesh_2, buf: BufferLoader, active: boolean, needRender?: () => void): void;
-    setTextByNatchIndex(batchIndex: number, text: string): void;
+    setTextByBatchIndex(batchIndex: number, text: string): void;
 }
 
 export declare const isFeatureMesh: (v: object) => v is FeatureMesh;
@@ -1962,6 +2127,12 @@ export declare const isPickableMesh: (v: object) => v is PickableMesh;
 
 export declare const JAPAN_GSI_ELEVATION_DECODER: () => ElevationDecoder;
 
+export declare type LatLng = Omit<LatLngHeight, "height">;
+
+export declare type LatLngHeight = Required<NormalizeWASMClass<LLE>>;
+
+declare type LatLngHeight_2 = Required<NormalizeWASMClass_2<LLE>>;
+
 export declare class Layer extends EventHandler<LayerEvent> {
     id: string;
     private core;
@@ -1978,7 +2149,7 @@ export declare class Layer extends EventHandler<LayerEvent> {
     delete(): void;
 }
 
-declare type Layer_2<LD> = ExtractProperties<RemoveFreeRecursively<LD>>;
+declare type Layer_2<LD> = NormalizeWASMClass<LD>;
 
 export declare abstract class LayerDeclaration<Config extends LayerDeclarationConfig = LayerDeclarationConfig, UpdateConfig extends LayerDeclarationConfigUpdate = LayerDeclarationConfigUpdate, Instance extends BaseInstance = BaseInstance, CustomEvent extends BaseEventMap = BaseEventMap> extends EventHandler<LayerDeclarationEvents & CustomEvent> {
     readonly id: string;
@@ -2009,6 +2180,28 @@ declare type LayerDeclarationEvents = {
 export declare type LayerDescription = ResourceLayerDescription | MeshLayerDeclarationDescription | LightLayerDeclarationDescription | EffectLayerDeclarationDescription;
 
 declare type LayerDescription_10 = {
+    cylinder?: {
+        radiusTop?: number;
+        radiusBottom?: number;
+        height?: number;
+        radialSegments?: number;
+        heightSegments?: number;
+        openEnded?: boolean;
+        thetaStart?: number;
+        thetaLength?: number;
+        color?: Color;
+        emissiveColor?: number;
+        emissiveIntensity?: number;
+        opacity?: number;
+        transparent?: boolean;
+        castShadow?: boolean;
+        receiveShadow?: boolean;
+        effectIds?: string[];
+        selectiveEffectOcclusion?: SelectiveEffectOcclusion;
+    };
+};
+
+declare type LayerDescription_11 = {
     tube?: {
         points?: XYZ[];
         tubularSegments?: number;
@@ -2028,7 +2221,7 @@ declare type LayerDescription_10 = {
     };
 };
 
-declare type LayerDescription_11 = {
+declare type LayerDescription_12 = {
     plane?: {
         width?: number;
         height?: number;
@@ -2046,7 +2239,7 @@ declare type LayerDescription_11 = {
     };
 };
 
-declare type LayerDescription_12 = {
+declare type LayerDescription_13 = {
     gltfModel?: {
         url: string;
         castShadow?: boolean;
@@ -2062,13 +2255,13 @@ declare type LayerDescription_12 = {
     };
 };
 
-declare type LayerDescription_13 = {
+declare type LayerDescription_14 = {
     axesHelper?: {
         size?: number;
     };
 };
 
-declare type LayerDescription_14 = {
+declare type LayerDescription_15 = {
     arrowHelper?: {
         direction: XYZ;
         origin?: XYZ;
@@ -2079,15 +2272,15 @@ declare type LayerDescription_14 = {
     };
 };
 
-declare type LayerDescription_15 = {
+declare type LayerDescription_16 = {
     arcLines?: Partial<ArcLineConfig> | Partial<ArcLineConfig>[];
 };
 
-declare type LayerDescription_16 = {
+declare type LayerDescription_17 = {
     smoothLines?: Partial<SmoothLineConfig> | Partial<SmoothLineConfig>[];
 };
 
-declare type LayerDescription_17 = {
+declare type LayerDescription_18 = {
     /**
      * Sun light configuration options. Includes all CSM (Cascaded Shadow Maps) settings.
      * Color can be specified as a number (hex value) or Navara Color instance.
@@ -2097,14 +2290,8 @@ declare type LayerDescription_17 = {
     };
 };
 
-declare type LayerDescription_18 = {
-    skyLightProbe?: SkyLightProbeOptions;
-};
-
 declare type LayerDescription_19 = {
-    ambient?: Omit<AmbientLightOptions, "color"> & {
-        color?: Color;
-    };
+    skyLightProbe?: SkyLightProbeOptions;
 };
 
 declare type LayerDescription_2 = {
@@ -2112,6 +2299,12 @@ declare type LayerDescription_2 = {
 };
 
 declare type LayerDescription_20 = {
+    ambient?: Omit<AmbientLightOptions, "color"> & {
+        color?: Color;
+    };
+};
+
+declare type LayerDescription_21 = {
     lightProbe?: {
         intensity?: number;
         sh?: SphericalHarmonics3;
@@ -2119,44 +2312,40 @@ declare type LayerDescription_20 = {
     };
 };
 
-declare type LayerDescription_21 = {
+declare type LayerDescription_22 = {
     aerialPerspective?: Omit<AerialPerspectiveOptions, "enabled">;
 };
 
-declare type LayerDescription_22 = {
+declare type LayerDescription_23 = {
     clouds?: Omit<CloudsOptions, "enabled">;
 };
 
-declare type LayerDescription_23 = {
+declare type LayerDescription_24 = {
     final?: {};
 };
 
-declare type LayerDescription_24 = {
+declare type LayerDescription_25 = {
     fogLight?: Omit<FogLightOptions, "enabled">;
 };
 
-declare type LayerDescription_25 = {
+declare type LayerDescription_26 = {
     fxaa?: {};
 };
 
-declare type LayerDescription_26 = {
+declare type LayerDescription_27 = {
     lensFlare?: Omit<LensFlareOptions, "enabled">;
 };
 
-declare type LayerDescription_27 = {
+declare type LayerDescription_28 = {
     mrt?: {
         debugNormal?: boolean;
     };
 };
 
-declare type LayerDescription_28 = {
+declare type LayerDescription_29 = {
     skyEnvMap?: {
         resolution?: number;
     };
-};
-
-declare type LayerDescription_29 = {
-    rainDrop?: Omit<RainDropOptions, "enabled">;
 };
 
 declare type LayerDescription_3 = {
@@ -2164,30 +2353,34 @@ declare type LayerDescription_3 = {
 };
 
 declare type LayerDescription_30 = {
-    smaa?: Omit<AntialiasOptions, "enabled">;
+    rainDrop?: Omit<RainDropOptions, "enabled">;
 };
 
 declare type LayerDescription_31 = {
-    ssao?: Omit<SSAOOptions, "enabled">;
+    smaa?: Omit<AntialiasOptions, "enabled">;
 };
 
 declare type LayerDescription_32 = {
-    ssr?: Omit<SSROptions, "enabled" | "geometryBuffer">;
+    ssao?: Omit<SSAOOptions, "enabled">;
 };
 
 declare type LayerDescription_33 = {
-    toneMapping?: Omit<ToneMappingOptions, "enabled">;
+    ssr?: Omit<SSROptions, "enabled" | "geometryBuffer">;
 };
 
 declare type LayerDescription_34 = {
-    transparent?: {};
+    toneMapping?: Omit<ToneMappingOptions, "enabled">;
 };
 
 declare type LayerDescription_35 = {
-    depthOfField?: Omit<DepthOfFieldOptions, "enabled">;
+    transparent?: {};
 };
 
 declare type LayerDescription_36 = {
+    depthOfField?: Omit<DepthOfFieldOptions, "enabled">;
+};
+
+declare type LayerDescription_37 = {
     colorGradingLUT?: ColorGradingLUTOptions;
 };
 
@@ -2196,12 +2389,20 @@ declare type LayerDescription_4 = {
 };
 
 declare type LayerDescription_5 = {
+    skyBox?: {
+        dayColor?: Color;
+        nightColor?: Color;
+        sunColor?: Color;
+    };
+};
+
+declare type LayerDescription_6 = {
     stars?: Partial<StarsOptions> & {
         assetsUrl?: string;
     };
 };
 
-declare type LayerDescription_6 = {
+declare type LayerDescription_7 = {
     box?: {
         width?: number;
         height?: number;
@@ -2221,7 +2422,7 @@ declare type LayerDescription_6 = {
     };
 };
 
-declare type LayerDescription_7 = {
+declare type LayerDescription_8 = {
     sphere?: {
         radius?: number;
         widthSegments?: number;
@@ -2242,7 +2443,7 @@ declare type LayerDescription_7 = {
     };
 };
 
-declare type LayerDescription_8 = {
+declare type LayerDescription_9 = {
     /**
      * Configuration for the glow globe mesh layer.
      *
@@ -2318,28 +2519,6 @@ declare type LayerDescription_8 = {
          * @range 0.0 (fully transparent) to 1.0 (fully opaque)
          */
         opacity?: number;
-    };
-};
-
-declare type LayerDescription_9 = {
-    cylinder?: {
-        radiusTop?: number;
-        radiusBottom?: number;
-        height?: number;
-        radialSegments?: number;
-        heightSegments?: number;
-        openEnded?: boolean;
-        thetaStart?: number;
-        thetaLength?: number;
-        color?: Color;
-        emissiveColor?: number;
-        emissiveIntensity?: number;
-        opacity?: number;
-        transparent?: boolean;
-        castShadow?: boolean;
-        receiveShadow?: boolean;
-        effectIds?: string[];
-        selectiveEffectOcclusion?: SelectiveEffectOcclusion;
     };
 };
 
@@ -2432,7 +2611,7 @@ export declare class LensFlare extends Effect<LensFlareEffect, LensFlareOptions>
     set intensity(v: number);
 }
 
-export declare type LensFlareConfig = LayerDescription_26 & EffectLayerConfig;
+export declare type LensFlareConfig = LayerDescription_27 & EffectLayerConfig;
 
 export declare class LensFlareEffectLayer extends EffectLayerDeclaration<LensFlareConfig, LensFlareUpdate, LensFlare> {
     static key: string;
@@ -2448,7 +2627,7 @@ export declare type LensFlareOptions = {
     intensity?: number;
 } & EffectOptions;
 
-export declare type LensFlareUpdate = LayerDescription_26 & EffectLayerUpdate;
+export declare type LensFlareUpdate = LayerDescription_27 & EffectLayerUpdate;
 
 export declare type Light = {
     ambient?: {
@@ -2514,22 +2693,9 @@ export declare class LightProbeLayer extends LightLayerDeclaration<LightProbeLay
     protected disposeLight(): void;
 }
 
-export declare type LightProbeLayerConfig = LightLayerConfig & LayerDescription_20;
+export declare type LightProbeLayerConfig = LightLayerConfig & LayerDescription_21;
 
-export declare type LightProbeLayerUpdate = LightLayerUpdate & LayerDescription_20;
-
-export { LLE }
-
-export declare type LngLat = {
-    lng: number;
-    lat: number;
-};
-
-export declare type LngLatHeight = {
-    lng: number;
-    lat: number;
-    height: number;
-};
+export declare type LightProbeLayerUpdate = LightLayerUpdate & LayerDescription_21;
 
 export declare type LUT = readonly (ColorTuple | Color_2)[];
 
@@ -2603,9 +2769,12 @@ export declare type MeshLayerConfig = {
     position?: XYZ;
     scale?: XYZ;
     rotation?: XYZ;
-    effectIds?: string[];
-    selectiveEffectOcclusion?: SelectiveEffectOcclusion;
 } & LayerDeclarationConfig;
+
+export declare type MeshLayerConfigWithSelectiveEffect = MeshLayerConfig & {
+    effectIds?: string[];
+    selectiveEffectOcclusion?: SelectiveEffectOcclusion | null;
+};
 
 export declare type MeshLayerConstructor<TConfig extends MeshLayerConfig = MeshLayerConfig> = new (view: ViewContext, config: TConfig) => MeshLayerDeclaration;
 
@@ -2618,8 +2787,6 @@ export declare abstract class MeshLayerDeclaration<Config extends MeshLayerConfi
     scale?: XYZ;
     rotation?: XYZ;
     private prevPassKey?;
-    private _effectIds;
-    private _selectiveEffectOcclusion?;
     constructor(view: ViewContext, config?: Config);
     protected getPassKey(): PassKey;
     abstract createMesh(): Instance;
@@ -2627,11 +2794,6 @@ export declare abstract class MeshLayerDeclaration<Config extends MeshLayerConfi
         raw: infer Raw extends Object3D;
     } ? Raw : never) | undefined;
     onCreate(): void;
-    /**
-     * Setup onBeforeRender callback for MaskPass context-based rendering.
-     * This enables Box, Sphere, and other standard meshes to participate in mask rendering.
-     */
-    private setupMeshOnBeforeRender;
     removeFromScene(passKey: PassKey): void;
     addToScene(passKey: PassKey): void;
     onUpdateConfig(updates: UpdateConfig): void;
@@ -2641,7 +2803,37 @@ export declare abstract class MeshLayerDeclaration<Config extends MeshLayerConfi
     onResize?(width: number, height: number): void;
 }
 
-export declare type MeshLayerDeclarationDescription = RainMeshLayerConfig | SnowMeshLayerConfig | SkyMeshLayerConfig | StarsLayerConfig | BoxMeshLayerConfig | SphereMeshLayerConfig | GlowGlobeMeshLayerConfig | CylinderMeshLayerConfig | TubeMeshLayerConfig | PlaneMeshLayerConfig | GLTFModelLayerConfig | AxesHelperLayerConfig | ArrowHelperLayerConfig | ArclineMeshLayerConfig | SmoothLineMeshLayerConfig;
+export declare type MeshLayerDeclarationDescription = RainMeshLayerConfig | SnowMeshLayerConfig | SkyMeshLayerConfig | SkyBoxMeshLayerConfig | StarsLayerConfig | BoxMeshLayerConfig | SphereMeshLayerConfig | GlowGlobeMeshLayerConfig | CylinderMeshLayerConfig | TubeMeshLayerConfig | PlaneMeshLayerConfig | GLTFModelLayerConfig | AxesHelperLayerConfig | ArrowHelperLayerConfig | ArclineMeshLayerConfig | SmoothLineMeshLayerConfig;
+
+export declare abstract class MeshLayerDeclarationForSelectiveEffect<Config extends MeshLayerConfigWithSelectiveEffect = MeshLayerConfigWithSelectiveEffect, UpdateConfig extends MeshLayerUpdateWithSelectiveEffect = MeshLayerUpdateWithSelectiveEffect, InstanceObj extends Object3D | {
+    raw: Object3D;
+} = Object3D | {
+    raw: Object3D;
+}, CustomEvent extends BaseEventMap = BaseEventMap, Instance extends MeshBaseInstance<InstanceObj> = MeshBaseInstance<InstanceObj>> extends MeshLayerDeclaration<Config, UpdateConfig, InstanceObj, CustomEvent, Instance> {
+    private readonly _initialSelectiveEffectOcclusion?;
+    private _effectIds;
+    private _hasSetupOnBeforeRender;
+    private _originalOnBeforeRender?;
+    /**
+     * Helper to apply a function to single or array of materials.
+     */
+    private forEachMaterial;
+    constructor(view: ViewContext, config?: Config);
+    protected getPassKey(): PassKey;
+    onCreate(): void;
+    /**
+     * Setup onBeforeRender callback for MaskPass context-based rendering.
+     * This enables Box, Sphere, and other standard meshes to participate in mask rendering.
+     */
+    private setupMeshOnBeforeRender;
+    /**
+     * Restore original onBeforeRender callback.
+     * Called when effectIds becomes empty or on destroy.
+     */
+    private restoreOnBeforeRender;
+    onUpdateConfig(updates: UpdateConfig): void;
+    onDestroy(): void;
+}
 
 export declare class MeshLayerRegistry extends LayerRegistry<MeshLayerConstructor, MeshLayerDeclaration, MeshLayerConfig> {
     create(name: string, config: MeshLayerConfig): MeshLayerDeclaration;
@@ -2651,9 +2843,11 @@ export declare class MeshLayerRegistry extends LayerRegistry<MeshLayerConstructo
     findMeshType(config: Record<string, unknown>): string | null;
 }
 
-export declare type MeshLayerUpdate = Pick<MeshLayerConfig, "position" | "scale" | "rotation"> & LayerDeclarationConfigUpdate & {
+export declare type MeshLayerUpdate = Pick<MeshLayerConfig, "position" | "scale" | "rotation"> & LayerDeclarationConfigUpdate;
+
+export declare type MeshLayerUpdateWithSelectiveEffect = MeshLayerUpdate & {
     effectIds?: string[];
-    selectiveEffectOcclusion?: SelectiveEffectOcclusion;
+    selectiveEffectOcclusion?: SelectiveEffectOcclusion | null;
 };
 
 export declare const MODEL_BATCH_TEXTURE_CONFIG: BatchTextureConfig;
@@ -2731,7 +2925,7 @@ export declare class ModelMesh extends Object3D<CustomObject3DEventMap> implemen
     dispose(viewEvents: EventHandler<ViewEvents>): void;
 }
 
-export declare type MRTPassConfig = LayerDescription_27 & EffectLayerConfig;
+export declare type MRTPassConfig = LayerDescription_28 & EffectLayerConfig;
 
 export declare class MRTPassEffectLayer extends EffectLayerDeclaration<MRTPassConfig, MRTPassUpdate, CustomRenderPass> {
     static key: string;
@@ -2741,7 +2935,7 @@ export declare class MRTPassEffectLayer extends EffectLayerDeclaration<MRTPassCo
     onUpdateConfig(updates: MRTPassUpdate): void;
 }
 
-export declare type MRTPassUpdate = LayerDescription_27 & EffectLayerUpdate;
+export declare type MRTPassUpdate = LayerDescription_28 & EffectLayerUpdate;
 
 export declare type MvtLayer = WithColorSupport<Layer_2<MvtLayerDescription & {
     type: "mvt";
@@ -2767,10 +2961,29 @@ export declare class NormalCopyPass extends Pass_2 {
     dispose(): void;
 }
 
+declare type NormalizeWASMClass<C> = ExtractProperties<RemoveFreeRecursively<C>>;
+
+declare type NormalizeWASMClass_2<C> = ExtractProperties_2<RemoveFreeRecursively_2<C>>;
+
+/**
+ * Creates a local North-East-Down (NED) reference frame transformation matrix at a position.
+ * @param origin - Origin position in ECEF coordinates
+ * @returns 4x4 transformation matrix from NED to ECEF
+ */
 export declare function northEastDownToFixedFrame(origin: Vector3): Matrix4;
 
+/**
+ * Creates a local North-Up-East (NUE) reference frame transformation matrix at a position.
+ * @param origin - Origin position in ECEF coordinates
+ * @returns 4x4 transformation matrix from NUE to ECEF
+ */
 export declare function northUpEastToFixedFrame(origin: Vector3): Matrix4;
 
+/**
+ * Creates a local North-West-Up (NWU) reference frame transformation matrix at a position.
+ * @param origin - Origin position in ECEF coordinates
+ * @returns 4x4 transformation matrix from NWU to ECEF
+ */
 export declare function northWestUpToFixedFrame(origin: Vector3): Matrix4;
 
 export declare type Nullable<T> = T | null | undefined;
@@ -2854,11 +3067,11 @@ declare type Picking = {
     enable: boolean;
 };
 
-export { Plane }
+export declare type Plane = Required<NormalizeWASMClass_2<Plane_3>>;
 
 declare type PlaneMeshEventMap = Object3DEventMap & CustomObject3DEventMap;
 
-export declare class PlaneMeshLayer extends MeshLayerDeclaration<PlaneMeshLayerConfig, PlaneMeshLayerUpdate, Mesh<PlaneGeometry, MeshLambertMaterial, PlaneMeshEventMap>> {
+export declare class PlaneMeshLayer extends MeshLayerDeclarationForSelectiveEffect<PlaneMeshLayerConfig, PlaneMeshLayerUpdate, Mesh<PlaneGeometry, MeshLambertMaterial, PlaneMeshEventMap>> {
     private config;
     constructor(view: ViewContext, config: PlaneMeshLayerConfig);
     createMesh(): Mesh<PlaneGeometry, MeshLambertMaterial, PlaneMeshEventMap>;
@@ -2866,17 +3079,18 @@ export declare class PlaneMeshLayer extends MeshLayerDeclaration<PlaneMeshLayerC
     protected disposeMesh(): void;
 }
 
-export declare type PlaneMeshLayerConfig = MeshLayerConfig & LayerDescription_11;
+export declare type PlaneMeshLayerConfig = MeshLayerConfigWithSelectiveEffect & LayerDescription_12;
 
-export declare type PlaneMeshLayerUpdate = MeshLayerUpdate & LayerDescription_11;
+export declare type PlaneMeshLayerUpdate = MeshLayerUpdateWithSelectiveEffect & LayerDescription_12;
 
 export declare type PntsLayer = WithColorSupport<Layer_2<PntsLayerDescription & {
     type: "pnts";
 }>>;
 
 export declare class PointMesh extends Sprite implements FeatureMesh {
-    constructor(material: PointMaterial, batchId: number, active: boolean);
+    constructor(material: PointMaterial, batchId: number, active: boolean, useRTE?: boolean);
     private initMaterial;
+    setPosition(useRTE: boolean, position: Float32Array<ArrayBufferLike> | null | undefined, positionHigh: Float32Array<ArrayBufferLike> | null | undefined, positionLow: Float32Array<ArrayBufferLike> | null | undefined, posIdx: number, transform: Transform_2): void;
     _update(material: PointMaterial, active: boolean): void;
     _setFeatureColor(color: Color_3): void;
     _getFeatureColor(): Color_3;
@@ -2956,6 +3170,11 @@ declare type Private = {
 
 declare type Quality = "low" | "medium" | "high" | "ultra";
 
+/**
+ * Converts an angle from radians to degrees.
+ * @param radian - Angle in radians
+ * @returns Angle in degrees
+ */
 export declare function radianToDegree(radian: number): number;
 
 export declare const RAIN_ASSETS_URL: string;
@@ -2980,7 +3199,7 @@ export declare type RainConfig = {
     maxHeight: number;
 };
 
-export declare type RainDropConfig = LayerDescription_29 & EffectLayerConfig;
+export declare type RainDropConfig = LayerDescription_30 & EffectLayerConfig;
 
 export declare class RainDropEffect extends Effect<RainDropPostEffect, RainDropOptions, RainDropEvents> {
     constructor(camera: Camera, options?: RainDropOptions);
@@ -3119,7 +3338,7 @@ declare class RainDropPostEffect extends Effect_2 {
     get jitterStrengthHigh(): number;
 }
 
-export declare type RainDropUpdate = LayerDescription_29 & EffectLayerUpdate;
+export declare type RainDropUpdate = LayerDescription_30 & EffectLayerUpdate;
 
 declare class RainMaterial extends ShaderMaterial {
     uniforms: {
@@ -3207,6 +3426,8 @@ export declare type RainMeshLayerConfig = MeshLayerConfig & LayerDescription_2;
 
 export declare type RainMeshLayerUpdate = MeshLayerUpdate & LayerDescription_2;
 
+export declare type Ray = Required<NormalizeWASMClass_2<Ray_3>>;
+
 declare type Ref<K extends string, T> = Record<K, T | undefined | null>;
 
 declare type RefThree<T> = Ref<"value", T>;
@@ -3244,11 +3465,15 @@ export declare class Registries {
     clearAll(): void;
 }
 
-export declare type RemoveFreeRecursively<T> = T extends {
+declare type RemoveFreeRecursively<T> = T extends {
     free: any;
 } ? Omit<{
     [K in keyof T]: RemoveFreeRecursively<T[K]>;
 }, "free"> : T;
+
+declare type RemoveFreeRecursively_2<T> = T extends { free: any }
+? Omit<{ [K in keyof T]: RemoveFreeRecursively_2<T[K]> }, "free">
+: T;
 
 export declare type RenderFlag = {
     forceUpdate: boolean;
@@ -3355,6 +3580,21 @@ export declare type ResourceLayerDescription = TilesLayer | TerrainLayer | GeoJs
  * @param material - Material to restore
  */
 export declare function restoreMaterialState(material: Material): void;
+
+/**
+ * Interface for objects that need RTE (Relative-To-Eye) rendering support
+ */
+export declare type RTEUserData = {
+    modelViewMatrixRTE?: {
+        value: Matrix4;
+    };
+    cameraPositionHigh?: {
+        value: Vector3;
+    };
+    cameraPositionLow?: {
+        value: Vector3;
+    };
+};
 
 declare class SceneGroup extends Group {
 }
@@ -3519,6 +3759,11 @@ export declare class SelectiveEffectHelper {
      */
     syncOcclusionCache(layerId: string, occlusion: SelectiveEffectOcclusionValue): void;
     /**
+     * Clear occlusion cache for a layer
+     * Called by Manager when layer is unregistered
+     */
+    clearOcclusionCache(layerId: string): void;
+    /**
      * Get Post Effect Occlusion setting for a layer (from cache)
      */
     getLayerSelectiveEffectOcclusion(layerId: string): SelectiveEffectOcclusionValue;
@@ -3663,6 +3908,11 @@ export declare class SelectiveEffectManager {
      * Set occlusion setting for a layer (SoT)
      */
     setLayerOcclusion(layerId: string, occlusion: SelectiveEffectOcclusionValue): void;
+    /**
+     * Clear occlusion setting for a layer (reset to Normal).
+     * Also syncs to Helper cache to maintain SoT consistency.
+     */
+    clearLayerOcclusion(layerId: string): void;
 }
 
 declare type SelectiveEffectManagerOptions = {
@@ -3851,7 +4101,63 @@ declare class SelectiveOutlinePass extends Pass_2 {
  */
 export declare function setMaskPassContext(ctx: Partial<MaskPassContext>): void;
 
+/**
+ * Set position using RTC (Relative-To-Center) encoding
+ *
+ * RTC mode sets the mesh position/rotation/scale to the tile center transform,
+ * and stores the relative offset in a uniform.
+ *
+ * @param mesh - The mesh to position (Sprite or Group)
+ * @param position - Position array (relative to tile center)
+ * @param posIdx - Index in the position array
+ * @param transform - Transform data (position, rotation, scale)
+ */
+export declare function setRTCPosition<T extends Object3D>(mesh: T, position: Float32Array<ArrayBufferLike> | null | undefined, posIdx: number, transform: Transform_2): void;
+
+/**
+ * Set position using RTE (Relative-To-Eye) encoding
+ *
+ * RTE mode stores position in high/low precision uniforms and keeps
+ * the mesh at origin (0,0,0). Only scale is applied to control sprite size.
+ * Rotation/quaternion would affect matrixWorld and break RTE calculations.
+ *
+ * @param mesh - The mesh to position (Sprite or Group)
+ * @param positionHigh - High precision component array
+ * @param positionLow - Low precision component array
+ * @param posIdx - Index in the position arrays
+ * @param transform - Transform data containing scale
+ */
+export declare function setRTEPosition<T extends Object3D>(mesh: T, positionHigh: Float32Array<ArrayBufferLike> | null | undefined, positionLow: Float32Array<ArrayBufferLike> | null | undefined, posIdx: number, transform: Transform_2): void;
+
+/**
+ * Setup onBeforeRender/onBeforeShadow callback for RTE rendering
+ *
+ * @param mesh - The mesh object to setup
+ * @param userData - RTE user data containing uniforms
+ * @param modelMatrix - Optional model matrix for calcModelMatrixRTE.
+ *                      - Use identity matrix for GLTF models where world position is in RTE uniforms
+ *                      - Use mesh.matrixWorld for objects with actual positions (default)
+ * @param cameraPosMatrix - Optional matrix for calcCameraPosition. If not specified, uses modelMatrix.
+ *                          - Point/Billboard/Text/Model: use identity matrix (world space camera position)
+ *                          - Polygon: use mesh.matrixWorld (same as modelMatrix)
+ * @returns A callback function that works for both onBeforeRender and onBeforeShadow
+ */
+export declare function setupRTEBeforeRender(mesh: Object3D, userData: RTEUserData, modelMatrix?: Matrix4, cameraPosMatrix?: Matrix4): (Object3D["onBeforeRender"] & Object3D["onBeforeShadow"]) | null;
+
 export declare type ShadowMode = "uniform" | "logarithmic" | "practical";
+
+export declare class SkyBoxMeshLayer extends MeshLayerDeclaration<SkyBoxMeshLayerConfig, SkyBoxMeshLayerUpdate, Mesh<BufferGeometry, ShaderMaterial>> {
+    private config;
+    constructor(view: ViewContext, config: SkyBoxMeshLayerConfig);
+    createMesh(): Mesh<BufferGeometry<NormalBufferAttributes, BufferGeometryEventMap>, ShaderMaterial, Object3DEventMap>;
+    onUpdateConfig(updates: SkyBoxMeshLayerUpdate): void;
+    update(_time: number): void;
+    protected disposeMesh(): void;
+}
+
+export declare type SkyBoxMeshLayerConfig = MeshLayerConfig & LayerDescription_5;
+
+export declare type SkyBoxMeshLayerUpdate = MeshLayerUpdate & LayerDescription_5;
 
 export declare class SkyEnvMapEffectLayer extends EffectLayerDeclaration<SkyEnvMapPassConfig, SkyEnvMapPassUpdate, SkyEnvMapPass> {
     static key: string;
@@ -3873,9 +4179,9 @@ export declare class SkyEnvMapPass extends RenderPass {
     dispose(): void;
 }
 
-export declare type SkyEnvMapPassConfig = LayerDescription_28 & EffectLayerConfig;
+export declare type SkyEnvMapPassConfig = LayerDescription_29 & EffectLayerConfig;
 
-export declare type SkyEnvMapPassUpdate = LayerDescription_28 & EffectLayerUpdate;
+export declare type SkyEnvMapPassUpdate = LayerDescription_29 & EffectLayerUpdate;
 
 export declare class SkyLightProbe extends EventHandler<SkyLightProbeEvents> {
     raw: SkyLightProbe_2;
@@ -3902,9 +4208,9 @@ export declare class SkyLightProbeLayer extends LightLayerDeclaration<SkyLightPr
     update(_time: number): void;
 }
 
-export declare type SkyLightProbeLayerConfig = LightLayerConfig & LayerDescription_18;
+export declare type SkyLightProbeLayerConfig = LightLayerConfig & LayerDescription_19;
 
-export declare type SkyLightProbeLayerUpdate = LightLayerUpdate & LayerDescription_18;
+export declare type SkyLightProbeLayerUpdate = LightLayerUpdate & LayerDescription_19;
 
 export declare type SkyLightProbeOptions = {
     intensity?: number;
@@ -3986,7 +4292,7 @@ export declare class SMAA extends Effect<SMAAEffect, AntialiasOptions> {
     set edgeDetectionMode(v: AntialiasOptions["edgeDetectionMode"]);
 }
 
-export declare type SMAAConfig = LayerDescription_30 & EffectLayerConfig;
+export declare type SMAAConfig = LayerDescription_31 & EffectLayerConfig;
 
 export declare class SMAAEffectLayer extends EffectLayerDeclaration<SMAAConfig, SMAAUpdate, SMAA> {
     static key: string;
@@ -3997,7 +4303,7 @@ export declare class SMAAEffectLayer extends EffectLayerDeclaration<SMAAConfig, 
     onUpdateConfig(updates: SMAAUpdate): void;
 }
 
-export declare type SMAAUpdate = LayerDescription_30 & EffectLayerUpdate;
+export declare type SMAAUpdate = LayerDescription_31 & EffectLayerUpdate;
 
 export declare class SmoothLine extends Object3D {
     private readonly _config;
@@ -4030,7 +4336,7 @@ export declare type SmoothLineConfig = {
     showPoints: boolean;
     pointSize: number;
     pointColor: number;
-    points: LngLatHeight[];
+    points: LatLngHeight[];
 };
 
 export declare class SmoothLineMeshLayer extends MeshLayerDeclaration<SmoothLineMeshLayerConfig, SmoothLineMeshLayerUpdate, SmoothLine> {
@@ -4043,9 +4349,9 @@ export declare class SmoothLineMeshLayer extends MeshLayerDeclaration<SmoothLine
     protected disposeMesh(): void;
 }
 
-export declare type SmoothLineMeshLayerConfig = MeshLayerConfig & LayerDescription_16;
+export declare type SmoothLineMeshLayerConfig = MeshLayerConfig & LayerDescription_17;
 
-export declare type SmoothLineMeshLayerUpdate = MeshLayerUpdate & LayerDescription_16;
+export declare type SmoothLineMeshLayerUpdate = MeshLayerUpdate & LayerDescription_17;
 
 export declare type SnowConfig = {
     particleCount: number;
@@ -4146,7 +4452,7 @@ declare class SnowPointsMaterial extends ShaderMaterial {
 
 declare type SphereMeshEventMap = Object3DEventMap & CustomObject3DEventMap;
 
-export declare class SphereMeshLayer extends MeshLayerDeclaration<SphereMeshLayerConfig, SphereMeshLayerUpdate, Mesh<SphereGeometry, MeshLambertMaterial, SphereMeshEventMap>> {
+export declare class SphereMeshLayer extends MeshLayerDeclarationForSelectiveEffect<SphereMeshLayerConfig, SphereMeshLayerUpdate, Mesh<SphereGeometry, MeshLambertMaterial, SphereMeshEventMap>> {
     private config;
     constructor(view: ViewContext, config: SphereMeshLayerConfig);
     createMesh(): Mesh<SphereGeometry, MeshLambertMaterial, SphereMeshEventMap>;
@@ -4154,9 +4460,9 @@ export declare class SphereMeshLayer extends MeshLayerDeclaration<SphereMeshLaye
     protected disposeMesh(): void;
 }
 
-export declare type SphereMeshLayerConfig = MeshLayerConfig & LayerDescription_7;
+export declare type SphereMeshLayerConfig = MeshLayerConfigWithSelectiveEffect & LayerDescription_8;
 
-export declare type SphereMeshLayerUpdate = MeshLayerUpdate & LayerDescription_7;
+export declare type SphereMeshLayerUpdate = MeshLayerUpdateWithSelectiveEffect & LayerDescription_8;
 
 export declare type SpherePointOptions = {
     visible?: boolean;
@@ -4201,7 +4507,7 @@ export declare class SSAO extends Pass<N8AOPostPass, unknown, SSAOOptions> {
     set color(v: Color);
 }
 
-export declare type SSAOConfig = LayerDescription_31 & EffectLayerConfig;
+export declare type SSAOConfig = LayerDescription_32 & EffectLayerConfig;
 
 export declare class SSAOEffectLayer extends EffectLayerDeclaration<SSAOConfig, SSAOUpdate, SSAO> {
     static key: string;
@@ -4224,7 +4530,7 @@ export declare type SSAOOptions = {
 
 export { SSAOQualityMode }
 
-export declare type SSAOUpdate = LayerDescription_31 & EffectLayerUpdate;
+export declare type SSAOUpdate = LayerDescription_32 & EffectLayerUpdate;
 
 export declare class SSR extends Effect<SSREffect, SSROptions> {
     constructor(camera: Camera, _options?: SSROptions);
@@ -4267,7 +4573,7 @@ export declare class SSR extends Effect<SSREffect, SSROptions> {
     set coneTracingIor(v: number);
 }
 
-export declare type SSRConfig = LayerDescription_32 & EffectLayerConfig;
+export declare type SSRConfig = LayerDescription_33 & EffectLayerConfig;
 
 export declare class SSREffect extends Effect_2 {
     private camera;
@@ -4426,7 +4732,7 @@ export declare type SSROptions = {
     coneTracingIor?: number;
 } & EffectOptions;
 
-export declare type SSRUpdate = LayerDescription_32 & EffectLayerUpdate;
+export declare type SSRUpdate = LayerDescription_33 & EffectLayerUpdate;
 
 export declare class Stars extends EventHandler<StarsEvents> {
     raw: Points<StarsGeometry, StarsMaterial>;
@@ -4465,9 +4771,9 @@ export declare class StarsLayer extends MeshLayerDeclaration<StarsLayerConfig, S
     getStars(): Stars | null;
 }
 
-export declare type StarsLayerConfig = MeshLayerConfig & LayerDescription_5;
+export declare type StarsLayerConfig = MeshLayerConfig & LayerDescription_6;
 
-export declare type StarsLayerUpdate = MeshLayerUpdate & LayerDescription_5;
+export declare type StarsLayerUpdate = MeshLayerUpdate & LayerDescription_6;
 
 export declare type StarsOptions = {
     visible?: boolean;
@@ -4602,9 +4908,9 @@ export declare class SunLightLayer extends LightLayerDeclaration<SunLightLayerCo
     getCSMHelper(): CSMHelper | null | undefined;
 }
 
-export declare type SunLightLayerConfig = LightLayerConfig & LayerDescription_17;
+export declare type SunLightLayerConfig = LightLayerConfig & LayerDescription_18;
 
-export declare type SunLightLayerUpdate = LightLayerUpdate & LayerDescription_17;
+export declare type SunLightLayerUpdate = LightLayerUpdate & LayerDescription_18;
 
 export declare type SunLightOptions = {
     /**
@@ -4741,9 +5047,10 @@ declare class TestSelectivePass extends Pass_2 {
 export declare class TextMesh extends Group implements FeatureMesh, PickableMesh {
     text: Text_2;
     background?: Mesh<PlaneGeometry, MeshBasicMaterial>;
-    constructor(meshMaterial: TextMaterial, uniforms: CommonUniforms, batchId: number);
+    constructor(meshMaterial: TextMaterial, uniforms: CommonUniforms, batchId: number, useRTE?: boolean);
     private initText;
     _createBackground(): Mesh<PlaneGeometry, MeshBasicMaterial, Object3DEventMap>;
+    setPosition(useRTE: boolean, position: Float32Array<ArrayBufferLike> | null | undefined, positionHigh: Float32Array<ArrayBufferLike> | null | undefined, positionLow: Float32Array<ArrayBufferLike> | null | undefined, posIdx: number, transform: Transform_2): void;
     _updateTextByMaterial(material: TextMaterial, active: boolean, needRender?: () => void): void;
     updateBackground(): void;
     setText(text: string): void;
@@ -4788,6 +5095,16 @@ declare class TexturizedSceneByTileCoordinates {
     setNeedsUpdate(handle: TileHandle, v: boolean): void;
 }
 
+/**
+ * The main 3D globe view class that manages rendering, layers, camera, and user interaction.
+ * Create an instance and call `init()` to start the engine.
+ *
+ * @example
+ * ```typescript
+ * const view = new ThreeView();
+ * await view.init();
+ * ```
+ */
 declare class ThreeView<CustomLayerDescriptions extends Record<string, unknown> | undefined = undefined, LayerDescription extends ActualLayerDescription = CustomLayerDescriptions extends undefined ? ActualLayerDescription : ActualLayerDescription | CustomLayerDescriptions> extends EventHandler<ViewEvents> {
     camera: ThreeViewCamera;
     renderer: WebGLRenderer;
@@ -4839,16 +5156,48 @@ declare class ThreeView<CustomLayerDescriptions extends Record<string, unknown> 
      * Convert a mouse event to a MapMouseEvent by adding map coordinates
      */
     private convertMouseEventToMapEvent;
-    initializeRenderPass(): Promise<void>;
+    private initializeRenderPass;
     private get renderPass();
+    /**
+     * Gets the tone mapping exposure value.
+     */
     get toneMappingExposure(): number;
+    /**
+     * Sets the tone mapping exposure value for HDR rendering.
+     */
     set toneMappingExposure(v: number);
+    /**
+     * Gets the globe depth texture for post-processing effects.
+     */
     get globeDepthTexture(): Texture;
+    /**
+     * Gets the globe normal texture for post-processing effects.
+     */
     get globeNormalTexture(): Texture;
+    /**
+     * Gets the scene normal texture from the G-buffer.
+     */
     get normalTexture(): Texture;
+    /**
+     * Forces an immediate re-render of the scene on the next frame.
+     */
     forceUpdate: () => void;
+    /**
+     * Initializes the 3D engine, WASM modules, and starts the main render loop.
+     * Must be called before using the view.
+     */
     init(): Promise<void>;
+    /**
+     * Disposes all resources and stops the render loop.
+     * Call this when the view is no longer needed.
+     */
     dispose(): void;
+    /**
+     * Resizes the renderer and updates the camera aspect ratio.
+     * @param width - New width in pixels (uses canvas size if omitted)
+     * @param height - New height in pixels (uses canvas size if omitted)
+     * @param pixelRatio - Device pixel ratio
+     */
     resize: (width?: number, height?: number, pixelRatio?: number) => void;
     private _updateUniforms;
     /** Returns true if the scene was updated and needs to be rendered. */
@@ -4865,8 +5214,22 @@ declare class ThreeView<CustomLayerDescriptions extends Record<string, unknown> 
      * Handles the two-level structure: layer -> material -> color fields.
      */
     private _convertColorsToNumbers;
+    /**
+     * Adds a new layer to the scene.
+     * @param l - Layer configuration object specifying type and options
+     * @returns A Layer or LayerHandle for controlling the added layer
+     */
     addLayer<L = unknown>(l: LayerDescription): L extends LayerDeclaration ? LayerHandle<L> : Layer;
+    /**
+     * Updates an existing layer's configuration by its ID.
+     * @param layerId - The unique identifier of the layer to update
+     * @param l - New layer configuration
+     */
     updateLayerById(layerId: string, l: LayerDescription): void;
+    /**
+     * Deletes a layer from the scene by its ID.
+     * @param layerId - The unique identifier of the layer to delete
+     */
     deleteLayerById(layerId: string): void;
     private registerBuiltIns;
     private registerBuiltInMeshes;
@@ -4875,8 +5238,23 @@ declare class ThreeView<CustomLayerDescriptions extends Record<string, unknown> 
     private addMeshLayer;
     private addLightLayer;
     private addEffectLayer;
+    /**
+     * Registers a custom mesh layer type for use with addLayer().
+     * @param name - Unique name to identify this mesh type in layer configurations
+     * @param meshClass - The mesh layer class constructor
+     */
     registerMesh(name: string, meshClass: MeshLayerConstructor): void;
+    /**
+     * Registers a custom light layer type for use with addLayer().
+     * @param name - Unique name to identify this light type in layer configurations
+     * @param lightClass - The light layer class constructor
+     */
     registerLight(name: string, lightClass: LightLayerConstructor): void;
+    /**
+     * Registers a custom post-processing effect layer type for use with addLayer().
+     * @param name - Unique name to identify this effect type in layer configurations
+     * @param effectClass - The effect layer class constructor
+     */
     registerEffect(name: string, effectClass: EffectLayerConstructor): void;
     /**
      * Find the sun light layer in the current layers
@@ -4890,6 +5268,10 @@ declare class ThreeView<CustomLayerDescriptions extends Record<string, unknown> 
      * Remove CSM for a single material
      */
     private removeCSMForMaterial;
+    /**
+     * Adds the default atmosphere layers including sky, stars, and sun lighting.
+     * @returns Handles to the created sky, skyEnv, stars, skyLightProbe, and sun layers
+     */
     addDefaultAtmosphereLayers(): {
         sky: LayerHandle<SkyMeshLayer>;
         skyEnv: LayerHandle<SkyMeshLayer>;
@@ -4898,8 +5280,9 @@ declare class ThreeView<CustomLayerDescriptions extends Record<string, unknown> 
         sun: LayerHandle<SunLightLayer>;
     };
     /**
-     * Adds default effect layers for rendering.
+     * Adds default post-processing effect layers including aerial perspective, tone mapping, and anti-aliasing.
      * On mobile devices (when mobileOptimization is enabled), uses lighter-weight effects.
+     * @returns Handles to the created aerialPerspective, lensFlare, toneMapping, and antialiasing layers
      */
     addDefaultEffectLayers(): {
         aerialPerspective: LayerHandle<AerialPerspectiveEffectLayer>;
@@ -4907,34 +5290,116 @@ declare class ThreeView<CustomLayerDescriptions extends Record<string, unknown> 
         toneMapping: LayerHandle<ToneMappingEffectLayer>;
         antialiasing: LayerHandle<SMAAEffectLayer> | LayerHandle<FXAAEffectLayer>;
     };
+    /**
+     * Returns the current order of effect passes for debugging purposes.
+     * @returns Array of effect pass names in execution order
+     */
     getEffectOrder(): string[];
+    /**
+     * Sets the camera position and orientation instantly.
+     * @param camPos - Camera position with lng, lat, height (meters), and optional pitch, heading, roll (degrees)
+     */
     setCamera(camPos: CameraPosition): void;
+    /**
+     * Moves the camera in a specified direction.
+     * @param move - Direction: "Forward", "Backward", "Up", "Down", "Left", or "Right"
+     * @param amount - Distance to move in meters
+     */
     moveCamera(move: string, amount: number): void;
+    /**
+     * Moves the camera along a custom direction vector.
+     * @param dir - Direction vector as [x, y, z] array
+     * @param amount - Distance to move in meters
+     */
     moveCameraWithDirection(dir: number[], amount: number): void;
+    /**
+     * Animates the camera to fly to a target position.
+     * @param camPos - Target position with required lng, lat, height (meters), and optional pitch, heading, roll (degrees)
+     * @param duration - Animation duration in milliseconds
+     * @param maxHeight - Maximum height during the flight arc in meters
+     */
     flyTo(camPos: CameraPosition & Required<Pick<CameraPosition, "lng" | "lat" | "height">>, duration?: number, maxHeight?: number): void;
-    lookAt(target: LLE, offset: Vector3): void;
-    cameraFollow(enabled: boolean, target?: LLE, offset?: Vector3): void;
-    sampleTerrainHeight(pos: LLE): number | undefined;
-    addTerrainHeightEvent(pos: LLE, cb: (height: number) => void): () => void;
+    /**
+     * Makes the camera look at a target position with an offset.
+     * @param target - Target geodetic position (lng, lat, height)
+     * @param offset - Offset from the target in East-North-Up (ENU) coordinates
+     */
+    lookAt(target: LatLngHeight, offset: Vector3): void;
+    /**
+     * Enables or disables camera following mode.
+     * @param enabled - Whether to enable camera following
+     * @param target - Target geodetic position to follow (lng, lat, height in meters)
+     * @param offset - Offset from the target in East-North-Up (ENU) coordinates
+     */
+    cameraFollow(enabled: boolean, target?: LatLngHeight, offset?: Vector3): void;
+    /**
+     * Samples the terrain height at a given geodetic position synchronously.
+     * @param pos - Geodetic position (lat, lng used; height is ignored)
+     * @returns Terrain height in meters, or undefined if terrain data not loaded
+     */
+    sampleTerrainHeight(pos: LatLngHeight): number | undefined;
+    /**
+     * Observes terrain height changes at a position. Callback is invoked each time terrain data updates.
+     * @param pos - Geodetic position to observe (lat, lng)
+     * @param cb - Callback function receiving the terrain height in meters
+     * @returns Cleanup function to stop observing
+     */
+    observeTerrainHeightAt(pos: LatLng, cb: (height: number) => void): () => void;
+    /**
+     * Rotates the camera around an axis.
+     * @param axis - Axis to rotate around (zero vector uses default)
+     * @param angle - Rotation angle in radians
+     */
     rotateAroundAxis(axis: Vector3, angle: number): void;
+    /**
+     * Rotates the camera around the current look-at point or center of view.
+     * @param angle - Rotation angle in radians
+     */
+    rotateAround(angle: number): void;
     private _startMainLoop;
     private _getCanvasSize;
     private _handleResize;
+    /**
+     * Handles pick events and emits the picked feature information.
+     * @param pickArr - Array of picked batch IDs
+     */
     onPick(pickArr: number[]): void;
+    /**
+     * Gets whether continuous animation mode is enabled.
+     */
     get animation(): boolean;
+    /**
+     * Sets whether to render every frame continuously (true) or only on changes (false).
+     */
     set animation(v: boolean);
+    /**
+     * Gets the current screen size in pixels.
+     */
     get screenSize(): Vector2;
+    /**
+     * Gets the current device pixel ratio.
+     */
     get pixelRatio(): number;
     /**
-     * Display shadow map on the left side of your screen.
+     * Gets whether shadow map debug viewers are displayed.
      */
     get shadowMapViewersEnabled(): boolean;
+    /**
+     * Enables or disables shadow map debug viewers on screen.
+     */
     set shadowMapViewersEnabled(v: boolean);
     /**
-     * Enable/disable post effect debug views rendering
-     * When disabled, disposes all debug view canvas elements
+     * Enables or disables debug views for selective post-processing effects.
+     * When disabled, disposes all debug view canvas elements.
+     * @param enabled - Whether to enable debug views
      */
     setSelectiveEffectDebugViews(enabled: boolean): void;
+    /**
+     * Picks the terrain position at screen coordinates.
+     * @param x - Screen X coordinate in CSS pixels (same as MouseEvent.clientX)
+     * @param y - Screen Y coordinate in CSS pixels (same as MouseEvent.clientY)
+     * @returns World position Vector3 in ECEF coordinates, or null if no terrain is hit
+     */
     pickTerrainPosition(x: number, y: number): Nullable<Vector3>;
 }
 export default ThreeView;
@@ -4947,7 +5412,7 @@ declare class ThreeViewCamera extends EventHandler<CameraEvent> {
     set core(core: Core | undefined);
     updateStatus(): void;
     get positionECEF(): XYZ;
-    get positionGeographic(): LngLatHeight;
+    get positionGeographic(): LatLngHeight;
     get orientation(): CameraOrientation;
     get fovy(): number | undefined;
     set fov(val: number);
@@ -5017,7 +5482,7 @@ export declare class ToneMapping extends Effect<ToneMappingEffect, ToneMappingOp
     set mode(v: ToneMappingMode);
 }
 
-export declare type ToneMappingConfig = LayerDescription_33 & EffectLayerConfig;
+export declare type ToneMappingConfig = LayerDescription_34 & EffectLayerConfig;
 
 export declare class ToneMappingEffectLayer extends EffectLayerDeclaration<ToneMappingConfig, ToneMappingUpdate, ToneMapping> {
     static key: string;
@@ -5034,11 +5499,11 @@ export declare type ToneMappingOptions = {
     mode?: ToneMappingMode;
 } & EffectOptions;
 
-export declare type ToneMappingUpdate = LayerDescription_33 & EffectLayerUpdate;
+export declare type ToneMappingUpdate = LayerDescription_34 & EffectLayerUpdate;
 
-export { Transform }
+export declare type Transform = Required<NormalizeWASMClass_2<Transform_3>>;
 
-export declare type TransparentPassConfig = LayerDescription_34 & EffectLayerConfig;
+export declare type TransparentPassConfig = LayerDescription_35 & EffectLayerConfig;
 
 export declare class TransparentPassEffectLayer extends EffectLayerDeclaration<TransparentPassConfig, TransparentPassUpdate, RenderPass> {
     static key: string;
@@ -5049,11 +5514,11 @@ export declare class TransparentPassEffectLayer extends EffectLayerDeclaration<T
     update(_time: number): void;
 }
 
-export declare type TransparentPassUpdate = LayerDescription_34 & EffectLayerUpdate;
+export declare type TransparentPassUpdate = LayerDescription_35 & EffectLayerUpdate;
 
 declare type TubeMeshEventMap = Object3DEventMap & CustomObject3DEventMap;
 
-export declare class TubeMeshLayer extends MeshLayerDeclaration<TubeMeshLayerConfig, TubeMeshLayerUpdate, Mesh<TubeGeometry, MeshLambertMaterial, TubeMeshEventMap>> {
+export declare class TubeMeshLayer extends MeshLayerDeclarationForSelectiveEffect<TubeMeshLayerConfig, TubeMeshLayerUpdate, Mesh<TubeGeometry, MeshLambertMaterial, TubeMeshEventMap>> {
     private config;
     constructor(view: ViewContext, config: TubeMeshLayerConfig);
     createMesh(): Mesh<TubeGeometry, MeshLambertMaterial, TubeMeshEventMap>;
@@ -5061,13 +5526,22 @@ export declare class TubeMeshLayer extends MeshLayerDeclaration<TubeMeshLayerCon
     protected disposeMesh(): void;
 }
 
-export declare type TubeMeshLayerConfig = MeshLayerConfig & LayerDescription_10;
+export declare type TubeMeshLayerConfig = MeshLayerConfigWithSelectiveEffect & LayerDescription_11;
 
-export declare type TubeMeshLayerUpdate = MeshLayerUpdate & LayerDescription_10;
+export declare type TubeMeshLayerUpdate = MeshLayerUpdateWithSelectiveEffect & LayerDescription_11;
 
 export declare function updateBatchAttribute(material: Material, batchId: number, attribute: BatchedAttributeName, value: number | number[] | boolean, defaultValues: DefaultBatchAttributeValues): void;
 
-export declare function vector3ToGeodetic(xyz: Vector3): LLE;
+export declare type Vec2 = Required<NormalizeWASMClass_2<Vec2_2>>;
+
+export declare type Vec3 = Required<NormalizeWASMClass_2<Vec3_2>>;
+
+/**
+ * Converts a Cartesian Vector3 in ECEF coordinates to geodetic coordinates.
+ * @param xyz - Cartesian Vector3 in Earth-Centered Earth-Fixed (ECEF) coordinates
+ * @returns Geodetic coordinates (lng, lat, height in meters)
+ */
+export declare function vector3ToGeodetic(xyz: Vector3): LatLngHeight_2;
 
 export declare class ViewContext {
     scenes: Scenes;
@@ -5089,6 +5563,7 @@ export declare class ViewContext {
     getLayerEffects(layerId: string): string[] | undefined;
     setLayerEmissiveColor(layerId: string, emissiveColor: number | undefined): void;
     setLayerSelectiveEffectOcclusion(layerId: string, selectiveEffectOcclusion: SelectiveEffectOcclusionValue): void;
+    clearLayerSelectiveEffectOcclusion(layerId: string): void;
     unregisterLayerEffects(layerId: string): void;
     updateLayerEffects(layerId: string, effectIds: string[] | undefined, emissiveIntensity?: number): void;
     /**
@@ -5153,6 +5628,7 @@ export declare const WATER_ASSETS_URL: string;
 
 export declare const WATER_NORMAL_URL: string;
 
+declare type Window_2 = Required<NormalizeWASMClass_2<Window_3>>;
 export { Window_2 as Window }
 
 /**

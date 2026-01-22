@@ -7290,33 +7290,14 @@ export class PointMesh {
      * @returns {boolean}
      */
     get active() {
-        const ret = wasm.__wbg_get_billboardmesh_active(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_pointmesh_active(this.__wbg_ptr);
         return ret !== 0;
     }
     /**
      * @param {boolean} arg0
      */
     set active(arg0) {
-        wasm.__wbg_set_billboardmesh_active(this.__wbg_ptr, arg0);
-    }
-    /**
-     * RTC (Relative-To-Center) coordinates - tile center in world-space
-     * Used for positioning the mesh when using RTC rendering
-     * @returns {Vec3}
-     */
-    get coordinates() {
-        const ret = wasm.__wbg_get_pointmesh_coordinates(this.__wbg_ptr);
-        return Vec3.__wrap(ret);
-    }
-    /**
-     * RTC (Relative-To-Center) coordinates - tile center in world-space
-     * Used for positioning the mesh when using RTC rendering
-     * @param {Vec3} arg0
-     */
-    set coordinates(arg0) {
-        _assertClass(arg0, Vec3);
-        var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_pointmesh_coordinates(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_pointmesh_active(this.__wbg_ptr, arg0);
     }
 }
 
@@ -8212,25 +8193,6 @@ export class PolygonMesh {
      */
     set active(arg0) {
         wasm.__wbg_set_polygonmesh_active(this.__wbg_ptr, arg0);
-    }
-    /**
-     * RTC (Relative-To-Center) coordinates - tile center in world-space
-     * Used for positioning the mesh when using RTC rendering
-     * @returns {Vec3}
-     */
-    get coordinates() {
-        const ret = wasm.__wbg_get_polygonmesh_coordinates(this.__wbg_ptr);
-        return Vec3.__wrap(ret);
-    }
-    /**
-     * RTC (Relative-To-Center) coordinates - tile center in world-space
-     * Used for positioning the mesh when using RTC rendering
-     * @param {Vec3} arg0
-     */
-    set coordinates(arg0) {
-        _assertClass(arg0, Vec3);
-        var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_polygonmesh_coordinates(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {BoundingSphere | undefined}
@@ -10832,6 +10794,7 @@ export class TextMaterial {
     }
     /**
      * Specify URL for font file. Supported files are ttf, otf and woff. Default is `Roboto`.
+     * Please note that this API might be replaced with another API in the future, since it loads a large font file at once.
      * @returns {string | undefined}
      */
     get font() {
@@ -10845,6 +10808,7 @@ export class TextMaterial {
     }
     /**
      * Specify URL for font file. Supported files are ttf, otf and woff. Default is `Roboto`.
+     * Please note that this API might be replaced with another API in the future, since it loads a large font file at once.
      * @param {string | null} [arg0]
      */
     set font(arg0) {
@@ -10997,6 +10961,28 @@ export class TextMaterial {
      */
     set outlineWidth(arg0) {
         wasm.__wbg_set_textmaterial_outlineWidth(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : Math.fround(arg0));
+    }
+    /**
+     * Language code for text shaping (e.g., "en", "ja", "ar"). Used for proper text rendering.
+     * @returns {string | undefined}
+     */
+    get lang() {
+        const ret = wasm.__wbg_get_textmaterial_lang(this.__wbg_ptr);
+        let v1;
+        if (ret[0] !== 0) {
+            v1 = getStringFromWasm0(ret[0], ret[1]).slice();
+            wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
+        }
+        return v1;
+    }
+    /**
+     * Language code for text shaping (e.g., "en", "ja", "ar"). Used for proper text rendering.
+     * @param {string | null} [arg0]
+     */
+    set lang(arg0) {
+        var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.__wbg_set_textmaterial_lang(this.__wbg_ptr, ptr0, len0);
     }
 }
 
@@ -11852,19 +11838,58 @@ export class TransferablePointGeometry {
         wasm.__wbg_transferablepointgeometry_free(ptr, 0);
     }
     /**
-     * @returns {TransferableFloatAttribute}
+     * @returns {TransferableFloatAttribute | undefined}
      */
     get position() {
-        const ret = wasm.__wbg_get_transferablepointgeometry_position(this.__wbg_ptr);
-        return TransferableFloatAttribute.__wrap(ret);
+        const ret = wasm.__wbg_get_transferablemodelgeometry_batch_ids(this.__wbg_ptr);
+        return ret === 0 ? undefined : TransferableFloatAttribute.__wrap(ret);
     }
     /**
-     * @param {TransferableFloatAttribute} arg0
+     * @param {TransferableFloatAttribute | null} [arg0]
      */
     set position(arg0) {
-        _assertClass(arg0, TransferableFloatAttribute);
-        var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_transferablepointgeometry_position(this.__wbg_ptr, ptr0);
+        let ptr0 = 0;
+        if (!isLikeNone(arg0)) {
+            _assertClass(arg0, TransferableFloatAttribute);
+            ptr0 = arg0.__destroy_into_raw();
+        }
+        wasm.__wbg_set_transferablemodelgeometry_batch_ids(this.__wbg_ptr, ptr0);
+    }
+    /**
+     * @returns {TransferableFloatAttribute | undefined}
+     */
+    get position_3d_high() {
+        const ret = wasm.__wbg_get_transferablepointgeometry_position_3d_high(this.__wbg_ptr);
+        return ret === 0 ? undefined : TransferableFloatAttribute.__wrap(ret);
+    }
+    /**
+     * @param {TransferableFloatAttribute | null} [arg0]
+     */
+    set position_3d_high(arg0) {
+        let ptr0 = 0;
+        if (!isLikeNone(arg0)) {
+            _assertClass(arg0, TransferableFloatAttribute);
+            ptr0 = arg0.__destroy_into_raw();
+        }
+        wasm.__wbg_set_transferablepointgeometry_position_3d_high(this.__wbg_ptr, ptr0);
+    }
+    /**
+     * @returns {TransferableFloatAttribute | undefined}
+     */
+    get position_3d_low() {
+        const ret = wasm.__wbg_get_transferablepointgeometry_position_3d_low(this.__wbg_ptr);
+        return ret === 0 ? undefined : TransferableFloatAttribute.__wrap(ret);
+    }
+    /**
+     * @param {TransferableFloatAttribute | null} [arg0]
+     */
+    set position_3d_low(arg0) {
+        let ptr0 = 0;
+        if (!isLikeNone(arg0)) {
+            _assertClass(arg0, TransferableFloatAttribute);
+            ptr0 = arg0.__destroy_into_raw();
+        }
+        wasm.__wbg_set_transferablepointgeometry_position_3d_low(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {TransferableFloatAttribute}
@@ -12128,7 +12153,7 @@ export class TransferablePolygonGeometry {
      * @returns {TransferableFloatAttribute | undefined}
      */
     get position_3d_high() {
-        const ret = wasm.__wbg_get_transferablepolygongeometry_position_3d_high(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_transferablepointgeometry_position_3d_high(this.__wbg_ptr);
         return ret === 0 ? undefined : TransferableFloatAttribute.__wrap(ret);
     }
     /**
@@ -12140,13 +12165,13 @@ export class TransferablePolygonGeometry {
             _assertClass(arg0, TransferableFloatAttribute);
             ptr0 = arg0.__destroy_into_raw();
         }
-        wasm.__wbg_set_transferablepolygongeometry_position_3d_high(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_transferablepointgeometry_position_3d_high(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {TransferableFloatAttribute | undefined}
      */
     get position_3d_low() {
-        const ret = wasm.__wbg_get_transferablepolygongeometry_position_3d_low(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_transferablepointgeometry_position_3d_low(this.__wbg_ptr);
         return ret === 0 ? undefined : TransferableFloatAttribute.__wrap(ret);
     }
     /**
@@ -12158,7 +12183,7 @@ export class TransferablePolygonGeometry {
             _assertClass(arg0, TransferableFloatAttribute);
             ptr0 = arg0.__destroy_into_raw();
         }
-        wasm.__wbg_set_transferablepolygongeometry_position_3d_low(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_transferablepointgeometry_position_3d_low(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {TransferableFloatAttribute | undefined}
@@ -12345,7 +12370,7 @@ export class TransferablePolygonOutlineGeometry {
      * @returns {TransferableFloatAttribute | undefined}
      */
     get scale_normal_and_cap() {
-        const ret = wasm.__wbg_get_transferablepolygongeometry_position_3d_high(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_transferablepointgeometry_position_3d_high(this.__wbg_ptr);
         return ret === 0 ? undefined : TransferableFloatAttribute.__wrap(ret);
     }
     /**
@@ -12357,7 +12382,7 @@ export class TransferablePolygonOutlineGeometry {
             _assertClass(arg0, TransferableFloatAttribute);
             ptr0 = arg0.__destroy_into_raw();
         }
-        wasm.__wbg_set_transferablepolygongeometry_position_3d_high(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_transferablepointgeometry_position_3d_high(this.__wbg_ptr, ptr0);
     }
     /**
      * @returns {number | undefined}

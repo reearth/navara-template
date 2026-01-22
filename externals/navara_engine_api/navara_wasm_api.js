@@ -6037,6 +6037,7 @@ export class TextMaterial {
     }
     /**
      * Specify URL for font file. Supported files are ttf, otf and woff. Default is `Roboto`.
+     * Please note that this API might be replaced with another API in the future, since it loads a large font file at once.
      * @returns {string | undefined}
      */
     get font() {
@@ -6050,6 +6051,7 @@ export class TextMaterial {
     }
     /**
      * Specify URL for font file. Supported files are ttf, otf and woff. Default is `Roboto`.
+     * Please note that this API might be replaced with another API in the future, since it loads a large font file at once.
      * @param {string | null} [arg0]
      */
     set font(arg0) {
@@ -6202,6 +6204,28 @@ export class TextMaterial {
      */
     set outlineWidth(arg0) {
         wasm.__wbg_set_textmaterial_outlineWidth(this.__wbg_ptr, isLikeNone(arg0) ? 0x100000001 : Math.fround(arg0));
+    }
+    /**
+     * Language code for text shaping (e.g., "en", "ja", "ar"). Used for proper text rendering.
+     * @returns {string | undefined}
+     */
+    get lang() {
+        const ret = wasm.__wbg_get_textmaterial_lang(this.__wbg_ptr);
+        let v1;
+        if (ret[0] !== 0) {
+            v1 = getStringFromWasm0(ret[0], ret[1]).slice();
+            wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
+        }
+        return v1;
+    }
+    /**
+     * Language code for text shaping (e.g., "en", "ja", "ar"). Used for proper text rendering.
+     * @param {string | null} [arg0]
+     */
+    set lang(arg0) {
+        var ptr0 = isLikeNone(arg0) ? 0 : passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.__wbg_set_textmaterial_lang(this.__wbg_ptr, ptr0, len0);
     }
 }
 
