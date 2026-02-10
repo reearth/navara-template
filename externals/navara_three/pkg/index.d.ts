@@ -1147,7 +1147,7 @@ declare type ConvertColorFields<T> = {
 
 /**
  * Converts screen coordinates to world coordinates by raycasting against the WGS84 ellipsoid.
- * @param window - Window configuration with width, height, and pixel_ratio
+ * @param window - Window configuration with width, height, and pixelRatio
  * @param camera - Three.js PerspectiveCamera
  * @param vec2 - Screen coordinates in CSS pixels (same as MouseEvent clientX/clientY)
  * @returns World position Vector3 in ECEF coordinates, or undefined if no intersection with ellipsoid
@@ -1156,7 +1156,7 @@ export declare function convertScreenToWorld(windowObject: Window_2, camera: Per
 
 /**
  * Converts world coordinates to screen coordinates.
- * @param window - Window configuration with width, height, and pixel_ratio
+ * @param window - Window configuration with width, height, and pixelRatio
  * @param camera - Three.js PerspectiveCamera
  * @param worldPos - World position Vector3 in ECEF coordinates
  * @returns Screen coordinates in CSS pixels, or undefined if behind camera
@@ -1864,7 +1864,7 @@ export declare type FeatureCreatedParams = {
  * // Style 3D Tiles buildings by height
  * layer.on("featureUpdated", (evaluator) => {
  *   evaluator.evaluate((_batchId, property) => {
- *     const measuredHeight = property?.get("height") as number;
+ *     const measuredHeight = property?.["height"] as number;
  *
  *     // Color and visibility based on building height
  *     const color = (() => {
@@ -1884,8 +1884,8 @@ export declare type FeatureCreatedParams = {
  * // Style GeoJSON polygons with extrusion based on properties
  * layer.on("featureUpdated", (evaluator) => {
  *   evaluator.evaluate((_batchId, property) => {
- *     const height = (property?.get("height") as number) ?? 0;
- *     const extrudedHeight = (property?.get("extrudedHeight") as number) ?? 0;
+ *     const height = (property?.["height"] as number) ?? 0;
+ *     const extrudedHeight = (property?.["extrudedHeight"] as number) ?? 0;
  *
  *     return {
  *       height,
@@ -1931,13 +1931,13 @@ export declare class FeatureEvaluator {
      *
      * // Access nested JSON attributes (common in MVT/PLATEAU data)
      * evaluator.readFeatureProperties((_batchId, property) => {
-     *   const attributes = JSON.parse((property?.get("attributes") as string) ?? "{}");
+     *   const attributes = JSON.parse((property?.["attributes"] as string) ?? "{}");
      *   const minHeight = attributes["minHeight"];
      *   const maxHeight = attributes["maxHeight"];
      * });
      * ```
      */
-    readFeatureProperties(f: (batchId: number, property: Map<string, unknown> | undefined) => void): void;
+    readFeatureProperties(f: (batchId: number, property: Record<string, unknown> | undefined) => void): void;
     /**
      * Evaluates and applies dynamic styles to features based on their properties.
      * The callback is invoked for each batch (sub-feature) within this feature.
@@ -1957,7 +1957,7 @@ export declare class FeatureEvaluator {
      * ```typescript
      * // Color MVT features based on a category property
      * evaluator.evaluate((_batchId, property) => {
-     *   const category = property?.get("category") as string;
+     *   const category = property?.["category"] as string;
      *
      *   const color = (() => {
      *     if (category === "A") return "#0000ff";
@@ -1972,7 +1972,7 @@ export declare class FeatureEvaluator {
      *
      * // Filter and style text labels
      * evaluator.evaluate((_batchId, property) => {
-     *   const text = property?.get("name") as string;
+     *   const text = property?.["name"] as string;
      *
      *   return {
      *     text,
@@ -1981,7 +1981,7 @@ export declare class FeatureEvaluator {
      * });
      * ```
      */
-    evaluate(f: (batchId: number, property: Map<string, unknown> | undefined) => Partial<EvaluatedValue>): void;
+    evaluate(f: (batchId: number, property: Record<string, unknown> | undefined) => Partial<EvaluatedValue>): void;
     private update;
     private apply;
 }
@@ -1995,7 +1995,7 @@ declare type FeatureHandler = {
     getTransferablePolygonBatchedFeature: (bits: bigint) => ReturnedTransferablePolygonBatchedFeature | undefined;
     getTransferablePolylineBatchedFeature: (bits: bigint) => ReturnedTransferablePolylineBatchedFeature | undefined;
     markFeatureIsRendered: (type: "point" | "polyline" | "polygon" | "model", bits: bigint) => void;
-    readPropertiesFromFeature(bits: bigint, callback: (batchIdx: number, batchId: number, properties?: Map<string, unknown>) => void): void;
+    readPropertiesFromFeature(bits: bigint, callback: (batchIdx: number, batchId: number, properties?: Record<string, unknown>) => void): void;
 };
 
 declare type FeatureId = bigint;
@@ -2205,14 +2205,14 @@ export declare const generateMixOverlaidTexturesMacro: (numTextures: number, ins
 
 /**
  * Computes the surface normal vector at a geodetic position on the WGS84 ellipsoid.
- * @param lle - Geodetic coordinates (lng, lat, height)
+ * @param lle - Geodetic coordinates (lng in radians, lat in radians, height in meters)
  * @returns Unit normal vector pointing outward from the ellipsoid surface
  */
 export declare function geodeticSurfaceNormal(lle: LatLngHeight_2): Vector3;
 
 /**
  * Converts geodetic coordinates (longitude, latitude, height) to a Cartesian Vector3 in ECEF coordinates.
- * @param lle - Geodetic coordinates (lng, lat, height in meters)
+ * @param lle - Geodetic coordinates (lng in radians, lat in radians, height in meters)
  * @returns Cartesian Vector3 in Earth-Centered Earth-Fixed (ECEF) coordinates
  */
 export declare function geodeticToVector3(lle: LatLngHeight_2): Vector3;
@@ -2249,7 +2249,7 @@ export declare function getMaskPassContext(): Readonly<MaskPassContext>;
 
 /**
  * Creates a picking ray from screen coordinates for raycasting.
- * @param window - Window configuration with width, height, and pixel_ratio
+ * @param window - Window configuration with width, height, and pixelRatio
  * @param camera - Three.js PerspectiveCamera
  * @param vec2 - Screen coordinates in CSS pixels (same as MouseEvent clientX/clientY)
  * @returns A Ray starting from the camera through the screen point
@@ -4247,7 +4247,7 @@ export declare class PickableMesh {
 }
 
 export declare type PickedFeature = {
-    properties: Map<string, unknown>;
+    properties: Nullable<Record<string, unknown>>;
     batchId: Nullable<number>;
     layerId: Nullable<string>;
 };
@@ -5739,6 +5739,10 @@ export declare class SmoothLine extends Object3D {
     private _lineMeshes;
     private _pointsMeshes;
     private _pointsData;
+    private _sharedRTEUniforms;
+    private _identityMatrix;
+    private _tempModelViewMatrix;
+    private _originalLineOnBeforeRender;
     constructor(config?: Partial<SmoothLineConfig>[]);
     private updatePointsData;
     private initSubMeshes;
@@ -5748,6 +5752,15 @@ export declare class SmoothLine extends Object3D {
     updateConfig(newConfig: Partial<SmoothLineConfig>[]): void;
     updateLineCfg(cfg: Partial<SmoothLineConfig>, i: number): void;
     updatePointsCfg(cfg: Partial<SmoothLineConfig>, i: number): void;
+    /**
+     * Inject RTE shader code into LineMaterial via onBeforeCompile
+     */
+    private injectRTEShaderCode;
+    /**
+     * Setup RTE callback for camera-relative rendering
+     * This method is safe to call multiple times - it only sets up the callback once
+     */
+    private setupRTECallback;
     dispose(): void;
     onResize(width: number, height: number): void;
 }
@@ -5900,10 +5913,12 @@ export declare type SpherePointOptions = {
 };
 
 /**
- * Renders points as spheres using impostor technique.
+ * Renders points as spheres using impostor technique with RTE (Relative-To-Eye) support.
  */
 export declare class SpherePoints extends Points {
     pointOpts: Required<SpherePointOptions>;
+    private _rteUniforms;
+    private _identityMatrix;
     constructor(opts?: SpherePointOptions);
     setPoints(points: Vector3[]): void;
     setOptions(patch: Partial<SpherePointOptions>): void;
@@ -6989,7 +7004,7 @@ export declare type Vec3 = Required<NormalizeWASMClass_2<Vec3_2>>;
 /**
  * Converts a Cartesian Vector3 in ECEF coordinates to geodetic coordinates.
  * @param xyz - Cartesian Vector3 in Earth-Centered Earth-Fixed (ECEF) coordinates
- * @returns Geodetic coordinates (lng, lat, height in meters)
+ * @returns Geodetic coordinates (lng in radians, lat in radians, height in meters)
  */
 export declare function vector3ToGeodetic(xyz: Vector3): LatLngHeight_2;
 
