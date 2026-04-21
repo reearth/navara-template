@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
+  '@navara/engine': ./externals/navara-engine-0.1.0.tgz
+  '@navara/engine-api': ./externals/navara-engine-api-0.1.0.tgz
+  '@navara/engine-worker': ./externals/navara-engine-worker-0.1.0.tgz
   '@navara/core': ./externals/navara-core-0.0.0.tgz
   '@navara/font': ./externals/navara-font-0.0.0.tgz
   '@navara/three_csm': ./externals/navara-three_csm-0.0.0.tgz
@@ -118,14 +121,14 @@ packages:
     version: 0.0.0
 
   '@navara/three@file:externals/navara-three-0.0.0.tgz':
-    resolution: {integrity: sha512-VErHpuoZlIxGRU4ZzClfRTqfimLWE+m0qokO52GDy7sRk3VH8R8Sj6KBHce+hTas3fkM4tl1LIU9EFYlKCG5FA==, tarball: file:externals/navara-three-0.0.0.tgz}
+    resolution: {integrity: sha512-pkXweegCzqK7Vp0KT9Uml9tVNNG2Fai/CXajabIok+odjZZ38dWxacyKfckOe/njlMIdsmKRtIhpE9Df1WSo/A==, tarball: file:externals/navara-three-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       postprocessing: '>=6.38.0'
       three: '>=0.183.0'
 
   '@navara/three_api@file:externals/navara-three_api-0.0.0.tgz':
-    resolution: {integrity: sha512-DYqHY6Rw7whgojOsQEZ2xumEiTg8Qzl1ZPZSnAYaYKZ2on4ZABXlBw/u7Eq8FeqpBWUkgVWG3plyZTdGX7eYvg==, tarball: file:externals/navara-three_api-0.0.0.tgz}
+    resolution: {integrity: sha512-XGtDVBbGHN3SpIbNU/txFB2NFWlkoiJDVGVBfyOCVRrjsGGcGfYk31M3e80XS+i2YUMildNxEwmdH38avEwZ8g==, tarball: file:externals/navara-three_api-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       three: '>=0.183.0'
@@ -137,7 +140,7 @@ packages:
       three: '>=0.183.0'
 
   '@navara/three_default_layers@file:externals/navara-three_default_layers-0.0.0.tgz':
-    resolution: {integrity: sha512-vxfAEQPXxhTxtl3B1QJJTJe96xjaaygwJdHNmMlH4wXr1NoEeJnoxJqBSpjxPdQr6ApQX4BWnYWxTL2quDcdtA==, tarball: file:externals/navara-three_default_layers-0.0.0.tgz}
+    resolution: {integrity: sha512-Sp4IbVSugeqia72L1nu7NsfZG8900HPFMfaJwlxNXNg4mHfc2QkCEEwzjL82yw1xc9dbEezgmlCvYccvxqrqlg==, tarball: file:externals/navara-three_default_layers-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       '@navara/three': 0.0.0
@@ -159,7 +162,7 @@ packages:
       three: '>=0.183.0'
 
   '@navara/worker@file:externals/navara-worker-0.0.0.tgz':
-    resolution: {integrity: sha512-D6KmitpYd2OKh386lxCtqcHN8tkJ8KvGXx7HHu5uxe0U04u2U1l96l7oITQzXOPHF/J4pGKGEqznmf3veLgGmg==, tarball: file:externals/navara-worker-0.0.0.tgz}
+    resolution: {integrity: sha512-ziKvbGEkrAQGFRIWaaQlmCJjdQVO9Kdym8eifVLLnyIDDVf8BFsrodNznx57tyNar4xJzvHjV6i3s4b4QuncKQ==, tarball: file:externals/navara-worker-0.0.0.tgz}
     version: 0.0.0
 
   '@oxc-project/types@0.124.0':
@@ -986,6 +989,8 @@ snapshots:
 
   '@navara/three_api@file:externals/navara-three_api-0.0.0.tgz(three@0.183.2)':
     dependencies:
+      '@navara/core': file:externals/navara-core-0.0.0.tgz
+      '@navara/engine-api': file:externals/navara-engine-api-0.1.0.tgz
       three: 0.183.2
 
   '@navara/three_csm@file:externals/navara-three_csm-0.0.0.tgz(three@0.183.2)':
@@ -1029,6 +1034,7 @@ snapshots:
 
   '@navara/worker@file:externals/navara-worker-0.0.0.tgz':
     dependencies:
+      '@navara/core': file:externals/navara-core-0.0.0.tgz
       workerpool: 10.0.1
 
   '@oxc-project/types@0.124.0': {}

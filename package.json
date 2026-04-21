@@ -28,6 +28,9 @@
 
   "pnpm": {
     "overrides": {
+      "@navara/engine": "./externals/navara-engine-0.1.0.tgz",
+      "@navara/engine-api": "./externals/navara-engine-api-0.1.0.tgz",
+      "@navara/engine-worker": "./externals/navara-engine-worker-0.1.0.tgz",
       "@navara/core": "./externals/navara-core-0.0.0.tgz",
       "@navara/font": "./externals/navara-font-0.0.0.tgz",
       "@navara/three_csm": "./externals/navara-three_csm-0.0.0.tgz",
@@ -37,6 +40,9 @@
     }
   },
   "overrides": {
+    "@navara/engine": "./externals/navara-engine-0.1.0.tgz",
+    "@navara/engine-api": "./externals/navara-engine-api-0.1.0.tgz",
+    "@navara/engine-worker": "./externals/navara-engine-worker-0.1.0.tgz",
     "@navara/core": "./externals/navara-core-0.0.0.tgz",
     "@navara/font": "./externals/navara-font-0.0.0.tgz",
     "@navara/three_csm": "./externals/navara-three_csm-0.0.0.tgz",
@@ -45,6 +51,9 @@
     "@navara/worker": "./externals/navara-worker-0.0.0.tgz"
   },
   "resolutions": {
+    "@navara/engine": "./externals/navara-engine-0.1.0.tgz",
+    "@navara/engine-api": "./externals/navara-engine-api-0.1.0.tgz",
+    "@navara/engine-worker": "./externals/navara-engine-worker-0.1.0.tgz",
     "@navara/core": "./externals/navara-core-0.0.0.tgz",
     "@navara/font": "./externals/navara-font-0.0.0.tgz",
     "@navara/three_csm": "./externals/navara-three_csm-0.0.0.tgz",
