@@ -11,9 +11,8 @@
   "dependencies": {
     "@navara/engine": "./externals/navara-engine-0.1.0.tgz",
     "@navara/engine-api": "./externals/navara-engine-api-0.1.0.tgz",
-    "@navara/engine-worker": "./externals/navara-engine-worker-0.1.0.tgz",
+    "@navara/core": "./externals/navara-core-0.0.0.tgz",
     "@navara/three": "./externals/navara-three-0.0.0.tgz",
-    "@navara/worker": "./externals/navara-worker-0.0.0.tgz",
     "@navara/three_react": "./externals/navara-three_react-0.0.0.tgz",
     "@navara/three_default_plugin": "./externals/navara-three_default_plugin-0.0.0.tgz",
     "three": "0.183.2",
@@ -25,7 +24,6 @@
     "typescript": "5.9.3",
     "vite": "8.0.8"
   },
-
   "pnpm": {
     "overrides": {
       "@navara/engine": "./externals/navara-engine-0.1.0.tgz",
@@ -54,6 +52,7 @@
     "@navara/engine": "./externals/navara-engine-0.1.0.tgz",
     "@navara/engine-api": "./externals/navara-engine-api-0.1.0.tgz",
     "@navara/engine-worker": "./externals/navara-engine-worker-0.1.0.tgz",
+    "@navara/engine-font-worker": "./externals/navara-engine-font-worker-0.1.0.tgz",
     "@navara/core": "./externals/navara-core-0.0.0.tgz",
     "@navara/font": "./externals/navara-font-0.0.0.tgz",
     "@navara/three_csm": "./externals/navara-three_csm-0.0.0.tgz",
