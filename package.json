@@ -11,12 +11,12 @@
   "dependencies": {
     "@navara/three": "./externals/navara-three-0.0.0.tgz",
     "@navara/three_default_plugin": "./externals/navara-three_default_plugin-0.0.0.tgz",
-    "three": "0.183.2",
+    "three": "0.184.0",
     "three-stdlib": "2.36.1",
     "postprocessing": "6.38.3"
   },
   "devDependencies": {
-    "@types/three": "0.183.1",
+    "@types/three": "0.184.0",
     "typescript": "5.9.3",
     "vite": "8.0.8"
   },
@@ -29,7 +29,7 @@
       "@navara/font": "./externals/navara-font-0.0.0.tgz",
       "@navara/three_csm": "./externals/navara-three_csm-0.0.0.tgz",
       "@navara/three_api": "./externals/navara-three_api-0.0.0.tgz",
-      "@navara/three_default_layers": "./externals/navara-three_default_layers-0.0.0.tgz",
+      "@navara/three_default_descs": "./externals/navara-three_default_descs-0.0.0.tgz",
       "@navara/worker": "./externals/navara-worker-0.0.0.tgz"
     }
   },
@@ -41,7 +41,7 @@
     "@navara/font": "./externals/navara-font-0.0.0.tgz",
     "@navara/three_csm": "./externals/navara-three_csm-0.0.0.tgz",
     "@navara/three_api": "./externals/navara-three_api-0.0.0.tgz",
-    "@navara/three_default_layers": "./externals/navara-three_default_layers-0.0.0.tgz",
+    "@navara/three_default_descs": "./externals/navara-three_default_descs-0.0.0.tgz",
     "@navara/worker": "./externals/navara-worker-0.0.0.tgz"
   },
   "resolutions": {
@@ -53,7 +53,7 @@
     "@navara/font": "./externals/navara-font-0.0.0.tgz",
     "@navara/three_csm": "./externals/navara-three_csm-0.0.0.tgz",
     "@navara/three_api": "./externals/navara-three_api-0.0.0.tgz",
-    "@navara/three_default_layers": "./externals/navara-three_default_layers-0.0.0.tgz",
+    "@navara/three_default_descs": "./externals/navara-three_default_descs-0.0.0.tgz",
     "@navara/worker": "./externals/navara-worker-0.0.0.tgz"
   }
 }
