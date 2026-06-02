@@ -87,38 +87,38 @@ packages:
       '@emnapi/runtime': ^1.7.1
 
   '@navara/core@file:externals/navara-core-0.0.0.tgz':
-    resolution: {integrity: sha512-J5+Fb8520rI3n0WtboU4CCPN7drZajQ279s3PvmylnTx4mEt7uHJZKlpJUL2DZAjJioX+eFRvT5tIUXB2SygzQ==, tarball: file:externals/navara-core-0.0.0.tgz}
+    resolution: {integrity: sha512-znnIQyxY5EJv4AYPhR7a2eHTp0tJ/Rrxp8whv6oNvHYDpozS0RdQxyBn4+jyuhr3Co0JmIfhyMCBUP8T7wZLFw==, tarball: file:externals/navara-core-0.0.0.tgz}
     version: 0.0.0
 
   '@navara/engine-api@file:externals/navara-engine-api-0.1.0.tgz':
-    resolution: {integrity: sha512-TpbaZxjv+mWPW8ZFXx6eN+8gnOj/pDuKFggsqmyrtcFcClwYCTOeCQCvc8IoJyXc6yO8E4ZKstJM/lvncwIJ7g==, tarball: file:externals/navara-engine-api-0.1.0.tgz}
+    resolution: {integrity: sha512-YscvdQxfX7A87tQJ4MdaA6KmOYsfSAhdkrUe4NjWYjdqMUr+vW2sWfVBYe/esIfsiUgjwPSoYT15mSbXTN2ZXA==, tarball: file:externals/navara-engine-api-0.1.0.tgz}
     version: 0.1.0
 
   '@navara/engine-font-worker@file:externals/navara-engine-font-worker-0.1.0.tgz':
-    resolution: {integrity: sha512-nT5rKn9fhvlmZGhOExQAVcFrMXvx7/rKdENSUw0CKyNNTr4Iiukm2fga9WasoefXD2EzTnEsBT0y16exeKsTOQ==, tarball: file:externals/navara-engine-font-worker-0.1.0.tgz}
+    resolution: {integrity: sha512-bYQtFFGTnF7pAnSr/i0v9VBnt1n3UGvFQsiIaEkNEzRuR8t3HYljFAkr9wkDYT2WjG1+y8uAuTVtv35PcA0Rlg==, tarball: file:externals/navara-engine-font-worker-0.1.0.tgz}
     version: 0.1.0
 
   '@navara/engine-worker@file:externals/navara-engine-worker-0.1.0.tgz':
-    resolution: {integrity: sha512-G2tNp1BGE1wnFjnPB/+QnFNyQLYAtQqObUwf8eojhLD46JGdZtkNQY0x9M3t000j/5yr0orEb7F1KrKtgTiMkA==, tarball: file:externals/navara-engine-worker-0.1.0.tgz}
+    resolution: {integrity: sha512-5rbDz+Jx5jwgk0gpzuDTpAa4RRRzTC0F090OBLgapOqUZOuqRFXUDzTE9W16zqUR5YLUvWA2oSrpU7SH89a2Dw==, tarball: file:externals/navara-engine-worker-0.1.0.tgz}
     version: 0.1.0
 
   '@navara/engine@file:externals/navara-engine-0.1.0.tgz':
-    resolution: {integrity: sha512-NcTUxnRkOI03LKDq5OkLpM1XWp7jNWR8XU7psneUg17MP4QL4iBfiVrNdJacw2M/ac5f3TfrYPp8WqVEdIZSnA==, tarball: file:externals/navara-engine-0.1.0.tgz}
+    resolution: {integrity: sha512-9GVMOdI1ANmlsHaJEBrPMGxmfIcjLJTGk9U4n1zIh3a8Vo30vfoFYYR1mcn9x0dpie2CQwafmnwruiS1pQA8qA==, tarball: file:externals/navara-engine-0.1.0.tgz}
     version: 0.1.0
 
   '@navara/font@file:externals/navara-font-0.0.0.tgz':
-    resolution: {integrity: sha512-zz04+AIrsb+evb0DMjxbBpasjYivn8CVF9LZoEY/j1WYnpXqC7sgOSy8Ha2Oqte2mXRYcjaFP6mlW5vNI63KzQ==, tarball: file:externals/navara-font-0.0.0.tgz}
+    resolution: {integrity: sha512-AhMBeUQu4PjZwAkHEUHtwdUxLUs9LZVb7VyQ3ueogVFpNLohcGGnjAS80kPHlsW/ftshlax0DMAdY2ESNjv4DQ==, tarball: file:externals/navara-font-0.0.0.tgz}
     version: 0.0.0
 
   '@navara/three@file:externals/navara-three-0.0.0.tgz':
-    resolution: {integrity: sha512-fqDh/t08Cs9Xv+uCE0aUl8Y5LYubMLWedoo7fcH53YTw9Qc9/vFzJUi/QISUtRfUtUMWz4Mq1zAZJMBZAWTiBQ==, tarball: file:externals/navara-three-0.0.0.tgz}
+    resolution: {integrity: sha512-lQe3UXv+0M8kJhPBU8eYCE9xKo9+gc+5QRADYIdvarqZzWPymUgsFn+vIdvc38Bg/zlFKu1c7rBM1fTq0+dfHw==, tarball: file:externals/navara-three-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       postprocessing: '>=6.38.0'
       three: '>=0.183.0'
 
   '@navara/three_api@file:externals/navara-three_api-0.0.0.tgz':
-    resolution: {integrity: sha512-9mLUosGkUaQu1rDl3uriHMy+32nuoSXsbx7MEiUGBWzp9ZsyKrgGBl89ktNM+hhg4ygkrW0p/TqUFqPUneKgcg==, tarball: file:externals/navara-three_api-0.0.0.tgz}
+    resolution: {integrity: sha512-Om5bX5ZI6W+DHQy03RS1GF9i33mnKLvcnAU8zftIkMf9Viv1SFCYug943Eq6uhjuS9l9eQ5zbvjJyaAPwHWJlA==, tarball: file:externals/navara-three_api-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       three: '>=0.183.0'
@@ -130,7 +130,7 @@ packages:
       three: '>=0.183.0'
 
   '@navara/three_default_descs@file:externals/navara-three_default_descs-0.0.0.tgz':
-    resolution: {integrity: sha512-zY1Snycs4smD+a4apTfH77UHPw78DhMb9YVceHZbCocNVuyWt9rphVcEad/5ggecOdh6R3WPW71PTnKjDWG6mQ==, tarball: file:externals/navara-three_default_descs-0.0.0.tgz}
+    resolution: {integrity: sha512-VY808XtaGtCJPehb44kaFHJbOuxPV6hIYvhSQfSPNfdBzWez6qPFPfq5pyQpLNHTNYART/wkVQDfjClRUKlIPA==, tarball: file:externals/navara-three_default_descs-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       '@navara/three': 0.0.0
@@ -138,13 +138,13 @@ packages:
       three: '>=0.183.0'
 
   '@navara/three_default_plugin@file:externals/navara-three_default_plugin-0.0.0.tgz':
-    resolution: {integrity: sha512-uthZvoMH8K02pYzlzz1edCNAtaWDrhsXvSlG6RmUh6d3atNz/YoVBbfUiUbJ3CbpElYl3FOjBhri8hSQXuMlfA==, tarball: file:externals/navara-three_default_plugin-0.0.0.tgz}
+    resolution: {integrity: sha512-KhBCZg3W2cfLu7VT5+Qcto2HpfCfQV3Xzw+gHJmpIew5ZDsaIZfN/FoJBhQThTwBLk96ejlRUqyS3qf6vhp1nA==, tarball: file:externals/navara-three_default_plugin-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       '@navara/three': 0.0.0
 
   '@navara/worker@file:externals/navara-worker-0.0.0.tgz':
-    resolution: {integrity: sha512-mbr3k6Ydh1fM/PfdM3GO2FN2qaWYf5VeTujGJkDY0kxnFsuEHZTQMw4NX8twlg6M+ODN6qDhgPE7fYTm2JuG4w==, tarball: file:externals/navara-worker-0.0.0.tgz}
+    resolution: {integrity: sha512-sKabmFUwcHziI1Xgotm5q2N5wHqCPtz+aDvrNiKegC1c+lyshFcSkqdzU5Rma4+cXN1o1tgYKSR/U4GQlu93FQ==, tarball: file:externals/navara-worker-0.0.0.tgz}
     version: 0.0.0
 
   '@oxc-project/types@0.124.0':
@@ -943,6 +943,7 @@ snapshots:
       '@takram/three-clouds': 0.7.6(@react-three/fiber@9.6.0(@types/react@19.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(three@0.184.0))(postprocessing@6.38.3(three@0.184.0))(react@19.2.0)(three@0.184.0)
       '@takram/three-geospatial': 0.9.1(@react-three/fiber@9.6.0(@types/react@19.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(three@0.184.0))(react@19.2.0)(three@0.184.0)
       '@takram/three-geospatial-effects': 0.6.4(@react-three/fiber@9.6.0(@types/react@19.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(three@0.184.0))(postprocessing@6.38.3(three@0.184.0))(react@19.2.0)(three@0.184.0)
+      astronomy-engine: 2.1.19
       postprocessing: 6.38.3(three@0.184.0)
       stats.js: 0.17.0
       three: 0.184.0
