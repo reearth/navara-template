@@ -1,13 +1,11 @@
 import ThreeView from "@navara/three";
 import { DefaultDescriptions, DefaultPlugin } from "@navara/three_default_plugin";
-import { AttributionPlugin } from "@navara/three_plugins";
+import { TileJsonPlugin } from "@navara/three_plugins";
 
 const view = new ThreeView<DefaultDescriptions>();
 
-// Plugins
-
-const attribution = new AttributionPlugin();
-view.addPlugin(attribution);
+const tilejson = new TileJsonPlugin();
+view.addPlugin(tilejson);
 
 const defaultPlugin = new DefaultPlugin();
 view.addPlugin(defaultPlugin);
@@ -22,15 +20,11 @@ defaultPlugin.addDefaultPhotorealScene();
 view.atmosphere.date.setHours(8);
 view.toneMappingExposure = 10;
 
-// Layer declarations
+// Layer declaration
 
-const raster = view.addSource({
+const raster = await tilejson.addSource({
   type: "raster-tile",
-  url: "https://tiles.maps.eox.at/wmts?layer=s2cloudless-2020_3857&style=default" +
-    "&tilematrixset=g&Service=WMTS&Request=GetTile" +
-    "&Version=1.0.0&Format=image%2Fjpeg" +
-    "&TileMatrix={z}&TileCol={x}&TileRow={y}",
-  maxZoom: 16,
+  url: "https://papers.reearth.land/bluemarble/tilejson.json",
 });
 
 view.addLayer({
@@ -55,11 +49,7 @@ view.addLayer({
 
 // Attribution
 
-attribution.show([
-  {
-    attributionHtml: `<a href="https://s2maps.eu">Sentinel-2 cloudless 2020</a> by <a href="https://eox.at">EOX IT Services GmbH</a> (contains modified Copernicus Sentinel data 2020)`,
-    attributionUrl: "https://www.openstreetmap.org/copyright",
-  },
+view.attribution?.add([
   {
     attribution: "© Re:Earth Terrain",
     attributionUrl: "https://terrain.reearth.land/",
