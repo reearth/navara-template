@@ -97,19 +97,19 @@ packages:
     version: 0.0.0
 
   '@navara/engine-api@file:externals/navara-engine-api-0.1.0.tgz':
-    resolution: {integrity: sha512-O854BjpP5YiHblyeqgh8vVl8T2PWDa2UUr+bBmI7xG5yq3S+vtW/5M5wx+nzGoWW+G+wqPJdHajQY326h2bE5g==, tarball: file:externals/navara-engine-api-0.1.0.tgz}
+    resolution: {integrity: sha512-j6UNlz3I7CpfS7Xs2L/BDeUrdpOuUpNPE42ir0aavb+7qOUK4I0/Rz8+H+ajNB1L2ouMiExgtYMGyE6tQ/LlWw==, tarball: file:externals/navara-engine-api-0.1.0.tgz}
     version: 0.1.0
 
   '@navara/engine-font-worker@file:externals/navara-engine-font-worker-0.1.0.tgz':
-    resolution: {integrity: sha512-weNz6SqucMBm3d439bxbVJ0JDcR+7WOXphXZ6dgyockb9ngr0/P8UY6gObDJ/Wfpq/dFyaW0C9wOkyzqCs7Z8Q==, tarball: file:externals/navara-engine-font-worker-0.1.0.tgz}
+    resolution: {integrity: sha512-YAXheS7RqzmbOZQTTmT/CCxVVWqhYbt7lYhhxnFGxJY+eU1XrxXtYE3XeoXXraLMxvohvQ7NJdK9pIvOjzP9Jw==, tarball: file:externals/navara-engine-font-worker-0.1.0.tgz}
     version: 0.1.0
 
   '@navara/engine-worker@file:externals/navara-engine-worker-0.1.0.tgz':
-    resolution: {integrity: sha512-ZN0nn6xeQHrniSAOPul/zVUAdhkZiNOdrG6AMiYlk2z3/JgB89Y8IGBDLPBFJNBxiBXLZYCMazOpYZSKrNkziQ==, tarball: file:externals/navara-engine-worker-0.1.0.tgz}
+    resolution: {integrity: sha512-cV+L8OeJ/F/r3Kyvg2hLBAH/3MTy8JGsdfRMnlQoHnChFdyyDnrbOtvp32czfOvhHXp3cGoZWiPzNdjs7Cl+xw==, tarball: file:externals/navara-engine-worker-0.1.0.tgz}
     version: 0.1.0
 
   '@navara/engine@file:externals/navara-engine-0.1.0.tgz':
-    resolution: {integrity: sha512-Dyh9BtekdQwqXF2nUjkIbShxAXcwxDsBs0TqW0XU/CHL7pue7moYQIYYJZNsHjoagBF1n0zXQ+F/ceDdHfUaLQ==, tarball: file:externals/navara-engine-0.1.0.tgz}
+    resolution: {integrity: sha512-eYzXfEjjWIMLtciITKiJLEAk6qy/3zj2aa4GobrkEkIqc/uesz4zR0bc7b2uSmOBv+u87xSZeoUdB8ZQfYUNew==, tarball: file:externals/navara-engine-0.1.0.tgz}
     version: 0.1.0
 
   '@navara/font@file:externals/navara-font-0.0.0.tgz':
@@ -117,7 +117,7 @@ packages:
     version: 0.0.0
 
   '@navara/three@file:externals/navara-three-0.0.0.tgz':
-    resolution: {integrity: sha512-RBErOm2ARVJYYuFZsUTYKNnu5rw/7Pu8r5RIdYBqAm85bqguyk6BPrGYJq5sFNJKPi6K2dkXoBwxMS6V3yV0dw==, tarball: file:externals/navara-three-0.0.0.tgz}
+    resolution: {integrity: sha512-jXf11XfRhKwm2cSw9Cy+OgOpL/tDRky71gNph5TyY6VOHhhTIirroCrhHFzlO7QulG+HeSfbGkR4JJc/vgpKFw==, tarball: file:externals/navara-three-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       postprocessing: '>=6.38.0'
@@ -136,7 +136,7 @@ packages:
       three: '>=0.183.0'
 
   '@navara/three_default_descs@file:externals/navara-three_default_descs-0.0.0.tgz':
-    resolution: {integrity: sha512-JWcKFoMauA4Uwcf7gPUPnAvLpoU/68ssRKiAT48nbayLGrfX73WyA3mLeTMtx7Ek6a0D04QDCh9P+/K6uANhSQ==, tarball: file:externals/navara-three_default_descs-0.0.0.tgz}
+    resolution: {integrity: sha512-Wq7C1jOJXSdNbjk2+hxp8bM//TB9j+BhbjCh/3E8EAozDOYNucmdYOA4b6tm1cS2jIX629CWlO89lKc6My5bYA==, tarball: file:externals/navara-three_default_descs-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       '@navara/three': 0.0.0
@@ -150,7 +150,7 @@ packages:
       '@navara/three': 0.0.0
 
   '@navara/three_plugins@file:externals/navara-three_plugins-0.0.0.tgz':
-    resolution: {integrity: sha512-hBnGtLFKBfHj9ZUc7QoimfMXyMZa1N3uoF68iHf5/SQ5318kJ9zkA0nn5U1EyUmDy0WlKkufkzHNsh7BDThbNw==, tarball: file:externals/navara-three_plugins-0.0.0.tgz}
+    resolution: {integrity: sha512-y7bdvowPlOO9NfPp0JwOjV+qKvXRS1KP5DqPD5OeVEjAMu5t1D0aMZwS630hmgqdgP6psBr2L0PLlC7ncRIo8g==, tarball: file:externals/navara-three_plugins-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       '@navara/three': 0.0.0
@@ -158,7 +158,7 @@ packages:
       three: '>=0.183.0'
 
   '@navara/worker@file:externals/navara-worker-0.0.0.tgz':
-    resolution: {integrity: sha512-vHaM0vSatOI9Q4Gs4zgaEDOUb/vRupVE+MdNFrPRAWf6romPoeayT/p9kgQmT4o/ZthPv9cNGlDsDS8p0lDqMQ==, tarball: file:externals/navara-worker-0.0.0.tgz}
+    resolution: {integrity: sha512-MiHA5FOM1ZHSRgOtcYR33wTnSvxwVHxVgZlVPfNTueqoxKPh2a1t4fLhshRu50I3TwD1m+JfnF+LrT/Lfkgzig==, tarball: file:externals/navara-worker-0.0.0.tgz}
     version: 0.0.0
 
   '@oxc-project/types@0.124.0':
