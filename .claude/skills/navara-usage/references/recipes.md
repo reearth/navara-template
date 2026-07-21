@@ -10,17 +10,17 @@ Proven combinations that get from zero to a high-quality scene. Prefer starting 
 
 **Composition (current best practice):**
 
-| Piece | What it contributes |
-|---|---|
-| `DefaultPlugin` + `addDefaultPhotorealScene()` | Sky, stars, sun light, sky light probe, aerial perspective, lens flare (skipped on mobile), tone mapping, antialiasing — mobile-aware |
-| Re:Earth Terrain (`quantized-mesh` source) | Global terrain relief with vertex normals and water mask |
-| EOX Sentinel-2 cloudless (`raster-tile` source) | Global satellite imagery draped over the terrain |
-| `AttributionPlugin` | Required data credits for the above |
+| Piece                                           | What it contributes                                                                                                                   |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `DefaultPlugin` + `addDefaultPhotorealScene()`  | Sky, stars, sun light, sky light probe, aerial perspective, lens flare (skipped on mobile), tone mapping, antialiasing — mobile-aware |
+| Re:Earth Terrain (`quantized-mesh` source)      | Global terrain relief with vertex normals and water mask                                                                              |
+| EOX Sentinel-2 cloudless (`raster-tile` source) | Global satellite imagery draped over the terrain                                                                                      |
+| `AttributionPlugin`                             | Required data credits for the above                                                                                                   |
 
 ```typescript
-import ThreeView from "@navara/three";
-import { DefaultPlugin, type DefaultDescriptions } from "@navara/three_default_plugin";
-import { AttributionPlugin } from "@navara/three_plugins";
+import ThreeView from "@navaramap/three";
+import { DefaultPlugin, type DefaultDescriptions } from "@navaramap/three_default_plugin";
+import { AttributionPlugin } from "@navaramap/three_plugins";
 
 const view = new ThreeView<DefaultDescriptions>({ shadow: true });
 const defaultPlugin = new DefaultPlugin();
