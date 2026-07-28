@@ -9,17 +9,17 @@ description: >
 
 # Using Navara (@navaramap/three)
 
-Navara is a 3D globe map engine: a Rust/WASM GIS core driven from TypeScript, rendered with Three.js. The public API is `ThreeView` plus a declarative Source/Layer/Descriptor model.
+Navara is a 3D globe map engine: reusable GIS logic lives in a Rust/WASM core, and drawing is delegated to a swappable CG-rendering library. `@navaramap/three` is the Three.js-based binding (currently the only one; more rendering engines are planned — avoid wording that fixes Navara to Three.js in prose). Its public API is `ThreeView` plus a declarative Source/Layer/Descriptor model.
 
 ## Packages
 
 | Package | What it provides | When you need it |
 |---|---|---|
-| `@navaramap/three` | `ThreeView` (default export), `Color`, geodetic math utils, `MeshDesc`/`EffectDesc`/`LightDesc` base classes, handle types | Always |
-| `@navaramap/three_default_plugin` | `DefaultPlugin`, `DefaultDescriptions` (registers ~40 built-in descriptors) | Almost always |
-| `@navaramap/three_default_descs` | Individual descriptor classes/types (`BoxMeshDesc`, `SSREffectDesc`, `SunLightDesc`, …) | Typed `addMesh<T>`/`addEffect<T>` calls, or manual registration without DefaultPlugin |
-| `@navaramap/three_plugins` | `AttributionPlugin`, `PersonViewPlugin`, `OverlayPlugin`, `CesiumIonPlugin` | Per feature |
-| `@navaramap/three_api` | Standalone GIS math (no view) | Pure geometry computation |
+| `@navaramap/three` | `ThreeView` (default export), `Color`, geodetic math utils, `MeshDesc`/`EffectDesc`/`LightDesc` base classes, handle types, built-in attribution UI (`view.attribution`, on by default) | Always |
+| `@navaramap/three-default-plugin` | `DefaultPlugin`, `DefaultDescriptions` (registers ~40 built-in descriptors) | Almost always |
+| `@navaramap/three-default-descs` | Individual descriptor classes/types (`BoxMeshDesc`, `SSREffectDesc`, `SunLightDesc`, …) | Typed `addMesh<T>`/`addEffect<T>` calls, or manual registration without DefaultPlugin |
+| `@navaramap/three-plugins` | `PersonViewPlugin`, `OverlayPlugin`, `CesiumIonPlugin`, `TileJsonPlugin` | Per feature |
+| `@navaramap/three-api` | Standalone GIS math (no view) | Pure geometry computation |
 
 Most apps need only the first two.
 
@@ -27,7 +27,7 @@ Most apps need only the first two.
 
 ```typescript
 import ThreeView from "@navaramap/three";
-import { DefaultPlugin, type DefaultDescriptions } from "@navaramap/three_default_plugin";
+import { DefaultPlugin, type DefaultDescriptions } from "@navaramap/three-default-plugin";
 
 const view = new ThreeView<DefaultDescriptions>({ shadow: true }); // 1. construct
 const defaultPlugin = new DefaultPlugin();
@@ -58,6 +58,7 @@ For "make it look good" goals, use the proven compositions in [references/recipe
 - **Updates are partial merges:** `Layer.update()`, `Source.update()` and mesh/effect/light handle `.update()` all merge into the current config — omitted materials and omitted fields within a material are preserved (verified: `layer.update({ point: { color } })` keeps `size`/`clampToGround`). Note: `Layer.update()`'s JSDoc says "the entire configuration is replaced" — that text is outdated; trust the merge behavior shown in its own `@example`.
 - **Sources are reference-counted:** `source.delete()` returns `false` while any layer still references it. Updating a source resets and reloads every referencing layer.
 - **Layer render order = add order** (e.g. add terrain before the raster basemap draped on it).
+- **Handle events vs desc events:** mesh/light/effect handles (`BaseHandle`) only emit `deleted` — desc-specific events (`load` / `error` / `animationReady` on GLTF, instanced-GLTF and splat descs) live on the desc, so subscribe via `handle.ref.on("load", ...)`.
 - **Never write to `view.camera.raw` frustum fields** (`fov` etc.) — the engine overwrites them and Rust-side culling desyncs. Use the `view.camera.fov/near/far` setters.
 - **Units:** mesh `position` is ECEF meters; `sampleTerrainHeight`/`observeTerrainHeightAt` take **radians** (use `degreeToRadian`); batch IDs are 24-bit.
 - **Mesh placement is Cartesian (ECEF) by default:** raw `position`/`rotation`/`scale` are earth-centered ECEF meters, so a bare `position` won't sit upright at a lng/lat. For geographic placement set `matrixWorld` to a tangent-frame matrix — then `position`/`rotation`/`scale` become offsets *within* that frame. Pick the frame function whose axis orientation you want (all exported from `@navaramap/three`): `eastNorthUpToFixedFrame` (ENU), `northEastDownToFixedFrame` (NED), `northUpEastToFixedFrame` (NUE), `northWestUpToFixedFrame` (NWU). See [references/low-level-api.md](references/low-level-api.md).

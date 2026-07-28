@@ -4,7 +4,7 @@ Use these when declarative layer config isn't enough: data-driven styling per fe
 
 ## FeatureEvaluator — data-driven styling
 
-Obtained from layer `featureCreated`/`featureUpdated` events. `evaluate()` runs per batch and returns only the properties you want to override (all optional: `color`, `show`, `height`, `extrudedHeight`, `text`, `width`, `size`, `opacity`):
+Obtained from layer `featureCreated`/`featureUpdated` events. `evaluate()` runs per batch and returns only the properties you want to override (all optional: `color`, `show`, `height`, `extrudedHeight`, `text`, `width`, `size`, `opacity`, `declutterPriority`):
 
 ```typescript
 import { Color } from "@navaramap/three";
@@ -26,6 +26,7 @@ layer.on("featureUpdated", ({ evaluator }) => {
 
 - Prefer `filters` (or `readFilteredFeatureProperties`) over reading all properties on large datasets.
 - `readFeatureProperties(cb)` reads attributes without styling (e.g. build a legend).
+- **Label decluttering:** `text`/`point`/`billboard` materials declutter by default (`declutter: true`) — screen-overlapping labels hide the lower-priority one (with a fade). Set `declutter: false` on the material to draw every label unconditionally. Placement priority: layer-level `declutterPriority` on the material, overridable per feature by returning `declutterPriority` from `evaluate()` — higher wins; among equal priorities currently-shown labels are sticky (hysteresis), then ties resolve deterministically by anchor position. The placement math itself is a Rust kernel (`declutterPlace` in `navara_wasm_api`); the TS `DeclutterManager` only orchestrates. Reference: `example/pages/styling/mvt-text`.
 - To restyle interactively (click-to-highlight), change your evaluation state and call `layer.forceUpdate()`.
 - Full API: https://navara-docs.netlify.app/three/api/feature-evaluator/ — runnable references in the Navara repo: `example/pages/styling/*` (one per geometry × source type).
 
@@ -41,7 +42,7 @@ const unobserve = view.observeTerrainHeightAt({ lat, lng }, (height) => { ... })
 
 Mouse events (`click`, `mousemove`, …) deliver `MapMouseEvent` with `.clientX/Y` and `.map` (ECEF coords). The `idle` event fires after `idleThreshold` ms without tile/data activity.
 
-## Geodetic / ECEF math (exported from `@navaramap/three`; standalone in `@navaramap/three_api`)
+## Geodetic / ECEF math (exported from `@navaramap/three`; standalone in `@navaramap/three-api`)
 
 Positions in the scene are **ECEF meters**. Geodetic helpers take **radians**.
 
@@ -75,12 +76,12 @@ geodesic.distance; geodesic.interpolatePoints(64);
 
 Pick the tangent-frame function by the axis orientation your mesh expects — all take an ECEF origin `Vector3` and return a `Matrix4`, all exported from `@navaramap/three`:
 
-| Function                    | Local axes (x, y, z) |
-| --------------------------- | -------------------- |
-| `eastNorthUpToFixedFrame`   | East, North, Up      |
-| `northEastDownToFixedFrame` | North, East, Down    |
-| `northUpEastToFixedFrame`   | North, Up, East      |
-| `northWestUpToFixedFrame`   | North, West, Up      |
+| Function | Local axes (x, y, z) |
+|---|---|
+| `eastNorthUpToFixedFrame` | East, North, Up |
+| `northEastDownToFixedFrame` | North, East, Down |
+| `northUpEastToFixedFrame` | North, Up, East |
+| `northWestUpToFixedFrame` | North, West, Up |
 
 Mesh transform modes: standard `position`/`rotation`/`scale` (Cartesian ECEF — the default), `matrix` (local frame), `matrixWorld` (world frame — the usual choice for geographic placement, as above).
 

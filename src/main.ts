@@ -1,5 +1,5 @@
 import ThreeView from "@navaramap/three";
-import { DefaultDescriptions, DefaultPlugin } from "@navaramap/three_default_plugin";
+import { DefaultDescriptions, DefaultPlugin } from "@navaramap/three-default-plugin";
 
 const view = new ThreeView<DefaultDescriptions>();
 
